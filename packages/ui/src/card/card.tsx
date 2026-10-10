@@ -114,7 +114,11 @@ function CardFooter({ children, ...rest }: NativeProps<'div'> & { children?: Rea
   );
 }
 
-/** A bordered surface that groups related content: a KPI, a form section, a record summary. */
+/**
+ * A bordered surface that groups related content: a KPI, a form section, a record summary.
+ * Parts are available both as `Card.Header` and as named exports (`CardHeader`), because a server
+ * component cannot reach into a client module's properties (`Card.Header` is undefined there).
+ */
 export const Card = Object.assign(CardRoot, {
   Header: CardHeader,
   Title: CardTitle,
@@ -122,3 +126,5 @@ export const Card = Object.assign(CardRoot, {
   Body: CardBody,
   Footer: CardFooter,
 });
+
+export { CardBody, CardDescription, CardFooter, CardHeader, CardTitle };

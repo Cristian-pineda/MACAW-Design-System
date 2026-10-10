@@ -120,9 +120,18 @@ const extras = `
 }
 `;
 
+// An explicit light block so a light scope nested inside a dark page (a preview frame, a swatch)
+// re-applies the light values. Only themed tokens need to appear here.
+const darkNames = [...darkCss.matchAll(/^\s+(--[a-z0-9-]+):/gm)].map((m) => m[1]);
+const lightLines = darkNames
+  .map((name) => lightCss.match(new RegExp(`^\\s+${name}: ([^;]+);`, 'm')))
+  .filter((m): m is RegExpMatchArray => m !== null)
+  .map((m) => `  ${m[0].trim()}`);
+const lightScope = `[data-theme="light"] {\n${lightLines.join('\n')}\n}\n`;
+
 await writeFile(
   `${DIST}tokens.css`,
-  `${lightCss}\n${darkCss}\n@media (prefers-color-scheme: dark) {\n${darkMedia.replace(/^/gm, '  ').replace(/^\s+$/gm, '')}}\n${extras}`,
+  `${lightCss}\n${lightScope}\n${darkCss}\n@media (prefers-color-scheme: dark) {\n${darkMedia.replace(/^/gm, '  ').replace(/^\s+$/gm, '')}}\n${extras}`,
 );
 await Promise.all(
   ['tokens.light.css', 'tokens.dark.css', 'tokens.dark.media.css'].map((f) => rm(`${DIST}${f}`)),

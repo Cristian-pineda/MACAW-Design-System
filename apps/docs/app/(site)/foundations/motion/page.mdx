@@ -1,0 +1,19 @@
+import { MotionExample } from '@/components/foundations/examples';
+
+export const metadata = { title: 'Motion' };
+
+# Motion
+
+Restrained. Four durations (`instant` 0 ms, `fast` 100 ms, `base` 160 ms, `slow` 240 ms) and three easings (`standard`, `enter`, `exit`). Colour and border transitions on controls use `fast`; panels that open use `base` with `enter`; nothing in the system is slower than `slow`.
+
+`tokens.css` collapses every duration to 0 ms under `prefers-reduced-motion: reduce`, so components never branch on it. The playground's "Reduced motion" toggle does the same for one frame.
+
+<MotionExample />
+
+## Rules
+
+- Use `transition-colors duration-fast ease-standard` on controls; do not invent durations.
+- The `loading` spinner is the only looping animation and it stops under reduced motion.
+- No motion for decoration. Motion explains a state change or it does not happen.
+
+See the [motion tokens](/tokens#motion).

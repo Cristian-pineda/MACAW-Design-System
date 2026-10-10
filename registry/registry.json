@@ -84,6 +84,11 @@
           "since": "0.1.0",
           "exports": [
             "Card",
+            "CardHeader",
+            "CardTitle",
+            "CardDescription",
+            "CardBody",
+            "CardFooter",
             "cardVariants"
           ],
           "budget": {

@@ -1,0 +1,17 @@
+import { ElevationExample } from '@/components/foundations/examples';
+
+export const metadata = { title: 'Elevation' };
+
+# Elevation
+
+Structure comes from a 1 px border, not from shadow. Four elevation tokens exist (`flat`, `raised`, `floating`, `overlay`) and each is a named role: a card on the canvas may be `raised`; a dropdown is `floating`; a dialog is `overlay`. Radii stay at 8 px or less: `shape.control` (4 px) for buttons and inputs, `shape.container` (6 px) for cards, `shape.overlay` (8 px) for menus and dialogs, `shape.pill` for badges.
+
+<ElevationExample />
+
+## Rules
+
+- Do not use elevation to signal importance; use position and heading level.
+- Do not nest cards.
+- Shadows are defined once per elevation; components never compose their own.
+
+See [radius](/tokens#radius) and [elevation](/tokens#elevation) in the token reference.

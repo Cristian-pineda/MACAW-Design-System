@@ -5,7 +5,7 @@
 import { readFile } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
 import { findManifestFiles, loadTokenMeta, ROOT } from '../lib.ts';
-import { loadManifests } from '@macaw-ds/manifest';
+import { loadManifests } from '@macaw-ds/manifest/node';
 
 const problems: string[] = [];
 const files = await findManifestFiles();

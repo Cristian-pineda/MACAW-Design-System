@@ -1,0 +1,92 @@
+export const metadata = { title: 'Getting started' };
+
+# Getting started
+
+MACAW is installed through one door. The CLI adds the packages, the stylesheet imports and the Claude Code plugin, so the next session already knows the system.
+
+## Install
+
+```bash
+npx @macaw-ds/cli init
+```
+
+`init` installs `@macaw-ds/ui`, `@macaw-ds/tokens` and `@macaw-ds/icons`, drops the plugin (skills, hooks, reviewer agent, MCP config) into `.claude/`, and writes a short `CLAUDE.md` block.
+
+## Stylesheets
+
+Import the four files once, in your root CSS, in this order. Tailwind v4 reads the theme from `theme.css`, so only token utilities exist afterwards.
+
+```css
+@import 'tailwindcss';
+@import '@macaw-ds/tokens/tokens.css';
+@import '@macaw-ds/tokens/theme.css';
+@import '@macaw-ds/ui/styles.css';
+```
+
+## Light and dark
+
+Light and dark are modes of the semantic token layer. Set `data-theme="light"` or `data-theme="dark"` on `<html>`; with no attribute the OS preference applies. Component code never branches on theme.
+
+```tsx
+<html lang="en" data-theme="dark">
+```
+
+## Fonts
+
+The token font stacks start with Inter and Geist Mono and fall back to system fonts. Load them any way you like; with Next.js:
+
+```tsx
+import { Geist_Mono, Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' });
+
+<html className={`${inter.variable} ${geistMono.variable}`}>
+```
+
+## Use a component
+
+```tsx
+import { Button, Text } from '@macaw-ds/ui';
+
+export function Summary() {
+  return (
+    <>
+      <Text numeric>$12,480.00</Text>
+      <Button>Pay invoice</Button>
+    </>
+  );
+}
+```
+
+## CLI commands
+
+```bash
+npx @macaw-ds/cli add button          # wires the import, prints a starter snippet
+npx @macaw-ds/cli add button --eject  # copies the source in; recorded in .macaw/ejected.json
+npx @macaw-ds/cli diff                # (0.2) shows what ejected copies are behind
+```
+
+## The plugin for Claude Code
+
+`init` installs it. To add it to an existing Claude Code setup by hand:
+
+```bash
+claude plugin marketplace add Cristian-pineda/MACAW-Design-System
+claude plugin install macaw
+```
+
+See [For agents](/for-agents) for what the plugin contains.
+
+## Tailwind-native option
+
+If you compile your own utilities instead of importing `@macaw-ds/ui/styles.css`, point Tailwind at the component sources and keep the theme import:
+
+```css
+@import 'tailwindcss';
+@import '@macaw-ds/tokens/tokens.css';
+@import '@macaw-ds/tokens/theme.css';
+@source '../node_modules/@macaw-ds/ui/src';
+```
+
+The ESLint config `@macaw-ds/eslint-config` then rejects anything that is not a token utility: raw hex or px, arbitrary values, Tailwind's default palette, and `className` on a MACAW component.

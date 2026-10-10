@@ -8,17 +8,32 @@
   "category": "layout",
   "purpose": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
   "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring.",
-  "exports": ["Card", "cardVariants"],
+  "exports": [
+    "Card",
+    "CardHeader",
+    "CardTitle",
+    "CardDescription",
+    "CardBody",
+    "CardFooter",
+    "cardVariants"
+  ],
   "props": {
     "padding": {
       "type": "enum",
-      "values": ["none", "sm", "md"],
+      "values": [
+        "none",
+        "sm",
+        "md"
+      ],
       "default": "md",
       "description": "Inner padding for the sections. none when the body is a table or an image that should touch the edges."
     },
     "elevation": {
       "type": "enum",
-      "values": ["flat", "raised"],
+      "values": [
+        "flat",
+        "raised"
+      ],
       "default": "flat",
       "description": "flat relies on the border; raised adds a subtle shadow for cards that float over the canvas."
     },
@@ -40,7 +55,13 @@
       "control": "none"
     }
   },
-  "slots": ["Header", "Title", "Description", "Body", "Footer"],
+  "slots": [
+    "Header",
+    "Title",
+    "Description",
+    "Body",
+    "Footer"
+  ],
   "tokens": [
     "card.radius",
     "card.padding.sm",
@@ -67,12 +88,15 @@
       "The footer's sunken background keeps 4.5:1 for primary and secondary text."
     ]
   },
-  "budget": { "gzip": 3000 },
+  "budget": {
+    "gzip": 3000
+  },
   "rules": [
     "Use the sections (Header, Body, Footer) rather than custom padding; the Card owns its spacing.",
     "Card.Title sets the heading level with `as` to fit the page outline.",
     "Interactive cards use asChild with an anchor or a button and contain no other interactive elements.",
-    "One primary action per card footer at most."
+    "One primary action per card footer at most.",
+    "From a React Server Component, import the named parts (CardHeader, CardBody, CardFooter); the dotted form (Card.Header) only works inside client components."
   ],
   "dos": [
     "Use padding=\"none\" and put a table in Card.Body so rows run edge to edge.",
@@ -83,16 +107,40 @@
     "Do not use elevation to signal importance; use position and heading level."
   ],
   "examples": [
-    { "name": "Default", "props": {} },
-    { "name": "Raised", "props": { "elevation": "raised" } },
-    { "name": "Compact", "props": { "padding": "sm" } },
+    {
+      "name": "Default",
+      "props": {}
+    },
+    {
+      "name": "Raised",
+      "props": {
+        "elevation": "raised"
+      }
+    },
+    {
+      "name": "Compact",
+      "props": {
+        "padding": "sm"
+      }
+    },
     {
       "name": "Interactive",
       "description": "The whole card is a link.",
-      "props": { "interactive": true }
+      "props": {
+        "interactive": true
+      }
     }
   ],
-  "registryDependencies": ["text"],
-  "dependencies": ["radix-ui", "class-variance-authority"],
-  "related": ["text", "button", "badge"]
+  "registryDependencies": [
+    "text"
+  ],
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority"
+  ],
+  "related": [
+    "text",
+    "button",
+    "badge"
+  ]
 }

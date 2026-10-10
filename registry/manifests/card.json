@@ -9,6 +9,11 @@
   "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring.",
   "exports": [
     "Card",
+    "CardHeader",
+    "CardTitle",
+    "CardDescription",
+    "CardBody",
+    "CardFooter",
     "cardVariants"
   ],
   "props": {
@@ -94,7 +99,8 @@
     "Use the sections (Header, Body, Footer) rather than custom padding; the Card owns its spacing.",
     "Card.Title sets the heading level with `as` to fit the page outline.",
     "Interactive cards use asChild with an anchor or a button and contain no other interactive elements.",
-    "One primary action per card footer at most."
+    "One primary action per card footer at most.",
+    "From a React Server Component, import the named parts (CardHeader, CardBody, CardFooter); the dotted form (Card.Header) only works inside client components."
   ],
   "dos": [
     "Use padding=\"none\" and put a table in Card.Body so rows run edge to edge.",

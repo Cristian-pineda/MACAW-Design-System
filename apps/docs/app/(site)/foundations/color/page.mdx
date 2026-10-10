@@ -1,0 +1,20 @@
+import { ColorExample } from '@/components/foundations/examples';
+
+export const metadata = { title: 'Color' };
+
+# Color
+
+One brand, one restrained blue-violet accent, neutral cool-grey surfaces, and success, warning, critical and info ramps with identical lightness steps (DECISIONS.md #15).
+
+Colour has three tiers. Components only ever reference the **semantic** tier: `surface.*` for backgrounds, `fg.*` for text, `line.*` for borders, `action.*` for buttons, `status.*` for badges and messages, `field.*` for inputs, `focus.ring` and `data.*` for charts. Light and dark are modes of that layer, switched by `data-theme` on `<html>`; nothing in component code branches on theme.
+
+<ColorExample />
+
+## Rules
+
+- Only token utilities: `bg-surface-default`, `text-fg-muted`, `border-line-default`. Never hex, rgb, oklch or Tailwind's default palette.
+- `fg.primary` and `fg.numeric` meet 7:1 on every surface; `fg.secondary` and `fg.muted` meet 4.5:1. Non-text lines and the focus ring meet 3:1.
+- Status colour reinforces a word; it never replaces it. "Overdue" in critical, not a red dot alone.
+- Primitives (`color.neutral.600`) are for the token files only. Rebranding is a change to the primitive tier.
+
+See the full [semantic table with contrast badges](/tokens#semantic).

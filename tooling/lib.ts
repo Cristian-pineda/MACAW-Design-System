@@ -1,7 +1,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadManifests, type LoadedManifest } from '@macaw-ds/manifest';
+import { loadManifests, type LoadedManifest } from '@macaw-ds/manifest/node';
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 export const SCOPE = '@macaw-ds';

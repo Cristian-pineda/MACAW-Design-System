@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+@import '@macaw-ds/tokens/tokens.css';
+@import '@macaw-ds/tokens/theme.css';
+@source '../../../packages/ui/src';
+@source '../';
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  [data-theme='dark'] {
+    color-scheme: dark;
+  }
+  html {
+    @apply bg-surface-canvas font-sans text-fg-primary antialiased;
+  }
+  body {
+    @apply min-h-dvh;
+  }
+  ::selection {
+    @apply bg-status-accent-bg text-status-accent-fg;
+  }
+}
+
+/* Shiki emits only --shiki-light / --shiki-dark variables (defaultColor: false); the scope picks one. */
+.macaw-code .shiki,
+.macaw-code .shiki span {
+  color: var(--shiki-light);
+  background-color: transparent;
+}
+[data-theme='dark'] .macaw-code .shiki,
+[data-theme='dark'] .macaw-code .shiki span {
+  color: var(--shiki-dark);
+}
+
+.macaw-code .shiki {
+  @apply m-0 overflow-x-auto p-4 font-mono text-code;
+}
+.macaw-code .shiki code {
+  @apply font-mono text-code;
+}
+
+/* Playground and gallery helpers: force the focus ring, and collapse every duration. */
+[data-show-focus] :is(button, a[href], input, [tabindex]) {
+  outline: var(--macaw-focus-ring-width) solid var(--macaw-color-focus-ring);
+  outline-offset: var(--macaw-focus-ring-offset);
+}
+[data-reduced-motion] {
+  --macaw-duration-instant: 0ms;
+  --macaw-duration-fast: 0ms;
+  --macaw-duration-base: 0ms;
+  --macaw-duration-slow: 0ms;
+}

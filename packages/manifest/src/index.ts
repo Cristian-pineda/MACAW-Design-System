@@ -12,4 +12,4 @@ export {
   type ManifestProp,
 } from './schema.ts';
 export { buildJsxSnippet, type SnippetOptions } from './snippet.ts';
-export { inferControl, loadManifests, type LoadedManifest } from './load.ts';
+export { inferControl } from './load.ts';

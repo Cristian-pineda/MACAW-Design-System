@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import { parseManifest, type Manifest } from './schema.ts';
 
 export interface LoadedManifest {
@@ -8,6 +7,7 @@ export interface LoadedManifest {
 
 /** Reads and validates manifest files. Throws on the first invalid one with a readable message. */
 export async function loadManifests(files: string[]): Promise<LoadedManifest[]> {
+  const { readFile } = await import('node:fs/promises');
   const out: LoadedManifest[] = [];
   for (const file of files) {
     const raw = JSON.parse(await readFile(file, 'utf8')) as unknown;
