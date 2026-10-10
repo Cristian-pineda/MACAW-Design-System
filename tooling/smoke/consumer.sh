@@ -31,6 +31,14 @@ cd "$WORK"
 npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --no-import-alias --skip-install --yes >/dev/null 2>&1 || npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --yes
 cd app
 if [ -z "$FROM_NPM" ]; then
+  # Unpublished builds: point every @macaw-ds/* range at the local tarballs so cross-package
+  # ranges (workspace:^ → ^0.0.0) resolve without the npm registry.
+  {
+    echo "overrides:"
+    for p in tokens icons manifest eslint-config ui cli mcp; do
+      echo "  \"@macaw-ds/$p\": \"file:$(ls "$PACKS"/macaw-ds-$p-*.tgz)\""
+    done
+  } > pnpm-workspace.yaml
   pnpm add "$PACKS"/macaw-ds-tokens-*.tgz "$PACKS"/macaw-ds-icons-*.tgz "$PACKS"/macaw-ds-ui-*.tgz >/dev/null
   pnpm add -D "$PACKS"/macaw-ds-eslint-config-*.tgz "$PACKS"/macaw-ds-cli-*.tgz >/dev/null
 else
@@ -67,7 +75,8 @@ test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-revi
 echo "smoke: macaw init ok"
 
 # Rendered CSS reaches the page: the built CSS must contain the token variable and the utility.
-CSS_FILE="$(ls .next/static/css/*.css | head -1)"
-grep -q -- "--macaw-color-action-primary" "$CSS_FILE" && grep -q "bg-action-primary" "$CSS_FILE"
+CSS_ALL="$(find .next/static -name '*.css' -exec cat {} +)"
+printf '%s' "$CSS_ALL" | grep -q -- "--macaw-color-action-primary"
+printf '%s' "$CSS_ALL" | grep -q "bg-action-primary"
 echo "smoke: tokens and utilities present in built CSS"
 echo "smoke: PASS"
