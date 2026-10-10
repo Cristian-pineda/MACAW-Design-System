@@ -20,6 +20,8 @@ export const tailwindTheme: Format = {
       '  --tracking-*: initial;',
       '  --ease-*: initial;',
       '  --breakpoint-*: initial;',
+      '  --animate-*: initial;',
+      '  --container-*: initial;',
       '  --spacing: 0.25rem;',
     ];
     const utilities: string[] = [];
@@ -50,13 +52,25 @@ export const tailwindTheme: Format = {
       // Breakpoints feed media queries, which cannot read var(); emit the literal value.
       else if (root === 'breakpoint')
         theme.push(`  --breakpoint-${key}: ${String(t.$value ?? t.value)};`);
+      // Layout rhythm and chrome sizes become named spacing values, so every spacing utility
+      // gets them (gap-gutter, px-margin, p-card-x, h-topbar, top-topbar, h-control-md).
+      else if (root === 'layout' && rest[0] === 'container')
+        theme.push(`  --container-${rest[1]}: ${v};`);
+      else if (root === 'layout' && rest[0] === 'grid') {
+        utilities.push(
+          `@utility layout-grid {\n  display: grid;\n  grid-template-columns: repeat(${v}, minmax(0, 1fr));\n  column-gap: var(--macaw-layout-gutter);\n}`,
+        );
+      } else if (root === 'layout') theme.push(`  --spacing-${key}: ${v};`);
+      else if (root === 'size' && rest[0] === 'control')
+        theme.push(`  --spacing-control-${rest[1]}: ${v};`);
+      else if (root === 'size' && (rest[0] === 'topbar' || rest[0] === 'sidenav'))
+        theme.push(`  --spacing-${rest[0]}: ${v};`);
+      else if (root === 'size' && rest[0] === 'target') theme.push(`  --spacing-target-min: ${v};`);
+      else if (root === 'animation') theme.push(`  --animate-${key}: ${v};`);
       else if (root === 'duration')
         utilities.push(`@utility duration-${key} {\n  transition-duration: ${v};\n}`);
       else if (root === 'z') utilities.push(`@utility z-${key} {\n  z-index: ${v};\n}`);
-      else if (root === 'size' && rest[0] === 'control') {
-        utilities.push(`@utility h-control-${rest[1]} {\n  height: ${v};\n}`);
-        utilities.push(`@utility min-h-control-${rest[1]} {\n  min-height: ${v};\n}`);
-      } else if (root === 'focus' && rest[0] === 'ring' && rest[1] === 'width') {
+      else if (root === 'focus' && rest[0] === 'ring' && rest[1] === 'width') {
         utilities.push(`@utility outline-focus {\n  outline-width: ${v};\n}`);
       } else if (root === 'focus' && rest[0] === 'ring' && rest[1] === 'offset') {
         utilities.push(`@utility outline-offset-focus {\n  outline-offset: ${v};\n}`);
@@ -67,10 +81,16 @@ export const tailwindTheme: Format = {
 
     // Only utilities.css is imported by @macaw-ds/ui, so the keyframes Tailwind's own theme would
     // provide must live here. One animation: the loading spinner.
-    theme.push('  --animate-spin: spin 1s linear infinite;');
     theme.push('  @keyframes spin {\n    to {\n      transform: rotate(360deg);\n    }\n  }');
+    utilities.push(
+      `@utility h-below-topbar {\n  height: calc(100dvh - var(--macaw-size-topbar));\n}`,
+    );
     utilities.push(`@utility tabular-nums {\n  font-variant-numeric: tabular-nums;\n}`);
 
-    return `${header()}@theme inline {\n${theme.join('\n')}\n}\n\n${utilities.join('\n\n')}\n`;
+    // force-focus: renders an element's own focus-visible style without focus, for previews,
+    // screenshots and visual tests. Scope with data-force-focus on the element or an ancestor.
+    const variants =
+      '@custom-variant force-focus (&:where([data-force-focus], [data-force-focus] *));\n\n';
+    return `${header()}${variants}@theme inline {\n${theme.join('\n')}\n}\n\n${utilities.join('\n\n')}\n`;
   },
 };

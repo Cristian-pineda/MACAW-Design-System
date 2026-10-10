@@ -1,0 +1,49 @@
+{
+  "size": {
+    "$type": "dimension",
+    "control": {
+      "sm": {
+        "$value": "24px"
+      },
+      "md": {
+        "$value": "28px"
+      },
+      "lg": {
+        "$value": "32px"
+      }
+    },
+    "topbar": {
+      "$value": "48px"
+    }
+  },
+  "layout": {
+    "$type": "dimension",
+    "gutter": {
+      "$value": "{space.4}"
+    },
+    "margin": {
+      "$value": "{space.6}"
+    },
+    "section": {
+      "$value": "{space.6}"
+    },
+    "stack-md": {
+      "$value": "{space.3}"
+    },
+    "stack-lg": {
+      "$value": "{space.4}"
+    },
+    "card-x": {
+      "$value": "{space.3}"
+    },
+    "card-y": {
+      "$value": "{space.3}"
+    },
+    "card-x-sm": {
+      "$value": "{space.2}"
+    },
+    "card-y-sm": {
+      "$value": "{space.2}"
+    }
+  }
+}

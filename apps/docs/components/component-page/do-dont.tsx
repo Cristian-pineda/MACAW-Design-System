@@ -11,7 +11,7 @@ function List({
   tone: 'success' | 'critical';
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-container border border-line-default bg-surface-default p-4">
+    <div className="flex flex-col gap-3 rounded-container border border-line-default bg-surface-layer-1 p-4">
       <div className="flex items-center gap-2">
         <Icon name={tone === 'success' ? 'check-circle' : 'x-circle'} tone={tone} />
         <Text as="h3" variant="heading-sm" tone={tone}>

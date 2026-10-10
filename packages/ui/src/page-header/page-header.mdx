@@ -1,0 +1,38 @@
+export const meta = {
+  title: 'PageHeader',
+  description: 'The page title, actions and section tabs.',
+};
+
+## When to use
+
+At the top of every page's main area: the title, a one-line description, context such as a status badge, the page's actions, and, when the page has sections with their own URLs, a TabNav.
+
+## When not to use
+
+- **The global header.** That is TopBar.
+- **Section headings inside the page.** Use `Text as="h2"` with a heading variant.
+
+## Anatomy
+
+Two rows on surface layer-1. The first row has the title, meta and description on the left and actions on the right. The second row has the tabs and sticks below the TopBar while the page scrolls. Without tabs, the header is a single row with a bottom border.
+
+It is compact by design: about 112px with tabs at comfortable density, against roughly 280px for Carbon's equivalent.
+
+## Recipe
+
+```tsx
+<PageHeader
+  title="INV-0041"
+  description="Acme Corporation · Due 14 Oct 2026"
+  meta={<Badge tone="critical">Overdue</Badge>}
+  actions={<><Button variant="secondary">Download PDF</Button><Button>Send reminder</Button></>}
+  tabs={<TabNav aria-label="Invoice sections">…</TabNav>}
+/>
+<div className="flex flex-col gap-section px-margin py-section">…</div>
+```
+
+## Accessibility
+
+- The title is the page's `h1` unless you set `headingLevel="h2"`.
+- The tab row sticks at `top-topbar`, so a focused tab is never hidden behind the TopBar (WCAG 2.2 SC 2.4.11).
+- One primary action per page, and it lives here.

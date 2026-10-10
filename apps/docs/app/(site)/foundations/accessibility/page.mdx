@@ -1,29 +1,24 @@
-import { AccessibilityExample } from '@/components/foundations/examples';
-import { ContrastMatrix } from '@/components/tokens/contrast-matrix';
-
 export const metadata = { title: 'Accessibility' };
-
-# Accessibility
 
 **Target: WCAG 2.2 AA everywhere** (DECISIONS.md #8), asserted in token tests, unit tests and the e2e suite against every page in both themes.
 
 ## Named exceptions above AA
 
-- **7:1 contrast** for primary text and financial numerals: `fg.primary` and `fg.numeric` meet AAA on every surface in both themes.
+- **7:1 contrast** for primary text and financial numerals: `fg.primary` and `fg.numeric` meet AAA on every surface layer in both themes.
 - **No time limits** on forms with legal weight. This is a consumer rule; the system never adds a timeout.
-
-<AccessibilityExample />
 
 ## WCAG 2.2 criteria the system meets
 
-| Criterion                        | How                                                                                                                                                 |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.4.11 Focus not obscured        | The focus ring is an outline with offset; no sticky chrome in the system covers a focused control.                                                  |
-| 2.5.8 Target size (minimum)      | `size.target.min` is 24 px; the smallest control is 28 px and a test asserts no interactive variant renders below 24 px.                            |
-| 1.4.11 Non-text contrast         | Input borders, the focus ring and status icons meet 3:1 against their background, in both themes.                                                   |
-| 2.4.7 Focus visible              | One shared `focus-visible` style (2 px outline, 2 px offset) on every interactive component; rendered with `outline` so it survives forced colours. |
-| 1.4.12 Text spacing              | Every text role sets size, leading and tracking in relative units; nothing clips when spacing is increased.                                         |
-| 1.4.13 Content on hover or focus | Nothing in the system appears only on hover; adornments and icons are always rendered.                                                              |
+| Criterion                         | How                                                                                                                                                 |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.4.1 Bypass blocks               | AppShell renders a skip link as the first Tab stop; it moves focus to `main`.                                                                       |
+| 2.4.11 Focus not obscured         | The focus ring is an outline with offset; sticky rows offset by the TopBar height (`top-topbar`), so a focused control is never covered.            |
+| 2.5.8 Target size (minimum)       | `size.target.min` is 24 px; the smallest control is 28 px (24 px compact) and a test asserts no interactive variant renders below 24 px.            |
+| 1.4.11 Non-text contrast          | Input borders, the focus ring and status icons meet 3:1 against their background, in both themes.                                                   |
+| 2.4.7 Focus visible               | One shared `focus-visible` style (2 px outline, 2 px offset) on every interactive component; rendered with `outline` so it survives forced colours. |
+| 2.3.3 Animation from interactions | Every duration collapses to 0 ms and the spinner stops under reduced motion, from the OS or `data-motion="reduced"`.                                |
+| 1.4.12 Text spacing               | Every text role sets size, leading and tracking in relative units; nothing clips when spacing is increased.                                         |
+| 1.4.13 Content on hover or focus  | Nothing in the system appears only on hover; adornments and icons are always rendered.                                                              |
 
 ## Consumer responsibilities
 
@@ -34,12 +29,8 @@ These are app-level criteria. The `using-macaw` skill repeats them and the revie
 - **3.3.8 Accessible authentication**: no cognitive tests at login; allow paste and password managers.
 - **2.5.7 Dragging movements**: any drag interaction has a single-pointer alternative.
 
-## Per component
+## In this section
 
-Every manifest declares `a11y.role`, `a11y.keyboard`, `a11y.name` and `a11y.notes`; the component page renders them as the Accessibility panel. Unit tests run axe on every variant in both themes, test the keyboard path, and check that `disabled` leaves the tab order. Icon-only buttons require `aria-label` at the type level and an `Input` requires a label.
-
-## Contrast matrix
-
-`fg.*` on `surface.*`, computed at build time from the token values. `fg.disabled` is omitted: disabled text is exempt from 1.4.3, and `fg.inverse` sits on `surface.inverse` only.
-
-<ContrastMatrix />
+- [Color](/foundations/accessibility/color): text and non-text contrast on every layer.
+- [Keyboard](/foundations/accessibility/keyboard): focus, the skip link and every component's keys.
+- [Developers](/foundations/accessibility/developers): the manifest contract and the checks in CI.

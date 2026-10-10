@@ -1,0 +1,31 @@
+{
+  "size": {
+    "$type": "dimension",
+    "$description": "Component and chrome sizes. Density modes override these (semantic/density.compact.json).",
+    "target": {
+      "min": {
+        "$value": "24px",
+        "$description": "WCAG 2.2 SC 2.5.8 minimum target size"
+      }
+    },
+    "control": {
+      "sm": {
+        "$value": "28px"
+      },
+      "md": {
+        "$value": "32px"
+      },
+      "lg": {
+        "$value": "40px"
+      }
+    },
+    "topbar": {
+      "$value": "56px",
+      "$description": "Height of the application TopBar. Sticky elements below it offset by this."
+    },
+    "sidenav": {
+      "$value": "240px",
+      "$description": "Width of the SideNav."
+    }
+  }
+}

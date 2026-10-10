@@ -13,7 +13,7 @@ export async function CodeBlock({ code, lang = 'tsx', copyLabel }: CodeBlockProp
   const trimmed = code.replace(/\n$/, '');
   const html = await highlight(trimmed, lang);
   return (
-    <div className="macaw-code relative rounded-container border border-line-default bg-surface-default">
+    <div className="macaw-code relative rounded-container border border-line-default bg-surface-layer-1">
       {copyLabel && (
         <div className="absolute top-1 right-1">
           <CopyButton text={trimmed} label={copyLabel} />

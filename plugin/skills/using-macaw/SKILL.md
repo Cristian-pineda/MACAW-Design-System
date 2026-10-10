@@ -21,6 +21,27 @@ MACAW is an agentic design system for financial software. The manifests in `refe
 - Root CSS imports, in this order: `@import "tailwindcss"; @import "@macaw-ds/tokens/tokens.css"; @import "@macaw-ds/tokens/theme.css"; @import "@macaw-ds/ui/styles.css";`
 - `<html data-theme="light">` (or `"dark"`, or omit to follow the OS). Fonts: Inter and Geist Mono via `next/font/google`, or the system stack falls back.
 
+## Page frame
+
+Every app has one `AppShell` at the root layout, with a `TopBar` and a `SideNav`. Every page starts with a `PageHeader`, whose title is the page's h1, followed by the content column:
+
+```tsx
+<AppShell topBar={<TopBar brand={…} actions={…} />} sideNav={<SideNav aria-label="Main">…</SideNav>}>
+  <PageHeader title="Invoices" description="…" actions={<Button>New invoice</Button>} />
+  <div className="flex flex-col gap-section px-margin py-section">…</div>
+</AppShell>
+```
+
+- Sections of one page with their own URLs: `PageHeader tabs={<TabNav aria-label="…">…</TabNav>}`. Panel switching without a URL is `not-in-system: Tabs`.
+- Grid: `<div className="layout-grid">` with `col-span-4` (thirds), `col-span-3` (quarters), `col-span-6` (halves).
+- Widths: `max-w-prose` for text, `max-w-form` for forms, `max-w-page` for most pages.
+
+## Surfaces, density and motion
+
+- Depth by tone: the page is `bg-surface-canvas`, panels and cards are `bg-surface-layer-1`, regions nested inside them are `bg-surface-layer-2`, then `layer-3`. Hover rows use the matching `-hover` token. Tone first, border second, shadow last.
+- Density: dense products set `data-density="compact"` on `html` or a region. Never shrink components by hand; use the spacing utilities (`gap-gutter`, `px-margin`, `p-card-x`, `gap-stack-md`) so density applies.
+- Motion: only `duration-fast|base|slow`, `ease-standard|enter|exit` and `animate-spin`. Never `motion-reduce:` or raw durations; reduced motion is handled by the tokens.
+
 ## Recipes
 
 **Form row**
@@ -79,7 +100,8 @@ MACAW is an agentic design system for financial software. The manifests in `refe
 - One `variant="primary"` Button per view.
 - Icon-only buttons: `iconOnly` plus `aria-label`.
 - Every Input has `id` with a `<Text as="label" htmlFor>` (or `aria-label` for a search box). `invalid` always comes with a message linked by `aria-describedby`.
-- Heading levels descend without skipping; set `as` on `Text` and `Card.Title`.
+- One h1 per page: the PageHeader title. Below it, heading levels descend without skipping; set `as` on `Text` and `Card.Title`.
+- From React Server Components, use named parts (`CardHeader`, `CardBody`); `Card.Header` only works in client components.
 - Never signal state by colour alone; the word carries the meaning.
 - Interactive cards use `asChild` with an anchor or button and contain no other interactive elements.
 
@@ -89,4 +111,4 @@ MACAW is an agentic design system for financial software. The manifests in `refe
 
 ## Not in the system yet
 
-Tables, select, dialog, tooltip, popover, tabs, toast, date picker, number or money input, textarea, checkbox, radio, switch, dropdown menu, command palette, app shell. Report `not-in-system` for these.
+Tables, select, dialog, tooltip, popover, in-page tabs, toast, date picker, number or money input, textarea, checkbox, radio, switch, dropdown menu, command palette. Report `not-in-system` for these.

@@ -1,0 +1,32 @@
+export const meta = { title: 'SideNav', description: 'Primary navigation in the left column.' };
+
+## When to use
+
+The product's main destinations: Home, Balances, Invoices, Customers, Settings. It lives in AppShell's left column, which gives it the full viewport height and its own scroll.
+
+## When not to use
+
+- **Sections of one page.** Use TabNav under the page title.
+- **Actions.** "New invoice" is a Button in the page header, not a nav item.
+
+## Anatomy
+
+Groups, each with an optional short heading, contain items. An item is a link with an optional decorative icon and a label. The active item has a tinted accent background and accent text.
+
+## With a router
+
+```tsx
+<SideNav.Item asChild active={pathname.startsWith('/invoices')} icon={<Icon name="receipt" />}>
+  <Link href="/invoices">Invoices</Link>
+</SideNav.Item>
+```
+
+## Density
+
+Item height is `size.control.sm`: 28px comfortable, 24px compact. Spacing between groups follows `layout.stack-lg`.
+
+## Accessibility
+
+- A `nav` landmark named by `aria-label`, with one `aria-current="page"`.
+- Every item is a link and a Tab stop, and Enter follows it.
+- Group headings are plain text, not headings, so screen reader heading navigation stays on the page content.

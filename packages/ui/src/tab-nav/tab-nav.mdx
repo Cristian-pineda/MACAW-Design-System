@@ -1,0 +1,30 @@
+export const meta = { title: 'TabNav', description: 'Page-level tabs, one URL per tab.' };
+
+## When to use
+
+The sections of one page that each deserve their own URL: a component's Overview, Usage, Accessibility and Code; an invoice's Overview, Line items, Payments and Activity. People can bookmark a tab, share it, and open it in a new browser tab.
+
+## When not to use
+
+- **Switching panels in place** without changing the URL, such as a chart's Daily, Weekly and Monthly views. That is Tabs, which is not in the system yet. Report `not-in-system: Tabs`.
+- **Primary navigation** between unrelated areas of the product. That is SideNav.
+
+## Anatomy
+
+A `nav` landmark with a list of links. The active link has a 2px underline in the primary action colour and primary text. Inactive links are secondary text and show a strong underline on hover.
+
+## With a router
+
+```tsx
+<TabNav aria-label="Invoice sections">
+  <TabNav.Item asChild active={pathname === '/invoices/41'}>
+    <Link href="/invoices/41">Overview</Link>
+  </TabNav.Item>
+</TabNav>
+```
+
+## Accessibility
+
+- These are links, not `role="tab"`. Each is a Tab stop and Enter follows it. Arrow keys belong to in-page Tabs.
+- The current tab has `aria-current="page"`. The underline is not the only signal, because the text colour changes too.
+- The landmark needs `aria-label`, and TypeScript requires it.

@@ -2,22 +2,16 @@ import { TypographyExample } from '@/components/foundations/examples';
 
 export const metadata = { title: 'Typography' };
 
-# Typography
-
-Inter for text, Geist Mono for code. A small scale (11 to 30 px) because the audience is dense dashboards, not marketing pages. Fifteen named roles cover display, heading, body, label, caption, numeric and code; each role fixes size, leading, weight and tracking together.
+Inter for text, Geist Mono for code. A small scale (11 to 30 px) because the audience is dense dashboards, not marketing pages. Fifteen named roles cover display, heading, body, label, caption, numeric and code; each role fixes size, leading, weight and tracking together. Type does not change with density.
 
 Every string on screen goes through `<Text>`, so nothing else sets a font size or colour. Pick `as` for document structure (an `h2` for a section, a `label` for a field) and `variant` for the role; screen readers navigate by heading level, not by font size.
 
+## In practice
+
 <TypographyExample />
 
-## Numerals
+## In this section
 
-Money, counts and dates use `<Text numeric>`: tabular numerals so columns line up, and the 7:1 `fg.numeric` colour. End-align amounts in tables.
-
-## Rules
-
-- Do not skip heading levels; the gallery and the reviewer agent check the outline.
-- `truncate` only when the full text is available elsewhere (a `title` or a tooltip).
-- Tone conveys emphasis, not meaning on its own.
-
-See the [typography roles with live samples](/tokens#typography).
+- [Scale](/foundations/typography/scale): the fifteen roles with live samples.
+- [Numerals](/foundations/typography/numerals): money, counts and dates.
+- [Usage](/foundations/typography/usage): which role for which job, and the rules.

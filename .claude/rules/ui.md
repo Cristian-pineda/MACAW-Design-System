@@ -14,3 +14,7 @@ paths:
 - `"use client"` only when the file uses hooks, refs or interactive Radix parts. `scripts/check-dist.mjs` verifies the directive survives the build.
 - Tests: `render` from `../lib/test-utils`, `axe(container)`, `userEvent`, and `expectManifestMatchesVariants(manifest, variants)`.
 - Examples: `*.examples.tsx` exports named React components with no props; the gallery renders them all.
+- Manifest `a11y.focusable` must match the source: true (or `{ whenProp }`) exactly when the component applies `focusRing`. `manifest:check` enforces it.
+- Motion only through tokens (`duration-*`, `ease-*`, `animate-spin`); declare a `motion` block in the manifest whenever the source uses them. Never `motion-reduce:`, `motion-safe:` or raw durations.
+- Backgrounds use surface layers (`bg-surface-layer-1`, `-2`, `-3`, `-hover`), never hand-picked neutrals. Spacing that should follow density uses the layout utilities (`p-card-x`, `gap-gutter`, `px-margin`, `h-control-*`).
+- Compound parts are exported twice: `Card.Header` for client code and `CardHeader` for React Server Components.

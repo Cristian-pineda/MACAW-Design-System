@@ -1,0 +1,112 @@
+{
+  "name": "AppShell",
+  "slug": "app-shell",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "layout",
+  "purpose": "The application frame: skip link, sticky TopBar, full-height SideNav column and the main area. One per app, at the root layout.",
+  "description": "Lays out the product chrome with depth by tone: the canvas is the background, the TopBar and SideNav column sit on layer-1. The SideNav column is sticky, exactly the viewport height below the TopBar, and scrolls on its own; the window scrolls the main area. A skip link is the first Tab stop.",
+  "exports": [
+    "AppShell"
+  ],
+  "props": {
+    "topBar": {
+      "type": "node",
+      "required": true,
+      "description": "The TopBar.",
+      "control": "none"
+    },
+    "sideNav": {
+      "type": "node",
+      "required": false,
+      "description": "The SideNav. Omit for pages without primary navigation.",
+      "control": "none"
+    },
+    "sideNavLabel": {
+      "type": "string",
+      "default": "Primary",
+      "required": false,
+      "description": "Accessible name for the side column landmark.",
+      "control": "none"
+    },
+    "mainId": {
+      "type": "string",
+      "default": "main",
+      "required": false,
+      "description": "id of the main element; the skip link targets it.",
+      "control": "none"
+    },
+    "skipLinkLabel": {
+      "type": "string",
+      "default": "Skip to main content",
+      "required": false,
+      "description": "Text of the skip link.",
+      "control": "none"
+    },
+    "children": {
+      "type": "node",
+      "required": false,
+      "description": "The page: usually PageHeader followed by content.",
+      "control": "none"
+    }
+  },
+  "slots": [
+    "topBar",
+    "sideNav",
+    "children"
+  ],
+  "tokens": [
+    "color.surface.canvas",
+    "color.surface.layer-1",
+    "color.line.default",
+    "size.topbar",
+    "size.sidenav",
+    "z.sticky",
+    "color.focus.ring"
+  ],
+  "a11y": {
+    "role": "Provides the landmarks: banner (TopBar), complementary (side column, named), main",
+    "focusable": true,
+    "keyboard": [
+      "Tab: the first stop is the skip link; Enter moves focus to main"
+    ],
+    "name": "The side column is named by sideNavLabel; main and banner are unique per page.",
+    "notes": [
+      "The skip link satisfies WCAG 2.4.1 Bypass Blocks; it is visually hidden until focused.",
+      "main has tabIndex=-1 so the skip link can move focus to it.",
+      "Sticky chrome is offset with size.topbar so focused content is never obscured (WCAG 2.2 SC 2.4.11)."
+    ]
+  },
+  "budget": {
+    "gzip": 1500
+  },
+  "rules": [
+    "One AppShell per application, at the root layout.",
+    "Put a TopBar in topBar and a SideNav in sideNav; do not build the frame by hand.",
+    "Start each page with a PageHeader, then the content in a px-margin py-section column."
+  ],
+  "dos": [
+    "Set data-density=\"compact\" on html (or the AppShell) for data-dense products; the frame adapts."
+  ],
+  "donts": [
+    "Do not add a second scroll container around the page; the window scrolls main.",
+    "Do not give the main area its own background; it sits on the canvas."
+  ],
+  "examples": [
+    {
+      "name": "Default",
+      "props": {}
+    }
+  ],
+  "registryDependencies": [
+    "top-bar",
+    "side-nav"
+  ],
+  "dependencies": [],
+  "related": [
+    "top-bar",
+    "side-nav",
+    "page-header"
+  ]
+}

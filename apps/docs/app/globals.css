@@ -39,15 +39,3 @@
 .macaw-code .shiki code {
   @apply font-mono text-code;
 }
-
-/* Playground and gallery helpers: force the focus ring, and collapse every duration. */
-[data-show-focus] :is(button, a[href], input, [tabindex]) {
-  outline: var(--macaw-focus-ring-width) solid var(--macaw-color-focus-ring);
-  outline-offset: var(--macaw-focus-ring-offset);
-}
-[data-reduced-motion] {
-  --macaw-duration-instant: 0ms;
-  --macaw-duration-fast: 0ms;
-  --macaw-duration-base: 0ms;
-  --macaw-duration-slow: 0ms;
-}

@@ -126,6 +126,7 @@
   ],
   "a11y": {
     "role": "img when label is set; otherwise none (aria-hidden)",
+    "focusable": false,
     "keyboard": [],
     "name": "From the label prop. Decorative icons have no name and are hidden from assistive technology.",
     "notes": [
@@ -133,7 +134,9 @@
       "Status tones meet 3:1 against surface.default in both themes."
     ]
   },
-  "budget": { "gzip": 14000 },
+  "budget": {
+    "gzip": 14000
+  },
   "rules": [
     "Icons next to visible text are decorative: do not pass label.",
     "An icon that is the only content of a control needs a label, or the control needs aria-label.",
@@ -145,16 +148,27 @@
     "Do not use icons for logos or illustrations."
   ],
   "examples": [
-    { "name": "Default", "props": { "name": "check" } },
+    {
+      "name": "Default",
+      "props": {
+        "name": "check"
+      }
+    },
     {
       "name": "Status tones",
       "description": "Each status tone on the default surface.",
-      "props": { "name": "alert-triangle", "tone": "warning" }
+      "props": {
+        "name": "alert-triangle",
+        "tone": "warning"
+      }
     },
     {
       "name": "Labelled",
       "description": "Meaningful on its own, so it gets a name.",
-      "props": { "name": "lock", "label": "Locked" }
+      "props": {
+        "name": "lock",
+        "label": "Locked"
+      }
     }
   ],
   "registryDependencies": [],

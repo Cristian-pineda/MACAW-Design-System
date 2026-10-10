@@ -64,6 +64,45 @@ for (const { manifest: m, file } of loaded) {
       problems.push(`${rel}: registryDependencies entry "${dep}" has no manifest`);
   for (const rel2 of m.related)
     if (!slugs.has(rel2)) problems.push(`${rel}: related entry "${rel2}" has no manifest`);
+  // ---- Source ⇔ manifest: focus and motion (the playground and CI trust these fields) ----
+  const sourceFile = join(dirname(file), `${m.slug}.tsx`);
+  const source = await readFile(sourceFile, 'utf8').catch(() => '');
+  const usesFocusRing = /\bfocusRing\b/.test(source);
+  const focusable = m.a11y.focusable;
+  if (usesFocusRing && focusable === false) {
+    problems.push(`${rel}: ${m.slug}.tsx applies focusRing but a11y.focusable is false`);
+  }
+  if (!usesFocusRing && focusable !== false) {
+    problems.push(
+      `${rel}: a11y.focusable is ${JSON.stringify(focusable)} but ${m.slug}.tsx never applies focusRing, so focus would be invisible`,
+    );
+  }
+  if (focusable === true && m.a11y.keyboard.length === 0) {
+    problems.push(`${rel}: focusable components must list their keys in a11y.keyboard`);
+  }
+  const motionClasses =
+    source.match(/\b(?:transition(?:-[a-z]+)?|duration-[a-z]+|animate-[a-z]+|ease-[a-z]+)\b/g) ??
+    [];
+  if (motionClasses.length && !m.motion) {
+    problems.push(
+      `${rel}: ${m.slug}.tsx uses motion (${[...new Set(motionClasses)].join(', ')}) but the manifest has no "motion" block`,
+    );
+  }
+  if (!motionClasses.length && m.motion) {
+    problems.push(`${rel}: manifest declares motion but ${m.slug}.tsx has no motion utilities`);
+  }
+  for (const t of m.motion?.tokens ?? []) {
+    if (!tokenNames.has(t)) problems.push(`${rel}: motion token "${t}" does not exist`);
+  }
+  for (const gate of [
+    typeof focusable === 'object' ? focusable.whenProp : undefined,
+    m.motion?.whenProp,
+  ]) {
+    if (gate && m.props[gate]?.type !== 'boolean') {
+      problems.push(`${rel}: "${gate}" gates focus or motion but is not a boolean prop`);
+    }
+  }
+
   if (
     m.a11y.keyboard.length === 0 &&
     ['primitive', 'form', 'navigation', 'overlay'].includes(m.category) &&

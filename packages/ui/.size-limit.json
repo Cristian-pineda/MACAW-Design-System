@@ -3,7 +3,7 @@
     "name": "barrel",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "12 kB"
+    "limit": "16 kB"
   },
   {
     "name": "button",
@@ -34,6 +34,36 @@
     "path": "dist/card/index.js",
     "import": "{ Card }",
     "limit": "3 kB"
+  },
+  {
+    "name": "tab-nav",
+    "path": "dist/tab-nav/index.js",
+    "import": "{ TabNav }",
+    "limit": "2 kB"
+  },
+  {
+    "name": "side-nav",
+    "path": "dist/side-nav/index.js",
+    "import": "{ SideNav }",
+    "limit": "2 kB"
+  },
+  {
+    "name": "top-bar",
+    "path": "dist/top-bar/index.js",
+    "import": "{ TopBar }",
+    "limit": "1 kB"
+  },
+  {
+    "name": "page-header",
+    "path": "dist/page-header/index.js",
+    "import": "{ PageHeader }",
+    "limit": "1.5 kB"
+  },
+  {
+    "name": "app-shell",
+    "path": "dist/app-shell/index.js",
+    "import": "{ AppShell }",
+    "limit": "1.5 kB"
   },
   {
     "name": "styles",

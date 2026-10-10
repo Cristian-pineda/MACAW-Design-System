@@ -81,10 +81,7 @@ export function Button({
     <LoaderCircle
       aria-hidden="true"
       data-icon="loader"
-      className={cn(
-        'shrink-0 animate-spin motion-reduce:animate-none',
-        size === 'sm' ? 'size-3.5' : 'size-4',
-      )}
+      className={cn('shrink-0 animate-spin', size === 'sm' ? 'size-3.5' : 'size-4')}
       strokeWidth={1.5}
       absoluteStrokeWidth
     />

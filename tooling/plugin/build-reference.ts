@@ -52,7 +52,7 @@ ${manifests
 
 ## Not in the system yet
 
-Anything not listed above. Say \`not-in-system: <what>\` instead of building it: tables, select, dialog, tooltip, popover, tabs, toast, date picker, number or money input, textarea, checkbox, radio, switch, dropdown menu, command palette, app shell.
+Anything not listed above. Say \`not-in-system: <what>\` instead of building it: tables, select, dialog, tooltip, popover, in-page tabs, toast, date picker, number or money input, textarea, checkbox, radio, switch, dropdown menu, command palette.
 
 ## Status
 

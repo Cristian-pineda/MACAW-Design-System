@@ -7,9 +7,12 @@ Prefix: `--macaw-`. Use the Tailwind utility, never the raw value. Light and dar
 | Token | Utility | Light | Dark |
 |---|---|---|---|
 | color.surface.canvas | bg-surface-canvas · text-surface-canvas · border-surface-canvas | oklch(0.985 0.002 250) | oklch(0.11 0.01 250) |
-| color.surface.default | bg-surface-default · text-surface-default · border-surface-default | oklch(1 0 0) | oklch(0.15 0.012 250) |
-| color.surface.raised | bg-surface-raised · text-surface-raised · border-surface-raised | oklch(1 0 0) | oklch(0.21 0.012 250) |
-| color.surface.sunken | bg-surface-sunken · text-surface-sunken · border-surface-sunken | oklch(0.965 0.003 250) | oklch(0.11 0.01 250) |
+| color.surface.layer-1 | bg-surface-layer-1 · text-surface-layer-1 · border-surface-layer-1 | oklch(1 0 0) | oklch(0.15 0.012 250) |
+| color.surface.layer-1-hover | bg-surface-layer-1-hover · text-surface-layer-1-hover · border-surface-layer-1-hover | oklch(0.965 0.003 250) | oklch(0.21 0.012 250) |
+| color.surface.layer-2 | bg-surface-layer-2 · text-surface-layer-2 · border-surface-layer-2 | oklch(0.985 0.002 250) | oklch(0.21 0.012 250) |
+| color.surface.layer-2-hover | bg-surface-layer-2-hover · text-surface-layer-2-hover · border-surface-layer-2-hover | oklch(0.965 0.003 250) | oklch(0.25 0.012 250) |
+| color.surface.layer-3 | bg-surface-layer-3 · text-surface-layer-3 · border-surface-layer-3 | oklch(0.965 0.003 250) | oklch(0.25 0.012 250) |
+| color.surface.layer-3-hover | bg-surface-layer-3-hover · text-surface-layer-3-hover · border-surface-layer-3-hover | oklch(0.925 0.005 250) | oklch(0.29 0.012 250) |
 | color.surface.overlay | bg-surface-overlay · text-surface-overlay · border-surface-overlay | oklch(1 0 0) | oklch(0.21 0.012 250) |
 | color.surface.inverse | bg-surface-inverse · text-surface-inverse · border-surface-inverse | oklch(0.15 0.012 250) | oklch(0.985 0.002 250) |
 
@@ -34,7 +37,7 @@ Prefix: `--macaw-`. Use the Tailwind utility, never the raw value. Light and dar
 |---|---|---|---|
 | color.line.subtle | bg-line-subtle · text-line-subtle · border-line-subtle | oklch(0.965 0.003 250) | oklch(0.21 0.012 250) |
 | color.line.default | bg-line-default · text-line-default · border-line-default | oklch(0.925 0.005 250) | oklch(0.29 0.012 250) |
-| color.line.strong | bg-line-strong · text-line-strong · border-line-strong | oklch(0.66 0.01 250) | oklch(0.48 0.012 250) |
+| color.line.strong | bg-line-strong · text-line-strong · border-line-strong | oklch(0.53 0.012 250) | same |
 | color.line.inverse | bg-line-inverse · text-line-inverse · border-line-inverse | oklch(0.38 0.012 250) | oklch(0.87 0.007 250) |
 
 ## color.action
@@ -211,11 +214,43 @@ Prefix: `--macaw-`. Use the Tailwind utility, never the raw value. Light and dar
 |---|---|---|---|
 | shape.pill | rounded-pill | 9999px | same |
 
+## size.target
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| size.target.min |  | 24px | same |
+
+## size.control
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| size.control.sm |  | 28px | same |
+| size.control.md |  | 32px | same |
+| size.control.lg |  | 40px | same |
+
+## size.topbar
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| size.topbar |  | 56px | same |
+
+## size.sidenav
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| size.sidenav |  | 240px | same |
+
 ## layout.gutter
 
 | Token | Utility | Light | Dark |
 |---|---|---|---|
 | layout.gutter | (use the 4px scale: p-4, gap-2) | 24px | same |
+
+## layout.margin
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| layout.margin | (use the 4px scale: p-4, gap-2) | 32px | same |
 
 ## layout.section
 
@@ -259,23 +294,44 @@ Prefix: `--macaw-`. Use the Tailwind utility, never the raw value. Light and dar
 |---|---|---|---|
 | layout.inline-md | (use the 4px scale: p-4, gap-2) | 12px | same |
 
-## layout.control-gap
+## layout.card-x
 
 | Token | Utility | Light | Dark |
 |---|---|---|---|
-| layout.control-gap | (use the 4px scale: p-4, gap-2) | 8px | same |
+| layout.card-x | (use the 4px scale: p-4, gap-2) | 20px | same |
 
-## layout.control-padding-x
-
-| Token | Utility | Light | Dark |
-|---|---|---|---|
-| layout.control-padding-x | (use the 4px scale: p-4, gap-2) | 12px | same |
-
-## layout.card-padding
+## layout.card-y
 
 | Token | Utility | Light | Dark |
 |---|---|---|---|
-| layout.card-padding | (use the 4px scale: p-4, gap-2) | 20px | same |
+| layout.card-y | (use the 4px scale: p-4, gap-2) | 16px | same |
+
+## layout.card-x-sm
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| layout.card-x-sm | (use the 4px scale: p-4, gap-2) | 16px | same |
+
+## layout.card-y-sm
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| layout.card-y-sm | (use the 4px scale: p-4, gap-2) | 12px | same |
+
+## layout.grid
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| layout.grid.columns | (use the 4px scale: p-4, gap-2) | 12 | same |
+
+## layout.container
+
+| Token | Utility | Light | Dark |
+|---|---|---|---|
+| layout.container.prose | (use the 4px scale: p-4, gap-2) | 720px | same |
+| layout.container.form | (use the 4px scale: p-4, gap-2) | 640px | same |
+| layout.container.page | (use the 4px scale: p-4, gap-2) | 1280px | same |
+| layout.container.wide | (use the 4px scale: p-4, gap-2) | 1536px | same |
 
 ## text.size
 

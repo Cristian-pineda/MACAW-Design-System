@@ -138,6 +138,7 @@
   ],
   "a11y": {
     "role": "img when label is set; otherwise none (aria-hidden)",
+    "focusable": false,
     "keyboard": [],
     "name": "From the label prop. Decorative icons have no name and are hidden from assistive technology.",
     "notes": [

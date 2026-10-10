@@ -1,0 +1,143 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tab-nav",
+  "type": "registry:ui",
+  "title": "TabNav",
+  "description": "Page-level tabs where each tab is its own URL. Not for switching panels in place; that is Tabs (not in the system yet).",
+  "dependencies": [
+    "radix-ui"
+  ],
+  "registryDependencies": [
+    "https://macaw-design-system.vercel.app/r/macaw-lib.json",
+    "https://macaw-design-system.vercel.app/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/ui/tab-nav.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/macaw/tab-nav.tsx",
+      "content": "import { Slot } from 'radix-ui';\nimport type * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport { focusRing } from '@/lib/macaw/focus';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface TabNavProps extends NativeProps<'nav'> {\n  /** Names the navigation landmark, e.g. \"Button sections\". Required: a page can have several navs. */\n  'aria-label': string;\n  children: React.ReactNode;\n}\n\n/**\n * Page-level tabs where each tab is its own URL. This is navigation (links with aria-current),\n * not an in-page tablist: use it for sections of a page that can be linked and bookmarked.\n */\nfunction TabNavRoot({ children, ...rest }: TabNavProps) {\n  return (\n    <nav {...rest}>\n      <ul className=\"m-0 flex list-none flex-wrap items-stretch gap-1 p-0\">{children}</ul>\n    </nav>\n  );\n}\n\nexport interface TabNavItemProps extends NativeProps<'a'> {\n  /** The current page. Sets aria-current=\"page\" and the selected style. */\n  active?: boolean;\n  /** Render the child (a router Link) instead of an anchor. */\n  asChild?: boolean;\n  children: React.ReactNode;\n}\n\nfunction TabNavItem({ active = false, asChild, children, ...rest }: TabNavItemProps) {\n  const Comp = asChild ? Slot.Root : 'a';\n  return (\n    <li className=\"flex\">\n      <Comp\n        aria-current={active ? 'page' : undefined}\n        className={cn(\n          'relative -mb-px inline-flex h-control-lg items-center border-b-2 px-3 font-sans text-label-md whitespace-nowrap',\n          'transition-colors duration-fast ease-standard',\n          active\n            ? 'border-action-primary text-fg-primary'\n            : 'border-transparent text-fg-secondary hover:border-line-strong hover:text-fg-primary',\n          focusRing,\n        )}\n        {...rest}\n      >\n        {children}\n      </Comp>\n    </li>\n  );\n}\n\n/** Tabs for page sections, one URL per tab. Compose `TabNav.Item` (or `TabNavItem`) inside. */\nexport const TabNav = Object.assign(TabNavRoot, { Item: TabNavItem });\nexport { TabNavItem };\n"
+    }
+  ],
+  "docs": "Ejected from @macaw-ds/ui@0.0.0. Each tab is a URL. Use TabNav only when the sections are separate pages or routes. Exactly one item is active, and it matches the current route.",
+  "categories": [
+    "navigation"
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "package": "@macaw-ds/ui",
+      "status": "beta",
+      "slug": "tab-nav",
+      "manifest": {
+        "$schema": "../../../manifest/schema/manifest.schema.json",
+        "name": "TabNav",
+        "slug": "tab-nav",
+        "package": "@macaw-ds/ui",
+        "status": "beta",
+        "since": "0.1.0",
+        "category": "navigation",
+        "purpose": "Page-level tabs where each tab is its own URL. Not for switching panels in place; that is Tabs (not in the system yet).",
+        "description": "Navigation tabs for the sections of a page: Overview, Usage, Accessibility, Code. Each item is a link, so tabs can be bookmarked, shared and opened in a new tab. The current tab sets aria-current=\"page\". Usually rendered by PageHeader's tabs slot.",
+        "exports": [
+          "TabNav",
+          "TabNavItem"
+        ],
+        "props": {
+          "aria-label": {
+            "type": "string",
+            "default": "Page sections",
+            "required": true,
+            "description": "Names the navigation landmark, e.g. \"Invoice sections\".",
+            "a11y": "Required: pages often have several nav landmarks."
+          },
+          "active": {
+            "type": "boolean",
+            "default": false,
+            "required": false,
+            "description": "On TabNav.Item: the current page.",
+            "a11y": "Sets aria-current=\"page\"."
+          },
+          "asChild": {
+            "type": "boolean",
+            "default": false,
+            "required": false,
+            "description": "On TabNav.Item: render a router Link instead of an anchor.",
+            "control": "none"
+          },
+          "children": {
+            "type": "node",
+            "required": false,
+            "description": "TabNav.Item elements.",
+            "control": "none"
+          }
+        },
+        "slots": [
+          "Item"
+        ],
+        "tokens": [
+          "color.action.primary",
+          "color.fg.primary",
+          "color.fg.secondary",
+          "color.line.strong",
+          "size.control.lg",
+          "text.size.label-md",
+          "color.focus.ring"
+        ],
+        "a11y": {
+          "role": "navigation, containing a list of links",
+          "focusable": true,
+          "keyboard": [
+            "Tab: move between tabs (each is a link)",
+            "Enter: follow the link"
+          ],
+          "name": "The navigation landmark takes its name from aria-label; each tab from its text.",
+          "notes": [
+            "Navigation tabs are links, not role=\"tab\". Arrow keys are not used; that pattern belongs to in-page Tabs.",
+            "The selected tab is marked with aria-current=\"page\", and the underline is not the only signal: the text colour changes too.",
+            "The list never scrolls horizontally, so the 2px focus ring is never clipped; keep to six short labels."
+          ]
+        },
+        "motion": {
+          "description": "Underline and text colour ease on hover.",
+          "tokens": [
+            "duration.fast",
+            "ease.standard"
+          ]
+        },
+        "budget": {
+          "gzip": 2000
+        },
+        "rules": [
+          "Each tab is a URL. Use TabNav only when the sections are separate pages or routes.",
+          "Exactly one item is active, and it matches the current route.",
+          "Keep labels to one or two words; four to six tabs at most.",
+          "With a router, pass the Link through asChild so client-side navigation keeps working."
+        ],
+        "dos": [
+          "Place TabNav in PageHeader's tabs slot so it sits under the page title and sticks below the TopBar."
+        ],
+        "donts": [
+          "Do not use TabNav to swap panels without changing the URL.",
+          "Do not nest TabNav inside a Card."
+        ],
+        "examples": [
+          {
+            "name": "Default",
+            "props": {
+              "aria-label": "Page sections"
+            }
+          }
+        ],
+        "registryDependencies": [],
+        "dependencies": [
+          "radix-ui"
+        ],
+        "related": [
+          "page-header",
+          "side-nav"
+        ]
+      }
+    }
+  }
+}

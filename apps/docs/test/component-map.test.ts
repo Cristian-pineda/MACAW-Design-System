@@ -25,6 +25,22 @@ describe('component-map', () => {
       );
   });
 
+  it('covers the eleven v1 components', () => {
+    expect([...componentMapSlugs].sort()).toEqual([
+      'app-shell',
+      'badge',
+      'button',
+      'card',
+      'icon',
+      'input',
+      'page-header',
+      'side-nav',
+      'tab-nav',
+      'text',
+      'top-bar',
+    ]);
+  });
+
   it('matches the registry exactly', () => {
     expect([...componentMapSlugs].sort()).toEqual([...registrySlugs].sort());
   });

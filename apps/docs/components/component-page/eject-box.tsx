@@ -5,7 +5,7 @@ import { REGISTRY_BASE_URL } from '@/lib/site';
 
 export function EjectBox({ slug, budgetGzip }: { slug: string; budgetGzip: number }) {
   return (
-    <div className="flex flex-col gap-4 rounded-container border border-line-default bg-surface-sunken p-4">
+    <div className="flex flex-col gap-4 rounded-container border border-line-default bg-surface-layer-2 p-4">
       <Text variant="body-sm" tone="secondary">
         Ejecting copies the source into your repo and records it in{' '}
         <code className="font-mono text-code">.macaw/ejected.json</code>, so the fork stays visible.

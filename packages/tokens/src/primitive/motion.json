@@ -1,15 +1,39 @@
 {
   "duration": {
     "$type": "duration",
-    "instant": { "$value": "0ms" },
-    "fast": { "$value": "100ms" },
-    "base": { "$value": "160ms" },
-    "slow": { "$value": "240ms" }
+    "instant": {
+      "$value": "0ms"
+    },
+    "fast": {
+      "$value": "100ms"
+    },
+    "base": {
+      "$value": "160ms"
+    },
+    "slow": {
+      "$value": "240ms"
+    },
+    "spin": {
+      "$value": "1000ms",
+      "$description": "One rotation of the loading spinner."
+    }
   },
   "ease": {
     "$type": "cubicBezier",
-    "standard": { "$value": [0.2, 0, 0, 1] },
-    "enter": { "$value": [0, 0, 0.2, 1] },
-    "exit": { "$value": [0.4, 0, 1, 1] }
+    "standard": {
+      "$value": [0.2, 0, 0, 1]
+    },
+    "enter": {
+      "$value": [0, 0, 0.2, 1]
+    },
+    "exit": {
+      "$value": [0.4, 0, 1, 1]
+    }
+  },
+  "animation": {
+    "$description": "Named animations. Reduced motion sets each to none.",
+    "spin": {
+      "$value": "spin 1000ms linear infinite"
+    }
   }
 }

@@ -1,0 +1,22 @@
+export const metadata = { title: 'Spacing usage' };
+
+## Which token for which distance
+
+| Distance                                 | Utility                       | Comfortable / compact |
+| ---------------------------------------- | ----------------------------- | --------------------- |
+| Label to its field, title to description | `gap-stack-xs`, `gap-1`       | 4 px                  |
+| Inside a group of related lines          | `gap-stack-sm`                | 8 px                  |
+| Between form fields                      | `gap-stack-md`                | 16 / 12 px            |
+| Between groups inside a section          | `gap-stack-lg`                | 24 / 16 px            |
+| Between buttons and inline controls      | `gap-inline-sm`               | 8 px                  |
+| Between grid columns                     | `gap-gutter`                  | 24 / 16 px            |
+| Page edge                                | `px-margin`                   | 32 / 24 px            |
+| Between page sections                    | `py-section`, `gap-section`   | 32 / 24 px            |
+| Inside a card                            | Card `padding` (`p-card-x/y`) | 20×16 / 12×12 px      |
+
+## Rules
+
+- Arbitrary values (`p-[13px]`) fail lint. If the scale does not have the distance, the distance is wrong.
+- Components own their internal spacing. Use Card sections and its `padding` prop, not custom padding inside a card.
+- Use the semantic utility when one exists, so the layout follows the density mode. Raw steps (`gap-4`) stay the same in compact.
+- Layouts are designed for 1024 px and above (DECISIONS.md #3).

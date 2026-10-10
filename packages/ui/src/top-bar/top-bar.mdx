@@ -1,0 +1,24 @@
+export const meta = { title: 'TopBar', description: 'The global application header.' };
+
+## When to use
+
+Once per application, in AppShell's `topBar` slot. Brand on the left, optional centre content such as search or a test-mode indicator, actions on the right.
+
+## When not to use
+
+- **Page titles and page actions.** Those belong to PageHeader, under the TopBar.
+- **Marketing headers.** MACAW is product UI.
+
+## Anatomy
+
+Three slots in a row: `brand`, `children` (centre, flexible), `actions`. The bar is sticky at the top, on surface layer-1 with a bottom border, and its height is the `size.topbar` token.
+
+## Density
+
+`size.topbar` is 56px comfortable and 48px compact. Anything sticky below it uses `top-topbar`, so it moves with the density.
+
+## Accessibility
+
+- Renders a `header`, which is the page's banner landmark.
+- Not focusable itself; its links and buttons are. Icon-only actions need `aria-label`.
+- Sticky content below it is offset by its height, so focus is never hidden behind it (WCAG 2.2 SC 2.4.11).

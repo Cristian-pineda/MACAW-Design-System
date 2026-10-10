@@ -89,7 +89,7 @@ export const mdxComponents: MDXComponents = {
     <strong className="font-medium text-fg-primary">{children}</strong>
   ),
   code: ({ children }: Props) => (
-    <code className="rounded-xs bg-surface-sunken px-1 py-0.5 font-mono text-code text-fg-primary">
+    <code className="rounded-xs bg-surface-layer-2 px-1 py-0.5 font-mono text-code text-fg-primary">
       {children}
     </code>
   ),
@@ -108,7 +108,7 @@ export const mdxComponents: MDXComponents = {
       <table className="w-full border-collapse text-start">{children}</table>
     </div>
   ),
-  thead: ({ children }: Props) => <thead className="bg-surface-sunken">{children}</thead>,
+  thead: ({ children }: Props) => <thead className="bg-surface-layer-2">{children}</thead>,
   th: ({ children }: Props) => (
     <th className="border-b border-line-default px-3 py-2 text-start text-label-sm text-fg-secondary">
       {children}

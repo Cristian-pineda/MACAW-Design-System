@@ -20,7 +20,12 @@
       "outputs": [".next/**", "!.next/cache/**", "public/r/**"]
     },
     "//#manifest:check": {
-      "dependsOn": ["@macaw-ds/ui#build", "@macaw-ds/icons#build", "@macaw-ds/tokens#build", "@macaw-ds/manifest#build"]
+      "dependsOn": [
+        "@macaw-ds/ui#build",
+        "@macaw-ds/icons#build",
+        "@macaw-ds/tokens#build",
+        "@macaw-ds/manifest#build"
+      ]
     },
     "//#registry:build": {
       "dependsOn": ["//#manifest:check"],

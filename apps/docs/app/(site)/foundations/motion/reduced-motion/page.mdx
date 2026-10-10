@@ -1,0 +1,19 @@
+import { ReducedMotionDemo } from '@/components/foundations/motion-demos';
+
+export const metadata = { title: 'Reduced motion' };
+
+One mechanism for every case (DECISIONS.md #20). Under `prefers-reduced-motion: reduce`, or inside any element with `data-motion="reduced"`, every duration token becomes 0 ms and `animation.spin` becomes `none`. A scope can opt back in with `data-motion="full"`, for example a product setting that overrides the OS. Components only move through these tokens, so none of them checks the preference.
+
+<ReducedMotionDemo />
+
+## Setting it
+
+```tsx
+<html lang="en" data-motion="reduced">        {/* a user setting for the whole product */}
+<div data-motion="reduced">…</div>             {/* a preview frame or one region */}
+<html lang="en" data-motion="full">           {/* ignore the OS preference */}
+```
+
+## What still changes
+
+State changes still happen; they are instant instead of eased. The spinner stops but stays visible, and `aria-busy` still announces the loading state, so nothing depends on seeing it move.

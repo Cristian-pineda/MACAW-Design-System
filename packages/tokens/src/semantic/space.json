@@ -1,17 +1,70 @@
 {
   "layout": {
     "$type": "dimension",
-    "$description": "Named layout rhythm on top of the 4px grid.",
-    "gutter": { "$value": "{space.6}" },
-    "section": { "$value": "{space.8}" },
-    "stack-xs": { "$value": "{space.1}" },
-    "stack-sm": { "$value": "{space.2}" },
-    "stack-md": { "$value": "{space.4}" },
-    "stack-lg": { "$value": "{space.6}" },
-    "inline-sm": { "$value": "{space.2}" },
-    "inline-md": { "$value": "{space.3}" },
-    "control-gap": { "$value": "{space.2}" },
-    "control-padding-x": { "$value": "{space.3}" },
-    "card-padding": { "$value": "{space.5}" }
+    "$description": "Layout rhythm on the 4px grid. Density modes override these; components and layouts use the matching utilities (gap-gutter, px-margin, p-card-x).",
+    "gutter": {
+      "$value": "{space.6}",
+      "$description": "Gap between grid columns."
+    },
+    "margin": {
+      "$value": "{space.8}",
+      "$description": "Page padding at the edge of the main area."
+    },
+    "section": {
+      "$value": "{space.8}",
+      "$description": "Space between page sections."
+    },
+    "stack-xs": {
+      "$value": "{space.1}"
+    },
+    "stack-sm": {
+      "$value": "{space.2}"
+    },
+    "stack-md": {
+      "$value": "{space.4}"
+    },
+    "stack-lg": {
+      "$value": "{space.6}"
+    },
+    "inline-sm": {
+      "$value": "{space.2}"
+    },
+    "inline-md": {
+      "$value": "{space.3}"
+    },
+    "card-x": {
+      "$value": "{space.5}"
+    },
+    "card-y": {
+      "$value": "{space.4}"
+    },
+    "card-x-sm": {
+      "$value": "{space.4}"
+    },
+    "card-y-sm": {
+      "$value": "{space.3}"
+    },
+    "grid": {
+      "columns": {
+        "$type": "number",
+        "$value": 12,
+        "$description": "Columns in the page grid. Divides into 2, 3, 4 and 6."
+      }
+    },
+    "container": {
+      "$description": "Maximum content widths. Utilities: max-w-prose, max-w-form, max-w-page, max-w-wide.",
+      "prose": {
+        "$value": "720px"
+      },
+      "form": {
+        "$value": "640px"
+      },
+      "page": {
+        "$value": "1280px"
+      },
+      "wide": {
+        "$value": "1536px"
+      }
+    }
   }
 }

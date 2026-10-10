@@ -86,11 +86,12 @@
     "input.fg.placeholder",
     "input.fg.disabled",
     "color.focus.ring",
-    "color.surface.sunken",
+    "color.surface.layer-2",
     "color.fg.muted"
   ],
   "a11y": {
     "role": "textbox (searchbox for type=\"search\")",
+    "focusable": true,
     "keyboard": [
       "Tab: focus",
       "Typing edits the value",
@@ -104,7 +105,9 @@
       "Error messages are linked with aria-describedby so they are announced with the field."
     ]
   },
-  "budget": { "gzip": 2500 },
+  "budget": {
+    "gzip": 2500
+  },
   "rules": [
     "Every Input has a visible label (Text as=\"label\" htmlFor) unless it is a search box with aria-label.",
     "Amounts use align=\"end\" and inputMode=\"decimal\"; the consumer formats the value.",
@@ -112,7 +115,7 @@
     "Use readOnly, not disabled, for values the user must still be able to read and copy."
   ],
   "dos": [
-    "Put the currency symbol in startAdornment and the code in endAdornment: $ … USD.",
+    "Put the currency symbol in startAdornment and the code in endAdornment: $ \u2026 USD.",
     "Match Input size to the Button beside it."
   ],
   "donts": [
@@ -123,20 +126,51 @@
     {
       "name": "Default",
       "description": "With a visible label.",
-      "props": { "id": "ref", "placeholder": "INV-0041" }
+      "props": {
+        "id": "ref",
+        "placeholder": "INV-0041"
+      }
     },
     {
       "name": "Amount",
-      "props": { "id": "amount", "align": "end", "placeholder": "0.00", "inputMode": "decimal" }
+      "props": {
+        "id": "amount",
+        "align": "end",
+        "placeholder": "0.00",
+        "inputMode": "decimal"
+      }
     },
     {
       "name": "Invalid",
-      "props": { "id": "email", "type": "email", "invalid": true, "defaultValue": "not-an-email" }
+      "props": {
+        "id": "email",
+        "type": "email",
+        "invalid": true,
+        "defaultValue": "not-an-email"
+      }
     },
-    { "name": "Disabled", "props": { "id": "d", "disabled": true, "defaultValue": "Locked" } },
-    { "name": "Read only", "props": { "id": "r", "readOnly": true, "defaultValue": "acct_1Nv2hZ" } }
+    {
+      "name": "Disabled",
+      "props": {
+        "id": "d",
+        "disabled": true,
+        "defaultValue": "Locked"
+      }
+    },
+    {
+      "name": "Read only",
+      "props": {
+        "id": "r",
+        "readOnly": true,
+        "defaultValue": "acct_1Nv2hZ"
+      }
+    }
   ],
   "registryDependencies": [],
   "dependencies": ["class-variance-authority"],
-  "related": ["text", "button"]
+  "related": ["text", "button"],
+  "motion": {
+    "description": "Border colour eases on hover.",
+    "tokens": ["duration.fast", "ease.standard"]
+  }
 }

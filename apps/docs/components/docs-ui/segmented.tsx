@@ -37,7 +37,7 @@ export function Segmented<T extends string>({
       onValueChange={(next) => {
         if (next) onValueChange(next as T);
       }}
-      className="inline-flex max-w-full flex-wrap gap-0.5 rounded-control border border-line-default bg-surface-sunken p-0.5"
+      className="inline-flex max-w-full flex-wrap gap-0.5 rounded-control border border-line-default bg-surface-layer-2 p-0.5"
     >
       {options.map((option) => (
         <ToggleGroup.Item
@@ -46,7 +46,7 @@ export function Segmented<T extends string>({
           className={cn(
             'inline-flex items-center justify-center rounded-sm font-sans whitespace-nowrap text-fg-secondary transition-colors duration-fast ease-standard',
             size === 'sm' ? 'h-6 px-2 text-label-sm' : 'h-7 px-2.5 text-label-md',
-            'hover:text-fg-primary data-[state=on]:bg-surface-default data-[state=on]:text-fg-primary data-[state=on]:shadow-xs',
+            'hover:text-fg-primary data-[state=on]:bg-surface-layer-1 data-[state=on]:text-fg-primary data-[state=on]:shadow-xs',
             focusRing,
           )}
         >

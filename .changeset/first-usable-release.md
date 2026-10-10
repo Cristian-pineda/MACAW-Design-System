@@ -8,4 +8,4 @@
 '@macaw-ds/mcp': minor
 ---
 
-First usable release: DTCG tokens with light and dark modes, Text, Button, Input, Badge and Card, the curated Icon set, the manifest contract, the lint rules, the CLI (`init`, `add`, `add --eject`) and the MCP server (`list_components`, `get_component`, `get_tokens`, `validate`).
+First usable release: DTCG tokens with light and dark modes, surface layers and a compact density mode; Text, Button, Input, Badge and Card; the application shell (AppShell, TopBar, SideNav, PageHeader, TabNav); the curated Icon set, the manifest contract, the lint rules, the CLI (`init`, `add`, `add --eject`) and the MCP server (`list_components`, `get_component`, `get_tokens`, `validate`).

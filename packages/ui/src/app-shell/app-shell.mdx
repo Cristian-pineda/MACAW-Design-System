@@ -1,0 +1,37 @@
+export const meta = { title: 'AppShell', description: 'The application frame.' };
+
+## When to use
+
+Once, at the root layout of a product. It gives you the skip link, the sticky TopBar, a full-height SideNav column and the main area, with depth by tone already applied.
+
+## When not to use
+
+- **Marketing or documentation-only sites** that have no primary navigation. You can still use AppShell without `sideNav`.
+- **Inside a page.** AppShell is the frame, never a section.
+
+## Anatomy
+
+| Region      | Surface | Behaviour                                                                          |
+| ----------- | ------- | ---------------------------------------------------------------------------------- |
+| TopBar      | layer-1 | Sticky at the top, height `size.topbar`                                            |
+| Side column | layer-1 | Sticky below the TopBar, exactly the remaining viewport height, scrolls on its own |
+| Main        | canvas  | The window scrolls it; pages start with a PageHeader                               |
+
+## Recipe
+
+```tsx
+<AppShell topBar={<TopBar brand={…} actions={…} />} sideNav={<SideNav aria-label="Main">…</SideNav>}>
+  <PageHeader title="Invoices" actions={…} tabs={…} />
+  <div className="layout-grid px-margin py-section">…</div>
+</AppShell>
+```
+
+## Density
+
+Set `data-density="compact"` on `html` and the TopBar, SideNav items, page margins, gutters and card padding all tighten together.
+
+## Accessibility
+
+- A skip link is the first Tab stop and moves focus to `main` (WCAG 2.4.1).
+- Landmarks: banner, a named complementary region for the side column, and main.
+- The side column and sticky rows offset by the TopBar height, so focus is never obscured (WCAG 2.2 SC 2.4.11).

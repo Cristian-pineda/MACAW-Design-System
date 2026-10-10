@@ -104,12 +104,11 @@
     "color.action.disabled",
     "color.action.disabled-fg",
     "color.focus.ring",
-    "duration.fast",
-    "ease.standard",
     "shadow.xs"
   ],
   "a11y": {
     "role": "button (or the child's role with asChild)",
+    "focusable": true,
     "keyboard": [
       "Tab: focus",
       "Enter, Space: activate",
@@ -121,6 +120,16 @@
       "loading keeps the label visible and sets aria-busy; it never swaps the label for a spinner alone.",
       "Use a real button for actions and an anchor (asChild) for navigation so assistive technology announces the right thing."
     ]
+  },
+  "motion": {
+    "description": "Background and border colours ease on hover and press; the loading spinner rotates.",
+    "tokens": [
+      "duration.fast",
+      "ease.standard",
+      "animation.spin",
+      "duration.spin"
+    ],
+    "whenProp": "loading"
   },
   "budget": {
     "gzip": 4000

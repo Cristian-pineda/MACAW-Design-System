@@ -13,3 +13,5 @@ apps/docs/public/r/
 e2e/__screenshots__/
 CHANGELOG.md
 LICENSE
+apps/docs/public/schema/
+apps/docs/next-env.d.ts

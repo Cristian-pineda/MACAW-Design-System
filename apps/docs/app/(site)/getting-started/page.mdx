@@ -1,7 +1,5 @@
 export const metadata = { title: 'Getting started' };
 
-# Getting started
-
 MACAW is installed through one door. The CLI adds the packages, the stylesheet imports and the Claude Code plugin, so the next session already knows the system.
 
 ## Install
@@ -23,13 +21,23 @@ Import the four files once, in your root CSS, in this order. Tailwind v4 reads t
 @import '@macaw-ds/ui/styles.css';
 ```
 
-## Light and dark
+## Theme, density and motion
 
-Light and dark are modes of the semantic token layer. Set `data-theme="light"` or `data-theme="dark"` on `<html>`; with no attribute the OS preference applies. Component code never branches on theme.
+Light and dark, comfortable and compact, and reduced motion are all modes of the token layer, set with data attributes on `<html>` or on any region. With no `data-theme` the OS preference applies; with no `data-motion` the OS reduced-motion setting applies. Component code never branches on any of them.
 
 ```tsx
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-density="compact">
 ```
+
+| Attribute      | Values                   | Changes                                                   |
+| -------------- | ------------------------ | --------------------------------------------------------- |
+| `data-theme`   | `light`, `dark`          | Every semantic colour                                     |
+| `data-density` | `comfortable`, `compact` | Control heights, TopBar height, gutters, margins, padding |
+| `data-motion`  | `reduced`, `full`        | Durations collapse to 0 ms and the spinner stops          |
+
+## Frame a page
+
+Products start from the system frame: `AppShell` with a `TopBar` and a `SideNav`, and a `PageHeader` at the top of every page. See [Layout templates](/foundations/layout/templates).
 
 ## Fonts
 

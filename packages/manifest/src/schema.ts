@@ -35,17 +35,42 @@ export const ExampleSchema = z
   })
   .strict();
 
+const WhenProp = z
+  .object({
+    whenProp: z.string().min(1).describe('A boolean prop that turns this on, e.g. "interactive"'),
+  })
+  .strict();
+
 export const A11ySchema = z
   .object({
     role: z
       .string()
       .min(1)
       .describe('ARIA role the rendered element exposes, or "none" for purely presentational text'),
+    focusable: z
+      .union([z.boolean(), WhenProp])
+      .describe(
+        'Whether the component receives keyboard focus. Drives the playground "Show focus" control and the focus checks in CI.',
+      ),
     keyboard: z
       .array(z.string())
       .describe('Every key the component handles, e.g. "Enter, Space: activate"'),
     name: z.string().min(1).describe('How the accessible name is computed'),
     notes: z.array(z.string()).default([]),
+  })
+  .strict();
+
+export const MotionSchema = z
+  .object({
+    description: z.string().min(1).describe('What moves, in a sentence'),
+    tokens: z
+      .array(z.string())
+      .min(1)
+      .describe('Motion tokens used: duration.*, ease.*, animation.*'),
+    whenProp: z
+      .string()
+      .optional()
+      .describe('A prop that must be on for the motion to be visible, e.g. "loading"'),
   })
   .strict();
 
@@ -84,6 +109,9 @@ export const ManifestSchema = z
       .array(z.string())
       .describe('Token names without the prefix, e.g. "color.action.primary"'),
     a11y: A11ySchema,
+    motion: MotionSchema.optional().describe(
+      'Present only if the component animates or transitions. Drives the playground "Reduced motion" control.',
+    ),
     budget: z
       .object({ gzip: z.number().int().positive().describe('Bundle budget in bytes, gzipped') })
       .strict(),
@@ -101,6 +129,8 @@ export type Manifest = z.infer<typeof ManifestSchema>;
 export type ManifestInput = z.input<typeof ManifestSchema>;
 export type ManifestProp = z.infer<typeof PropSchema>;
 export type ManifestExample = z.infer<typeof ExampleSchema>;
+export type ManifestMotion = z.infer<typeof MotionSchema>;
+export type ManifestA11y = z.infer<typeof A11ySchema>;
 
 export function parseManifest(input: unknown, source = 'manifest'): Manifest {
   const result = ManifestSchema.safeParse(input);

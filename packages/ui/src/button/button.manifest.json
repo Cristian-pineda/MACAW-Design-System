@@ -80,12 +80,11 @@
     "color.action.disabled",
     "color.action.disabled-fg",
     "color.focus.ring",
-    "duration.fast",
-    "ease.standard",
     "shadow.xs"
   ],
   "a11y": {
     "role": "button (or the child's role with asChild)",
+    "focusable": true,
     "keyboard": [
       "Tab: focus",
       "Enter, Space: activate",
@@ -172,5 +171,10 @@
   ],
   "registryDependencies": [],
   "dependencies": ["radix-ui", "class-variance-authority", "lucide-react"],
-  "related": ["icon", "card"]
+  "related": ["icon", "card"],
+  "motion": {
+    "description": "Background and border colours ease on hover and press; the loading spinner rotates.",
+    "tokens": ["duration.fast", "ease.standard", "animation.spin", "duration.spin"],
+    "whenProp": "loading"
+  }
 }

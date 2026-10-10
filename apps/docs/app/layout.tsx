@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { DENSITY_INIT_SCRIPT } from '@/components/shell/density';
 import { ThemeProvider } from '@/components/shell/theme-provider';
 import { SITE_NAME } from '@/lib/site';
 import './globals.css';
@@ -21,6 +22,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${geistMono.variable}`}>
+      <head>
+        {/* Applies the stored density before paint; see components/shell/density.ts. */}
+        <script dangerouslySetInnerHTML={{ __html: DENSITY_INIT_SCRIPT }} />
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

@@ -4,6 +4,35 @@
   "homepage": "https://macaw-design-system.vercel.app",
   "items": [
     {
+      "name": "app-shell",
+      "type": "registry:ui",
+      "title": "AppShell",
+      "description": "The application frame: skip link, sticky TopBar, full-height SideNav column and the main area. One per app, at the root layout.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/app-shell.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/app-shell.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "layout",
+          "since": "0.1.0",
+          "exports": [
+            "AppShell"
+          ],
+          "budget": {
+            "gzip": 1500
+          },
+          "file": "packages/ui/src/app-shell/app-shell.manifest.json"
+        }
+      }
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
@@ -164,6 +193,96 @@
       }
     },
     {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "PageHeader",
+      "description": "The page's own header under the TopBar: title, description, meta, actions and section tabs. Not the global header; that is TopBar.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/page-header.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/page-header.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "layout",
+          "since": "0.1.0",
+          "exports": [
+            "PageHeader"
+          ],
+          "budget": {
+            "gzip": 1500
+          },
+          "file": "packages/ui/src/page-header/page-header.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "side-nav",
+      "type": "registry:ui",
+      "title": "SideNav",
+      "description": "The product's primary navigation in the left column of AppShell. Not for sections within a page; that is TabNav.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/side-nav.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/side-nav.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "navigation",
+          "since": "0.1.0",
+          "exports": [
+            "SideNav",
+            "SideNavGroup",
+            "SideNavItem"
+          ],
+          "budget": {
+            "gzip": 2000
+          },
+          "file": "packages/ui/src/side-nav/side-nav.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "tab-nav",
+      "type": "registry:ui",
+      "title": "TabNav",
+      "description": "Page-level tabs where each tab is its own URL. Not for switching panels in place; that is Tabs (not in the system yet).",
+      "files": [
+        {
+          "path": "registry/macaw/ui/tab-nav.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/tab-nav.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "navigation",
+          "since": "0.1.0",
+          "exports": [
+            "TabNav",
+            "TabNavItem"
+          ],
+          "budget": {
+            "gzip": 2000
+          },
+          "file": "packages/ui/src/tab-nav/tab-nav.manifest.json"
+        }
+      }
+    },
+    {
       "name": "text",
       "type": "registry:ui",
       "title": "Text",
@@ -190,6 +309,35 @@
             "gzip": 2000
           },
           "file": "packages/ui/src/text/text.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "top-bar",
+      "type": "registry:ui",
+      "title": "TopBar",
+      "description": "The application's global header: brand, optional centre content and actions. Not a page title; that is PageHeader.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/top-bar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/top-bar.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "layout",
+          "since": "0.1.0",
+          "exports": [
+            "TopBar"
+          ],
+          "budget": {
+            "gzip": 1000
+          },
+          "file": "packages/ui/src/top-bar/top-bar.manifest.json"
         }
       }
     },
@@ -229,12 +377,17 @@
       "scope": "@macaw-ds",
       "generatedFrom": "packages/ui, packages/icons, packages/tokens",
       "components": [
+        "app-shell",
         "badge",
         "button",
         "card",
         "icon",
         "input",
-        "text"
+        "page-header",
+        "side-nav",
+        "tab-nav",
+        "text",
+        "top-bar"
       ]
     }
   }

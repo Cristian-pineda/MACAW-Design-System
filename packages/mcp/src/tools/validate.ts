@@ -41,7 +41,6 @@ const MISSING = new Set([
   'Accordion',
   'CommandPalette',
   'Command',
-  'AppShell',
   'Sidebar',
 ]);
 

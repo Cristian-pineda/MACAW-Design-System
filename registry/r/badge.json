@@ -121,6 +121,7 @@
         ],
         "a11y": {
           "role": "none (a span with text)",
+          "focusable": false,
           "keyboard": [],
           "name": "The text content. A badge has no role; it reads as part of the surrounding text.",
           "notes": [

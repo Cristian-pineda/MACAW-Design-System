@@ -18,7 +18,7 @@
       "path": "registry/macaw/lib/focus.ts",
       "type": "registry:lib",
       "target": "lib/macaw/focus.ts",
-      "content": "/**\n * The one focus style every interactive component uses (DECISIONS.md #8).\n * Rendered with `outline` so it survives forced-colors mode; ring colour meets 3:1 on every surface.\n */\nexport const focusRing =\n  'outline-none focus-visible:outline-focus focus-visible:outline-offset-focus focus-visible:outline-solid focus-visible:outline-focus-ring';\n"
+      "content": "/**\n * The one focus style every interactive component uses (DECISIONS.md #8).\n * Rendered with `outline` so it survives forced-colors mode; the ring colour meets 3:1 on every\n * surface layer. The force-focus variant renders the same style without focus, scoped by\n * data-force-focus, so previews and visual tests show the component's real focus style.\n */\nexport const focusRing = [\n  'outline-none',\n  'focus-visible:outline-solid focus-visible:outline-focus focus-visible:outline-offset-focus focus-visible:outline-focus-ring',\n  'force-focus:outline-solid force-focus:outline-focus force-focus:outline-offset-focus force-focus:outline-focus-ring',\n].join(' ');\n"
     },
     {
       "path": "registry/macaw/lib/types.ts",

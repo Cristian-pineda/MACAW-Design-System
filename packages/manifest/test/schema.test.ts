@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildJsxSnippet, inferControl, parseManifest } from '../src/index.ts';
+import { buildJsxSnippet, inferControl, parseManifest, previewControls } from '../src/index.ts';
 
 const base = {
   name: 'Button',
@@ -22,7 +22,13 @@ const base = {
     children: { type: 'node', description: 'Label' },
   },
   tokens: ['color.action.primary'],
-  a11y: { role: 'button', keyboard: ['Enter, Space: activate'], name: 'From children' },
+  a11y: {
+    role: 'button',
+    focusable: true,
+    keyboard: ['Enter, Space: activate'],
+    name: 'From children',
+  },
+  motion: { description: 'Spinner rotates', tokens: ['animation.spin'], whenProp: 'loading' },
   budget: { gzip: 3000 },
   rules: ['One primary button per view.'],
   donts: ['Do not use for navigation.'],
@@ -98,5 +104,26 @@ describe('inferControl', () => {
         required: false,
       }),
     ).toBe('select');
+  });
+});
+
+describe('previewControls', () => {
+  const m = parseManifest(base);
+  it('shows focus for focusable components and motion when declared', () => {
+    expect(previewControls(m, {}).focus).toBe(true);
+    expect(previewControls(m, {}).motion).toBe(true);
+    expect(previewControls(m, {}).hints).toEqual(['Motion is visible when loading is on.']);
+    expect(previewControls(m, { loading: true }).hints).toEqual([]);
+  });
+  it('hides both for static components and gates focus on a prop', () => {
+    const { motion: _motion, ...staticBase } = base;
+    const s = parseManifest({ ...staticBase, a11y: { ...base.a11y, focusable: false } });
+    expect(previewControls(s, {})).toEqual({ focus: false, motion: false, hints: [] });
+    const c = parseManifest({
+      ...staticBase,
+      a11y: { ...base.a11y, focusable: { whenProp: 'interactive' } },
+    });
+    expect(previewControls(c, {}).focus).toBe(false);
+    expect(previewControls(c, { interactive: true }).focus).toBe(true);
   });
 });

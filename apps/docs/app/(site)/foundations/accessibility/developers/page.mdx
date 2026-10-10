@@ -1,0 +1,27 @@
+export const metadata = { title: 'Accessibility for developers' };
+
+## The manifest is the contract
+
+Every component's manifest declares an `a11y` block, required by the schema:
+
+| Field       | Meaning                                                                                   |
+| ----------- | ----------------------------------------------------------------------------------------- |
+| `role`      | What assistive technology sees                                                            |
+| `focusable` | `true`, `false`, or `{ "whenProp": "interactive" }`; drives the Show focus control and CI |
+| `keyboard`  | Every key the component handles, such as `Enter, Space: activate`                         |
+| `name`      | How the accessible name is computed                                                       |
+| `notes`     | Anything else a reviewer should check                                                     |
+
+A component that moves also declares `motion` (`description`, `tokens`, optional `whenProp`). `previewControls(manifest, props)` from `@macaw-ds/manifest` reads both and decides which playground controls appear, so a control never shows where it can do nothing.
+
+## What runs in CI
+
+- **Token tests**: text contrast on every surface layer (7:1 for `fg.primary` and `fg.numeric`, 4.5:1 for secondary and muted), 3:1 for lines and the focus ring, adjacent layers differ in tone, compact controls stay at or above 24 px.
+- **Unit tests**: axe on every variant in both themes, the keyboard path, `disabled` leaves the tab order, `loading` sets `aria-busy`.
+- **manifest:check**: fails if a component applies the focus ring or motion utilities without the matching manifest field, or the reverse.
+- **e2e**: axe on every docs page and gallery in both themes and once in compact; a keyboard walk that checks a visible outline on every focused element; and a preview-controls suite that checks Show focus renders the component's own outline and Reduced motion stops every animation and transition.
+- **Lint**: `jsx-a11y` strict, and the MACAW rules against raw values and untokenised motion.
+
+## Before you merge
+
+The pull request template asks for a screen reader pass (VoiceOver with Safari and Chrome) on any new or changed interactive component. The `macaw-reviewer` agent checks label association, heading order, one primary action and `aria-label` on icon-only buttons.

@@ -113,9 +113,18 @@ describe('Button', () => {
     }
   });
 
-  it('uses the shared focus ring', () => {
+  it('uses the shared focus ring, including the force-focus variant used by previews', () => {
     render(<Button>Focus</Button>);
-    expect(screen.getByRole('button').className).toContain('focus-visible:outline-focus-ring');
+    const cls = screen.getByRole('button').className;
+    expect(cls).toContain('focus-visible:outline-focus-ring');
+    expect(cls).toContain('force-focus:outline-focus-ring');
+  });
+
+  it('spins only through the animation token so reduced motion can stop it', () => {
+    render(<Button loading>Busy</Button>);
+    const spinner = screen.getByRole('button').querySelector('[data-icon="loader"]');
+    expect(spinner?.getAttribute('class')).toContain('animate-spin');
+    expect(spinner?.getAttribute('class')).not.toMatch(/motion-(reduce|safe):/);
   });
 
   it('matches its manifest', () => {

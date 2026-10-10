@@ -8,7 +8,7 @@ MACAW targets dense, high-contrast, dashboard-first financial interfaces: tabula
 
 ## Status
 
-Pre-release (`0.x`). The first usable release is `0.1.0`: tokens, Button, Text, Input, Badge, Card, the CLI, the Claude Code plugin and the MCP server.
+Pre-release (`0.x`). The first usable release is `0.1.0`: tokens with light, dark and compact modes, Button, Text, Input, Badge, Card, the application shell (AppShell, TopBar, SideNav, PageHeader, TabNav), the CLI, the Claude Code plugin and the MCP server.
 
 ## Install (one door)
 

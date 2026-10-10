@@ -116,11 +116,12 @@
     "input.fg.placeholder",
     "input.fg.disabled",
     "color.focus.ring",
-    "color.surface.sunken",
+    "color.surface.layer-2",
     "color.fg.muted"
   ],
   "a11y": {
     "role": "textbox (searchbox for type=\"search\")",
+    "focusable": true,
     "keyboard": [
       "Tab: focus",
       "Typing edits the value",
@@ -132,6 +133,13 @@
       "Placeholder text meets 4.5:1 but is never the label.",
       "Adornments are aria-hidden. If the unit matters, say it in the label: \"Amount (USD)\".",
       "Error messages are linked with aria-describedby so they are announced with the field."
+    ]
+  },
+  "motion": {
+    "description": "Border colour eases on hover.",
+    "tokens": [
+      "duration.fast",
+      "ease.standard"
     ]
   },
   "budget": {

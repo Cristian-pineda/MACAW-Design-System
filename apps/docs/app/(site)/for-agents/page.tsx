@@ -7,6 +7,7 @@ import { CodeBlock } from '@/components/docs-ui/code-block';
 import { focusRing } from '@/components/docs-ui/focus';
 import { cn } from '@/lib/cn';
 import { REPO_ROOT } from '@/lib/paths';
+import { DocsPage } from '@/components/shell/docs-page';
 import { MARKETPLACE_ADD } from '@/lib/site';
 
 export const metadata: Metadata = { title: 'For agents' };
@@ -42,18 +43,10 @@ npx @macaw-ds/cli diff                 # (0.2) what ejected copies are behind`;
 export default async function ForAgentsPage() {
   const template = await readFile(path.join(REPO_ROOT, 'plugin', 'templates', 'CLAUDE.md'), 'utf8');
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        <Text as="h1" variant="display-md">
-          For agents
-        </Text>
-        <Text variant="body-lg" tone="secondary">
-          Context ships with the code. A rule in prose is advice; a rule in a hook, a type or a lint
-          check is enforced (DECISIONS.md #16). This page is what Claude reads, and how it gets
-          there.
-        </Text>
-      </div>
-
+    <DocsPage
+      title="For agents"
+      description="Context ships with the code. A rule in prose is advice; a rule in a hook, a type or a lint check is enforced (DECISIONS.md #16). This page is what Claude reads, and how it gets there."
+    >
       <Section
         id="plugin"
         title="The plugin"
@@ -112,7 +105,7 @@ export default async function ForAgentsPage() {
       >
         <div className="overflow-x-auto rounded-container border border-line-default">
           <table className="w-full border-collapse">
-            <thead className="bg-surface-sunken">
+            <thead className="bg-surface-layer-2">
               <tr>
                 <th
                   scope="col"
@@ -193,6 +186,6 @@ export default async function ForAgentsPage() {
           <code className="font-mono text-code">npx shadcn add</code> read.
         </Text>
       </Section>
-    </>
+    </DocsPage>
   );
 }

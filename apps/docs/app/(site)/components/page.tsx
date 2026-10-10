@@ -1,5 +1,5 @@
-import { Text } from '@macaw-ds/ui';
 import type { Metadata } from 'next';
+import { DocsPage } from '@/components/shell/docs-page';
 import { getComponentSummaries } from '@/lib/registry';
 import { ComponentsGrid } from './components-grid';
 
@@ -8,17 +8,11 @@ export const metadata: Metadata = { title: 'Components' };
 export default function ComponentsPage() {
   const items = getComponentSummaries();
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        <Text as="h1" variant="display-md">
-          Components
-        </Text>
-        <Text variant="body-lg" tone="secondary">
-          Every component ships with a manifest: the props, the rules, the accessibility contract
-          and the tokens it uses. The registry below is generated from those manifests.
-        </Text>
-      </div>
+    <DocsPage
+      title="Components"
+      description="Every component ships with a manifest: the props, the rules, the accessibility contract and the tokens it uses. This list is generated from those manifests."
+    >
       <ComponentsGrid items={items} />
-    </>
+    </DocsPage>
   );
 }

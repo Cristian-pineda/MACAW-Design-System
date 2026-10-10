@@ -5,6 +5,7 @@ import { use, type ComponentType } from 'react';
 import { componentMap } from '@/components/playground/component-map';
 import { humanize } from '@/lib/format';
 import { FocusFirst } from './focus-first';
+import { UniqueLandmarks } from './unique-landmarks';
 
 export interface Example {
   name: string;
@@ -33,6 +34,10 @@ function getExamples(slug: string): Promise<Example[]> {
 }
 
 /** Every example of a component, labelled, in whatever theme scope the parent sets. */
+/**
+ * Example names are labels, not headings: examples render their own headings (a PageHeader is an
+ * h1), and a heading per example would break the page outline around them.
+ */
 export function ExampleList({ slug, prefix }: { slug: string; prefix: string }) {
   const examples = use(getExamples(slug));
   return (
@@ -42,8 +47,10 @@ export function ExampleList({ slug, prefix }: { slug: string; prefix: string }) 
           <Text as="span" variant="label-sm" tone="muted" id={`${prefix}-${name}`}>
             {humanize(name)}
           </Text>
-          <div className="rounded-container border border-line-subtle bg-surface-default p-6">
-            <Example />
+          <div className="isolate rounded-container border border-line-subtle bg-surface-layer-1 p-6">
+            <UniqueLandmarks suffix={`${humanize(name)}, ${prefix}`}>
+              <Example />
+            </UniqueLandmarks>
           </div>
         </li>
       ))}
@@ -57,9 +64,11 @@ export function FocusedExample({ slug }: { slug: string }) {
   const first = examples[0];
   if (!first) return null;
   return (
-    <div className="rounded-container border border-line-subtle bg-surface-default p-6">
+    <div className="isolate rounded-container border border-line-subtle bg-surface-layer-1 p-6">
       <FocusFirst>
-        <first.Example />
+        <UniqueLandmarks suffix={`${humanize(first.name)}, focused`}>
+          <first.Example />
+        </UniqueLandmarks>
       </FocusFirst>
     </div>
   );

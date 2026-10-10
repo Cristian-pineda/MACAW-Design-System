@@ -9,9 +9,9 @@ const INSTALL = 'npx @macaw-ds/cli init';
 
 export default function HomePage() {
   return (
-    <>
-      <section aria-labelledby="hero-title" className="grid items-center gap-10 md:grid-cols-2">
-        <div className="flex flex-col gap-5">
+    <div className="flex max-w-page flex-col gap-section px-margin py-section">
+      <section aria-labelledby="hero-title" className="layout-grid items-center gap-y-section">
+        <div className="col-span-12 flex flex-col gap-stack-md lg:col-span-6">
           <Badge tone="accent" variant="outline">
             Pre-release 0.x
           </Badge>
@@ -41,7 +41,9 @@ export default function HomePage() {
             </Button>
           </div>
         </div>
-        <InvoiceSummary />
+        <div className="col-span-12 lg:col-span-6">
+          <InvoiceSummary />
+        </div>
       </section>
 
       <section aria-labelledby="install-title" className="flex flex-col gap-3">
@@ -61,6 +63,6 @@ export default function HomePage() {
         </Text>
         <LinkCards />
       </section>
-    </>
+    </div>
   );
 }

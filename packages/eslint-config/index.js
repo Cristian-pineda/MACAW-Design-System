@@ -19,6 +19,11 @@ const ARBITRARY_COLOR =
   '^(?:[a-z0-9:-]+:)*(?:bg|text|border|ring|outline|fill|stroke|from|via|to|decoration|accent|caret|shadow|divide|placeholder)-\\[.*\\]$';
 const ARBITRARY_LENGTH =
   '^(?:[a-z0-9:-]+:)*(?:p|px|py|pt|pr|pb|pl|ps|pe|m|mx|my|mt|mr|mb|ml|ms|me|gap|gap-x|gap-y|space-x|space-y|w|h|size|min-w|min-h|max-w|max-h|inset|top|right|bottom|left|rounded(?:-[a-z]+)?|text|leading|tracking|border(?:-[a-z]+)?)-\\[.*\\]$';
+const UNTOKENIZED_MOTION = [
+  '^(?:[a-z0-9-]+:)*motion-(?:reduce|safe):.*$',
+  '^(?:[a-z0-9:-]+:)*(?:duration|delay)-\\d+$',
+  '^(?:[a-z0-9:-]+:)*(?:animate|transition|duration|delay|ease)-\\[.*\\]$',
+];
 const DEFAULT_PALETTE =
   '^(?:[a-z0-9:-]+:)*(?:bg|text|border|ring|outline|fill|stroke|from|via|to|decoration|accent|caret|divide|placeholder)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|white|black)(?:-\\d+)?(?:/\\d+)?$';
 
@@ -57,6 +62,11 @@ export default function macaw(options = {}) {
                 message:
                   "Tailwind's default palette is disabled in MACAW. Use a semantic token utility.",
               },
+              ...UNTOKENIZED_MOTION.map((pattern) => ({
+                pattern,
+                message:
+                  'Motion must use MACAW tokens (duration-fast, ease-standard, animate-spin) so reduced motion applies everywhere. Do not use motion-reduce:/motion-safe: or raw durations.',
+              })),
             ],
           },
         ],

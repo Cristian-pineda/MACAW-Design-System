@@ -2,18 +2,15 @@ import { SpacingExample } from '@/components/foundations/examples';
 
 export const metadata = { title: 'Spacing' };
 
-# Spacing
+A 4 px scale. Tailwind's spacing utilities map straight onto it: `p-1` is 4 px, `p-4` is 16 px, `gap-2` is 8 px. Half-steps (2, 6 and 10 px) exist for the inside of components only (DECISIONS.md #19).
 
-A 4 px scale. Tailwind's spacing utilities map straight onto it: `p-1` is 4 px, `p-4` is 16 px, `gap-2` is 8 px. Semantic layout tokens name the distances that recur: `layout.stack-md` (16 px) between form fields, `layout.control-gap` (8 px) between buttons, `layout.card-padding` (20 px) inside a card, `layout.gutter` (24 px) at the page edge.
+Semantic layout tokens name the distances that recur, and they follow the density mode: `gap-stack-md` between form fields (16 px, 12 px compact), `gap-inline-sm` between buttons (8 px), `p-card-x` and `p-card-y` inside a card, `gap-gutter` between grid columns and `px-margin` at the page edge. Controls come in three heights, `h-control-sm`, `h-control-md` and `h-control-lg` (28, 32 and 40 px; 24, 28 and 32 px compact), and every interactive target is at least 24 px (WCAG 2.2 2.5.8).
 
-Controls come in three heights, 28, 32 and 40 px (`h-control-sm`, `h-control-md`, `h-control-lg`), and every interactive target is at least 24 px (WCAG 2.2 2.5.8).
+## In practice
 
 <SpacingExample />
 
-## Rules
+## In this section
 
-- Arbitrary values (`p-[13px]`) fail lint. If the scale does not have the distance, the distance is wrong.
-- Components own their internal spacing. Card sections, not custom padding.
-- Layouts are designed for 1024 px and above (DECISIONS.md #3).
-
-See the [space scale](/tokens#space).
+- [Scale](/foundations/spacing/scale): the primitive steps and the semantic tokens with their compact values.
+- [Usage](/foundations/spacing/usage): which token for which distance.

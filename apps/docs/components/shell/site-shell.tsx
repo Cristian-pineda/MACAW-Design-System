@@ -1,58 +1,54 @@
+import { Icon } from '@macaw-ds/icons';
+import { AppShell, Button, Text, TopBar } from '@macaw-ds/ui';
+import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { focusRing } from '@/components/docs-ui/focus';
+import { cn } from '@/lib/cn';
 import { getComponentSummaries } from '@/lib/registry';
-import { Header } from './header';
-import { SidebarNav, type NavGroup } from './sidebar-nav';
+import { GITHUB_URL, SITE_NAME } from '@/lib/site';
+import { DensityToggle } from './density-toggle';
+import { DocsSideNav } from './docs-side-nav';
+import { navGroups } from './nav';
+import { ThemeToggle } from './theme-toggle';
 
-const FOUNDATIONS = [
-  'color',
-  'typography',
-  'spacing',
-  'elevation',
-  'motion',
-  'accessibility',
-] as const;
-
-function navGroups(): NavGroup[] {
-  const components = getComponentSummaries();
-  return [
-    { title: 'Start', links: [{ href: '/getting-started', label: 'Getting started' }] },
-    {
-      title: 'Foundations',
-      links: FOUNDATIONS.map((f) => ({
-        href: `/foundations/${f}`,
-        label: f.charAt(0).toUpperCase() + f.slice(1),
-      })),
-    },
-    {
-      title: 'Components',
-      links: [
-        { href: '/components', label: 'All components' },
-        ...components.map((c) => ({ href: `/components/${c.slug}`, label: c.title })),
-      ],
-    },
-    {
-      title: 'Reference',
-      links: [
-        { href: '/tokens', label: 'Tokens' },
-        { href: '/for-agents', label: 'For agents' },
-      ],
-    },
-  ];
+function Brand() {
+  return (
+    <Link href="/" className={cn('inline-flex items-center gap-2 rounded-control', focusRing)}>
+      <span aria-hidden="true" className="inline-block size-3 rounded-xs bg-action-primary" />
+      <Text as="span" variant="heading-md">
+        {SITE_NAME}
+      </Text>
+      <Text as="span" variant="caption" tone="muted">
+        Design system
+      </Text>
+    </Link>
+  );
 }
 
-/** Header, sidebar and main column. Desktop-first at 1024 px (DECISIONS.md #3). */
+/** The docs dogfood the system frame: AppShell, TopBar and SideNav (DECISIONS.md #21). Desktop-first at 1024 px (#3). */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-dvh flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <aside className="sticky top-14 hidden max-h-dvh w-60 shrink-0 self-start overflow-y-auto border-r border-line-default bg-surface-default px-3 py-6 md:block">
-          <SidebarNav groups={navGroups()} />
-        </aside>
-        <main id="main" className="min-w-0 flex-1 px-6 py-8 md:px-10">
-          <div className="max-w-5xl mx-auto flex flex-col gap-10">{children}</div>
-        </main>
-      </div>
-    </div>
+    <AppShell
+      sideNavLabel="Site"
+      topBar={
+        <TopBar
+          brand={<Brand />}
+          actions={
+            <>
+              <Button asChild variant="ghost" size="sm" iconEnd={<Icon name="external-link" />}>
+                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                  GitHub
+                </a>
+              </Button>
+              <DensityToggle />
+              <ThemeToggle />
+            </>
+          }
+        />
+      }
+      sideNav={<DocsSideNav groups={navGroups(getComponentSummaries())} />}
+    >
+      {children}
+    </AppShell>
   );
 }

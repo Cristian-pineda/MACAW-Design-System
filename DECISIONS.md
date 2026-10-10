@@ -35,7 +35,7 @@ Consequences. Roughly a third less cost per component than fully responsive. Bre
 
 Status: accepted · 2026-10-10
 
-Decision. One brand. Light and dark are modes of the semantic token layer, switched by `data-theme="light|dark"` on `<html>`, with OS preference honoured when no attribute is set. Multi-brand is explicitly unsupported.
+Decision. One brand. Light and dark are modes of the semantic token layer, switched by `data-theme="light|dark"` on `<html>` or any element, with OS preference honoured when no attribute is set. Multi-brand is explicitly unsupported.
 
 Consequences. Component code never branches on theme. Only semantic colour tokens differ between modes.
 
@@ -128,6 +128,56 @@ Status: accepted · 2026-10-10
 Decision. Every component carries a schema-validated manifest. The plugin (`plugin/`) holds a `using-macaw` skill with generated reference files, hooks that lint after every edit and run `verify` before a turn ends, a fresh-context reviewer agent, and MCP config. `CLAUDE.md` in a consumer repo stays under 20 lines and points at the skill. `@macaw-ds/mcp` exposes `list_components`, `get_component`, `get_tokens` and `validate` over the generated registry.
 
 Consequences. Context ships with the code. A rule in prose is advice; a rule in a hook, a type or a lint check is enforced.
+
+## 17. Depth by tone: surface layers
+
+Status: accepted · 2026-10-10 · replaces surface.default, surface.raised, surface.sunken
+
+Context. Depth should read from colour alone, the way the docs separate the nav and header from the page. The old tokens did not do that in light mode: `surface.default` and `surface.raised` were the same white.
+
+Decision. A layer scale: `surface.canvas` (the app background), `surface.layer-1` (nav, TopBar, cards), `surface.layer-2` and `surface.layer-3` (regions nested inside a layer), each with a `-hover` token, plus `surface.overlay` for floating UI and `surface.inverse`. In light, layer-1 is white on a shaded canvas and nested layers step darker. In dark, every step is lighter. The rule is tone first, border second, shadow last.
+
+Consequences. Adjacent layers differ in tone in both themes, and the token tests assert it. Text, strong lines and the focus ring keep their contrast on every layer. The tokens are defined in Color; the concept is documented in Elevation.
+
+## 18. Density as a token mode
+
+Status: accepted · 2026-10-10
+
+Context. Financial products range from a few cards to a wall of tables. One density is too loose for some and too tight for others.
+
+Decision. `data-density="comfortable|compact"` on `<html>` or any region, built like the light and dark modes. Compact overrides control heights (28/32/40 to 24/28/32 px), the TopBar height (56 to 48 px), gutter (24 to 16 px), page margin (32 to 24 px), section and stack spacing, and card padding. Type sizes and badge sizes do not change. Components read the semantic tokens through utilities such as `h-control-md`, `p-card-x` and `gap-gutter`, so they adapt without props.
+
+Consequences. A dense table can sit inside a comfortable page. Compact controls never go below the 24 px target size, and the tests assert it.
+
+## 19. Layout grid and spacing base
+
+Status: accepted · 2026-10-10
+
+Decision. A 12-column page grid (`layout-grid`, column gap equals the gutter) with 24 px gutters comfortable and 16 px compact, and named content widths (`max-w-prose`, `max-w-form`, `max-w-page`, `max-w-wide`). Spacing stays on a 4 px base, with 2 px half-steps allowed inside components only. A 2 px base was rejected because it doubles the spacing choices without adding useful layouts.
+
+Consequences. Twelve divides into 2, 3, 4 and 6, which suits KPI rows. Carbon-style 1 px condensed gutters can be added later if a tile wall needs them.
+
+## 20. Motion and focus have one mechanism each
+
+Status: accepted · 2026-10-10
+
+Context. The playground's Show focus and Reduced motion toggles did nothing for most components. The spinner ignored the reduced-motion toggle, and Show focus forced an outline with CSS, which would hide a broken focus style.
+
+Decision.
+
+- Motion only through tokens: `duration-*`, `ease-*` and `animate-*`, where each named animation is a token. Reduced motion is `data-motion="reduced"` on any element, or the OS preference unless a scope sets `data-motion="full"`. Lint bans `motion-reduce:`, `motion-safe:`, raw durations and arbitrary motion values.
+- Focus previews use the component's own style through the `force-focus:` variant, scoped by `data-force-focus`.
+- Manifests declare `a11y.focusable` (true, false, or `{ whenProp }`) and `motion` when a component moves. The playground shows a control only when it applies.
+
+Consequences. `manifest:check` fails if a component applies `focusRing` or motion utilities without the matching manifest field, or the reverse. The e2e suite checks that each preview control does what it claims.
+
+## 21. Application shell components are part of the system
+
+Status: accepted · 2026-10-10
+
+Decision. `AppShell`, `TopBar`, `SideNav`, `PageHeader` and `TabNav` ship in `@macaw-ds/ui`, and the docs site uses them. `TabNav` is navigation: each tab is a URL, with links and `aria-current`. In-page panel switching is a separate Tabs component, not yet built. `AppShell` keeps window scrolling, a skip link and a full-height SideNav column.
+
+Consequences. Every MACAW product gets the same frame and landmarks. Pages start with `PageHeader`, whose title is the page's `h1`.
 
 ---
 

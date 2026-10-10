@@ -120,6 +120,7 @@
   ],
   "a11y": {
     "role": "none (inherits the element's role: heading, paragraph, label, time). The HTML role attribute passes through.",
+    "focusable": false,
     "keyboard": [],
     "name": "Not applicable; Text is content. For label, the name is the text and it names the control via htmlFor.",
     "notes": [

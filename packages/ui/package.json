@@ -39,6 +39,26 @@
       "types": "./dist/card/index.d.ts",
       "import": "./dist/card/index.js"
     },
+    "./tab-nav": {
+      "types": "./dist/tab-nav/index.d.ts",
+      "import": "./dist/tab-nav/index.js"
+    },
+    "./side-nav": {
+      "types": "./dist/side-nav/index.d.ts",
+      "import": "./dist/side-nav/index.js"
+    },
+    "./top-bar": {
+      "types": "./dist/top-bar/index.d.ts",
+      "import": "./dist/top-bar/index.js"
+    },
+    "./page-header": {
+      "types": "./dist/page-header/index.d.ts",
+      "import": "./dist/page-header/index.js"
+    },
+    "./app-shell": {
+      "types": "./dist/app-shell/index.d.ts",
+      "import": "./dist/app-shell/index.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },

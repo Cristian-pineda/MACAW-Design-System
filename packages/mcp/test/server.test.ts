@@ -33,12 +33,17 @@ describe('macaw mcp', () => {
   it('list_components returns the v1 set', async () => {
     const r = text(await client.callTool({ name: 'list_components', arguments: {} }));
     expect(r.components.map((c: { name: string }) => c.name).sort()).toEqual([
+      'app-shell',
       'badge',
       'button',
       'card',
       'icon',
       'input',
+      'page-header',
+      'side-nav',
+      'tab-nav',
       'text',
+      'top-bar',
     ]);
   });
   it('get_component returns a manifest and not-in-system for unknown names', async () => {

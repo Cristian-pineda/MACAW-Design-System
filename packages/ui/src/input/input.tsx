@@ -10,7 +10,7 @@ export const inputVariants = cva(
     'transition-colors duration-fast ease-standard',
     'hover:border-field-line-hover',
     'aria-invalid:border-field-line-invalid',
-    'read-only:bg-surface-sunken',
+    'read-only:bg-surface-layer-2',
     'disabled:cursor-not-allowed disabled:border-field-line-disabled disabled:bg-field-bg-disabled disabled:text-fg-disabled',
     focusRing,
   ),

@@ -35,7 +35,11 @@
       "description": "Leading dot in the tone colour, for live or state indicators.",
       "a11y": "Decorative (aria-hidden). The text must still say the state."
     },
-    "children": { "type": "node", "description": "The status word or two.", "default": "Paid" }
+    "children": {
+      "type": "node",
+      "description": "The status word or two.",
+      "default": "Paid"
+    }
   },
   "slots": ["children"],
   "tokens": [
@@ -62,6 +66,7 @@
   ],
   "a11y": {
     "role": "none (a span with text)",
+    "focusable": false,
     "keyboard": [],
     "name": "The text content. A badge has no role; it reads as part of the surrounding text.",
     "notes": [
@@ -70,7 +75,9 @@
       "Badges are not interactive. For a filter chip or a removable tag, a different component is needed (not in the system yet)."
     ]
   },
-  "budget": { "gzip": 2500 },
+  "budget": {
+    "gzip": 2500
+  },
   "rules": [
     "The label is a word or two that states the status in plain language.",
     "Tone follows meaning, not decoration: critical means failed or overdue, never \"important\".",
@@ -85,15 +92,52 @@
     "Do not use badges as counters; a count is Text numeric."
   ],
   "examples": [
-    { "name": "Default", "props": { "children": "Paid", "tone": "success" } },
-    { "name": "Overdue", "props": { "children": "Overdue", "tone": "critical" } },
-    { "name": "Solid", "props": { "children": "Refunded", "tone": "info", "variant": "solid" } },
+    {
+      "name": "Default",
+      "props": {
+        "children": "Paid",
+        "tone": "success"
+      }
+    },
+    {
+      "name": "Overdue",
+      "props": {
+        "children": "Overdue",
+        "tone": "critical"
+      }
+    },
+    {
+      "name": "Solid",
+      "props": {
+        "children": "Refunded",
+        "tone": "info",
+        "variant": "solid"
+      }
+    },
     {
       "name": "Outline",
-      "props": { "children": "Draft", "tone": "neutral", "variant": "outline" }
+      "props": {
+        "children": "Draft",
+        "tone": "neutral",
+        "variant": "outline"
+      }
     },
-    { "name": "With dot", "props": { "children": "Active", "tone": "success", "dot": true } },
-    { "name": "Small", "props": { "children": "Pending", "tone": "warning", "size": "sm" } }
+    {
+      "name": "With dot",
+      "props": {
+        "children": "Active",
+        "tone": "success",
+        "dot": true
+      }
+    },
+    {
+      "name": "Small",
+      "props": {
+        "children": "Pending",
+        "tone": "warning",
+        "size": "sm"
+      }
+    }
   ],
   "registryDependencies": [],
   "dependencies": ["class-variance-authority"],

@@ -1,0 +1,87 @@
+{
+  "$schema": "../../../manifest/schema/manifest.schema.json",
+  "name": "SideNav",
+  "slug": "side-nav",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "navigation",
+  "purpose": "The product's primary navigation in the left column of AppShell. Not for sections within a page; that is TabNav.",
+  "description": "Groups of links with optional headings and icons. One item is active and carries aria-current=\"page\". Item height follows the density mode. AppShell gives it a full-height, independently scrolling column on surface layer-1.",
+  "exports": ["SideNav", "SideNavGroup", "SideNavItem"],
+  "props": {
+    "aria-label": {
+      "type": "string",
+      "required": true,
+      "description": "Names the navigation landmark, e.g. \"Main\".",
+      "default": "Main"
+    },
+    "title": {
+      "type": "string",
+      "description": "On SideNav.Group: the group heading.",
+      "default": "Billing",
+      "control": "none"
+    },
+    "active": {
+      "type": "boolean",
+      "default": false,
+      "description": "On SideNav.Item: the current page.",
+      "a11y": "Sets aria-current=\"page\"."
+    },
+    "icon": {
+      "type": "node",
+      "description": "On SideNav.Item: a decorative Icon before the label.",
+      "control": "none"
+    },
+    "asChild": {
+      "type": "boolean",
+      "default": false,
+      "description": "On SideNav.Item: render a router Link instead of an anchor.",
+      "control": "none"
+    },
+    "children": { "type": "node", "description": "SideNav.Group elements.", "control": "none" }
+  },
+  "slots": ["Group", "Item"],
+  "tokens": [
+    "color.status.accent-bg",
+    "color.status.accent-fg",
+    "color.fg.secondary",
+    "color.fg.primary",
+    "color.fg.muted",
+    "color.surface.layer-1-hover",
+    "size.control.sm",
+    "text.size.label-sm",
+    "text.size.caption",
+    "color.focus.ring"
+  ],
+  "a11y": {
+    "role": "navigation, containing lists of links",
+    "focusable": true,
+    "keyboard": ["Tab: move between items (each is a link)", "Enter: follow the link"],
+    "name": "The landmark takes its name from aria-label; each item from its text. Group headings are visible text, not headings, so they do not interrupt the page outline.",
+    "notes": [
+      "The active item has aria-current=\"page\" and a tinted background plus accent text, so selection is not shown by colour of one property alone.",
+      "Icons are decorative; the label always names the item."
+    ]
+  },
+  "motion": {
+    "description": "Item background and text colour ease on hover.",
+    "tokens": ["duration.fast", "ease.standard"]
+  },
+  "budget": { "gzip": 2000 },
+  "rules": [
+    "Exactly one item is active, and it matches the current route.",
+    "Group related destinations under a short heading; keep fewer than ten items per group.",
+    "With a router, pass the Link through asChild so client-side navigation keeps working.",
+    "Place SideNav in AppShell's sideNav slot; it does not set its own width or background."
+  ],
+  "dos": ["Use icons for every item in a group or for none of them."],
+  "donts": [
+    "Do not put actions (buttons) in SideNav; it is for navigation only.",
+    "Do not nest groups."
+  ],
+  "examples": [{ "name": "Default", "props": { "aria-label": "Main" } }],
+  "registryDependencies": [],
+  "dependencies": ["radix-ui"],
+  "related": ["app-shell", "tab-nav", "top-bar"]
+}

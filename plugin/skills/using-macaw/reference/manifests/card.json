@@ -6,7 +6,7 @@
   "since": "0.1.0",
   "category": "layout",
   "purpose": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
-  "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring.",
+  "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring. Padding follows the density mode.",
   "exports": [
     "Card",
     "CardHeader",
@@ -68,19 +68,24 @@
   ],
   "tokens": [
     "card.radius",
-    "card.padding.sm",
-    "card.padding.md",
     "card.bg.default",
     "card.line",
     "card.shadow.flat",
     "card.shadow.raised",
     "color.line.subtle",
     "color.line.strong",
-    "color.surface.sunken",
-    "color.focus.ring"
+    "color.surface.layer-2",
+    "color.focus.ring",
+    "layout.card-x",
+    "layout.card-y",
+    "layout.card-x-sm",
+    "layout.card-y-sm"
   ],
   "a11y": {
     "role": "none for a static card; link or button when interactive with asChild",
+    "focusable": {
+      "whenProp": "interactive"
+    },
     "keyboard": [
       "Static cards are not focusable",
       "Interactive cards (asChild anchor or button): Tab to focus, Enter (and Space for buttons) to activate"
@@ -91,6 +96,14 @@
       "Do not nest interactive elements inside an interactive card; a card that is a link cannot contain buttons.",
       "The footer's sunken background keeps 4.5:1 for primary and secondary text."
     ]
+  },
+  "motion": {
+    "description": "An interactive card eases its border colour on hover.",
+    "tokens": [
+      "duration.fast",
+      "ease.standard"
+    ],
+    "whenProp": "interactive"
   },
   "budget": {
     "gzip": 3000

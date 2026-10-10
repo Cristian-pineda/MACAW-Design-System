@@ -1,0 +1,15 @@
+import { NumeralsExample } from '@/components/foundations/examples';
+
+export const metadata = { title: 'Numerals' };
+
+Money, counts and dates use `<Text numeric>`: tabular numerals so columns line up, and the `fg.numeric` colour, which meets 7:1 on every surface layer in both themes (DECISIONS.md #8).
+
+<NumeralsExample />
+
+## Rules
+
+- Every amount, count, percentage and date in a column is `numeric`. Use the `numeric-*` variants for figures that stand alone (a KPI), and `numeric` on a body or label variant inside sentences.
+- End-align amounts in tables (`align="end"`) so the decimal points line up.
+- Show the currency once, in the column header or as a symbol on every row; never mix the two in one table.
+- Negative amounts use a minus sign and the critical tone together; colour alone does not carry the sign.
+- Format with `Intl.NumberFormat` for the user's locale; the font handles alignment, not padding.

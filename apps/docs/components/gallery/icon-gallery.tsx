@@ -8,7 +8,7 @@ export function IconGallery() {
       {iconNames.map((name) => (
         <li
           key={name}
-          className="flex flex-col items-center gap-1 rounded-container border border-line-subtle bg-surface-default p-2"
+          className="flex flex-col items-center gap-1 rounded-container border border-line-subtle bg-surface-layer-1 p-2"
         >
           <Icon name={name} size="lg" />
           <Text as="span" variant="caption" tone="muted" truncate title={name}>

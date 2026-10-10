@@ -12,7 +12,7 @@ type Padding = 'none' | 'sm' | 'md';
 const PaddingContext = React.createContext<Padding>('md');
 
 export const cardVariants = cva(
-  'overflow-hidden rounded-container border border-line-default bg-surface-default text-fg-primary',
+  'overflow-hidden rounded-container border border-line-default bg-surface-layer-1 text-fg-primary',
   {
     variants: {
       elevation: { flat: 'shadow-flat', raised: 'shadow-raised' },
@@ -29,8 +29,9 @@ export const cardVariants = cva(
   },
 );
 
-const PAD_X: Record<Padding, string> = { none: '', sm: 'px-4', md: 'px-5' };
-const PAD_Y: Record<Padding, string> = { none: '', sm: 'py-3', md: 'py-4' };
+// Density-aware: card-x / card-y follow data-density (DECISIONS.md #18).
+const PAD_X: Record<Padding, string> = { none: '', sm: 'px-card-x-sm', md: 'px-card-x' };
+const PAD_Y: Record<Padding, string> = { none: '', sm: 'py-card-y-sm', md: 'py-card-y' };
 
 export interface CardProps
   extends NativeProps<'div'>, Omit<VariantProps<typeof cardVariants>, 'interactive' | 'padding'> {
@@ -72,7 +73,7 @@ function CardHeader({ children, ...rest }: NativeProps<'div'> & { children?: Rea
       className={cn(
         'flex items-start justify-between gap-4',
         PAD_X[p],
-        p === 'none' ? '' : 'pt-4 pb-3',
+        p === 'none' ? '' : cn(p === 'sm' ? 'pt-card-y-sm' : 'pt-card-y', 'pb-stack-sm'),
       )}
       {...rest}
     >
@@ -103,9 +104,9 @@ function CardFooter({ children, ...rest }: NativeProps<'div'> & { children?: Rea
   return (
     <div
       className={cn(
-        'flex items-center justify-end gap-2 border-t border-line-subtle bg-surface-sunken',
+        'flex items-center justify-end gap-2 border-t border-line-subtle bg-surface-layer-2',
         PAD_X[p],
-        p === 'none' ? '' : 'py-3',
+        PAD_Y[p],
       )}
       {...rest}
     >

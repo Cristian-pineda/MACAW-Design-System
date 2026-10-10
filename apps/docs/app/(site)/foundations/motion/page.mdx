@@ -1,19 +1,17 @@
-import { MotionExample } from '@/components/foundations/examples';
-
 export const metadata = { title: 'Motion' };
 
-# Motion
+Restrained. Four durations (`instant` 0 ms, `fast` 100 ms, `base` 160 ms, `slow` 240 ms), three easings (`standard`, `enter`, `exit`) and one named animation, the loading spinner. Colour and border transitions on controls use `fast`; panels that open use `base` with `enter`; nothing in the system is slower than `slow`.
 
-Restrained. Four durations (`instant` 0 ms, `fast` 100 ms, `base` 160 ms, `slow` 240 ms) and three easings (`standard`, `enter`, `exit`). Colour and border transitions on controls use `fast`; panels that open use `base` with `enter`; nothing in the system is slower than `slow`.
-
-`tokens.css` collapses every duration to 0 ms under `prefers-reduced-motion: reduce`, so components never branch on it. The playground's "Reduced motion" toggle does the same for one frame.
-
-<MotionExample />
+Motion goes only through tokens (DECISIONS.md #20): `duration-*`, `ease-*` and `animate-spin`. Tailwind's other animations are disabled, and lint rejects raw durations, arbitrary motion values and the `motion-reduce:` and `motion-safe:` variants, so reduced motion applies everywhere without component code.
 
 ## Rules
 
 - Use `transition-colors duration-fast ease-standard` on controls; do not invent durations.
-- The `loading` spinner is the only looping animation and it stops under reduced motion.
+- The `loading` spinner is the only looping animation, and it stops under reduced motion.
 - No motion for decoration. Motion explains a state change or it does not happen.
+- A component that moves declares it in its manifest's `motion` block, which drives the playground's Reduced motion control.
 
-See the [motion tokens](/tokens#motion).
+## In this section
+
+- [Tokens](/foundations/motion/tokens): durations, easings and the spin animation, with a live comparison.
+- [Reduced motion](/foundations/motion/reduced-motion): the one mechanism, with a live spinner.

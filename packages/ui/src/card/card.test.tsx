@@ -37,7 +37,7 @@ describe('Card', () => {
         <Card.Body>B</Card.Body>
       </Card>,
     );
-    expect(screen.getByText('B').className).toContain('px-4');
+    expect(screen.getByText('B').className).toContain('px-card-x-sm');
     render(
       <Card padding="none">
         <Card.Body>N</Card.Body>

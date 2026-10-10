@@ -1,0 +1,126 @@
+{
+  "name": "PageHeader",
+  "slug": "page-header",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "layout",
+  "purpose": "The page's own header under the TopBar: title, description, meta, actions and section tabs. Not the global header; that is TopBar.",
+  "description": "A compact secondary header on surface layer-1, full width at the top of the main area. The title is the page's h1. Actions sit on the right; the tabs slot takes a TabNav, which sticks below the TopBar for the whole page. Spacing follows the density mode.",
+  "exports": [
+    "PageHeader"
+  ],
+  "props": {
+    "title": {
+      "type": "string",
+      "default": "Invoices",
+      "required": true,
+      "description": "The page title."
+    },
+    "description": {
+      "type": "string",
+      "default": "Every invoice across your customers, newest first.",
+      "required": false,
+      "description": "One line under the title."
+    },
+    "headingLevel": {
+      "type": "enum",
+      "values": [
+        "h1",
+        "h2"
+      ],
+      "default": "h1",
+      "required": false,
+      "description": "Heading element for the title. h1 unless the page already has one.",
+      "a11y": "Each page has exactly one h1; PageHeader's title is usually it."
+    },
+    "meta": {
+      "type": "node",
+      "required": false,
+      "description": "Small context next to the title: a status Badge, an ID.",
+      "control": "none"
+    },
+    "actions": {
+      "type": "node",
+      "required": false,
+      "description": "Page actions: one primary Button and its secondaries.",
+      "control": "none"
+    },
+    "tabs": {
+      "type": "node",
+      "required": false,
+      "description": "A TabNav for the page's sections.",
+      "control": "none"
+    }
+  },
+  "slots": [
+    "title",
+    "description",
+    "meta",
+    "actions",
+    "tabs"
+  ],
+  "tokens": [
+    "color.surface.layer-1",
+    "color.line.default",
+    "layout.margin",
+    "layout.stack-lg",
+    "layout.stack-sm",
+    "size.topbar",
+    "z.sticky",
+    "text.size.heading-lg"
+  ],
+  "a11y": {
+    "role": "none (a plain region at the top of main; it never becomes a second banner landmark)",
+    "focusable": false,
+    "keyboard": [],
+    "name": "The title is the page's heading; the tabs landmark is named by TabNav's aria-label.",
+    "notes": [
+      "The title renders as h1 by default so every page has exactly one top-level heading.",
+      "The sticky tab row sits below the TopBar (top-topbar), so focused tabs are never hidden behind it."
+    ]
+  },
+  "budget": {
+    "gzip": 1500
+  },
+  "rules": [
+    "One PageHeader per page, first inside main.",
+    "The title is the page's only h1.",
+    "At most one primary Button in actions; it is the page's primary action.",
+    "Use the tabs slot only with TabNav, and only when each section has its own URL."
+  ],
+  "dos": [
+    "Put the record status in meta as a Badge: Invoices / INV-0041 [Overdue]."
+  ],
+  "donts": [
+    "Do not stack two PageHeaders.",
+    "Do not put filters in the PageHeader; they belong to the content area."
+  ],
+  "examples": [
+    {
+      "name": "Default",
+      "props": {
+        "title": "Invoices",
+        "description": "Every invoice across your customers, newest first."
+      }
+    },
+    {
+      "name": "Record",
+      "description": "Meta, actions and tabs.",
+      "props": {
+        "title": "INV-0041"
+      }
+    }
+  ],
+  "registryDependencies": [
+    "text"
+  ],
+  "dependencies": [],
+  "related": [
+    "tab-nav",
+    "top-bar",
+    "app-shell",
+    "button",
+    "badge"
+  ]
+}

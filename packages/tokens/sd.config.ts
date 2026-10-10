@@ -12,8 +12,9 @@ import { header, PREFIX } from './formats/shared.ts';
 
 const DIST = 'dist/';
 const PRIMITIVE = ['src/primitive/**/*.json'];
-const SEMANTIC_BASE = ['src/semantic/!(*.dark).json'];
+const SEMANTIC_BASE = ['src/semantic/!(*.dark|*.compact).json'];
 const SEMANTIC_DARK = ['src/semantic/*.dark.json'];
+const DENSITY_COMPACT = ['src/semantic/*.compact.json'];
 const COMPONENT = ['src/component/**/*.json'];
 
 StyleDictionary.registerFormat(cssVariablesThemed);
@@ -75,31 +76,67 @@ const dark = new StyleDictionary({
   },
 });
 
+const compact = new StyleDictionary({
+  usesDtcg: true,
+  log: { verbosity: 'silent', warnings: 'error' },
+  include: [...PRIMITIVE, ...SEMANTIC_BASE, ...COMPONENT],
+  source: DENSITY_COMPACT,
+  platforms: {
+    css: {
+      transformGroup: 'css',
+      prefix: PREFIX,
+      buildPath: DIST,
+      files: [
+        {
+          destination: 'tokens.compact.css',
+          format: 'macaw/css-themed',
+          filter: (t) => String(t.filePath).endsWith('.compact.json'),
+          options: { selector: '[data-density="compact"]', withHeader: false },
+        },
+        { destination: 'tokens.meta.compact.json', format: 'macaw/meta' },
+      ],
+    },
+  },
+});
+
 await light.buildAllPlatforms();
 await dark.buildAllPlatforms();
+await compact.buildAllPlatforms();
 
 // ---- Assemble tokens.css --------------------------------------------------------------------
 const lightCss = await readFile(`${DIST}tokens.light.css`, 'utf8');
 const darkCss = await readFile(`${DIST}tokens.dark.css`, 'utf8');
 const darkMedia = await readFile(`${DIST}tokens.dark.media.css`, 'utf8');
+const compactCss = await readFile(`${DIST}tokens.compact.css`, 'utf8');
 
-const extras = `
-/* Reduced motion: every duration collapses to 0ms. Components never need to branch. */
-@media (prefers-reduced-motion: reduce) {
-  :root {
+const reducedMotion = `
     --${PREFIX}-duration-fast: 0ms;
     --${PREFIX}-duration-base: 0ms;
     --${PREFIX}-duration-slow: 0ms;
+    --${PREFIX}-duration-spin: 0ms;
+    --${PREFIX}-animation-spin: none;`;
+
+const extras = `
+/*
+ * Reduced motion. One mechanism for both the OS preference and an explicit scope:
+ * data-motion="reduced" on any element (a user setting, a preview frame), or the OS setting
+ * unless a scope opts back in with data-motion="full". Components only animate through these
+ * tokens, so they never branch on motion themselves.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) {${reducedMotion}
   }
+}
+[data-motion="reduced"] {${reducedMotion}
 }
 
 /* Forced colors (Windows High Contrast): keep structure and focus visible with system colours. */
 @media (forced-colors: active) {
   :root, [data-theme="dark"] {
     --${PREFIX}-color-surface-canvas: Canvas;
-    --${PREFIX}-color-surface-default: Canvas;
-    --${PREFIX}-color-surface-raised: Canvas;
-    --${PREFIX}-color-surface-sunken: Canvas;
+    --${PREFIX}-color-surface-layer-1: Canvas;
+    --${PREFIX}-color-surface-layer-2: Canvas;
+    --${PREFIX}-color-surface-layer-3: Canvas;
     --${PREFIX}-color-surface-overlay: Canvas;
     --${PREFIX}-color-fg-primary: CanvasText;
     --${PREFIX}-color-fg-secondary: CanvasText;
@@ -120,6 +157,16 @@ const extras = `
 }
 `;
 
+/** A comfortable block so a comfortable region can nest inside a compact page. */
+function comfortableScope(compact: string, base: string): string {
+  const names = [...compact.matchAll(/^\s+(--[a-z0-9-]+):/gm)].map((m) => m[1]);
+  const lines = names
+    .map((name) => base.match(new RegExp(`^\\s+${name}: ([^;]+);`, 'm')))
+    .filter((m): m is RegExpMatchArray => m !== null)
+    .map((m) => `  ${m[0].trim()}`);
+  return `[data-density="comfortable"] {\n${lines.join('\n')}\n}\n`;
+}
+
 // An explicit light block so a light scope nested inside a dark page (a preview frame, a swatch)
 // re-applies the light values. Only themed tokens need to appear here.
 const darkNames = [...darkCss.matchAll(/^\s+(--[a-z0-9-]+):/gm)].map((m) => m[1]);
@@ -131,10 +178,12 @@ const lightScope = `[data-theme="light"] {\n${lightLines.join('\n')}\n}\n`;
 
 await writeFile(
   `${DIST}tokens.css`,
-  `${lightCss}\n${lightScope}\n${darkCss}\n@media (prefers-color-scheme: dark) {\n${darkMedia.replace(/^/gm, '  ').replace(/^\s+$/gm, '')}}\n${extras}`,
+  `${lightCss}\n${lightScope}\n${darkCss}\n@media (prefers-color-scheme: dark) {\n${darkMedia.replace(/^/gm, '  ').replace(/^\s+$/gm, '')}}\n\n/* Density: compact overrides control heights, chrome and layout spacing on any scope. */\n${compactCss}${comfortableScope(compactCss, lightCss)}${extras}`,
 );
 await Promise.all(
-  ['tokens.light.css', 'tokens.dark.css', 'tokens.dark.media.css'].map((f) => rm(`${DIST}${f}`)),
+  ['tokens.light.css', 'tokens.dark.css', 'tokens.dark.media.css', 'tokens.compact.css'].map((f) =>
+    rm(`${DIST}${f}`),
+  ),
 );
 
 // ---- Merge metadata ------------------------------------------------------------------------
@@ -143,6 +192,10 @@ const lightMeta = JSON.parse(
 ) as TokenMeta[];
 const darkMeta = JSON.parse(await readFile(`${DIST}tokens.meta.dark.json`, 'utf8')) as TokenMeta[];
 const darkByName = new Map(darkMeta.map((t) => [t.name, t]));
+const compactMeta = JSON.parse(
+  await readFile(`${DIST}tokens.meta.compact.json`, 'utf8'),
+) as TokenMeta[];
+const compactByName = new Map(compactMeta.map((t) => [t.name, t]));
 
 const merged = lightMeta.map((t) => {
   const d = darkByName.get(t.name);
@@ -157,6 +210,10 @@ const merged = lightMeta.map((t) => {
     original: t.original,
     value: { light: t.value, dark: differs ? d.value : t.value },
     themed: differs,
+    ...(() => {
+      const c = compactByName.get(t.name);
+      return c && JSON.stringify(c.value) !== JSON.stringify(t.value) ? { compact: c.value } : {};
+    })(),
     file: t.file,
   };
 });
@@ -169,7 +226,9 @@ await writeFile(
   ) + '\n',
 );
 await Promise.all(
-  ['tokens.meta.light.json', 'tokens.meta.dark.json'].map((f) => rm(`${DIST}${f}`)),
+  ['tokens.meta.light.json', 'tokens.meta.dark.json', 'tokens.meta.compact.json'].map((f) =>
+    rm(`${DIST}${f}`),
+  ),
 );
 
 // ---- TypeScript constants ------------------------------------------------------------------

@@ -1,0 +1,23 @@
+export const metadata = { title: 'Typography usage' };
+
+## Which role for which job
+
+| Role          | Use for                                                | Typical element |
+| ------------- | ------------------------------------------------------ | --------------- |
+| `display-*`   | One per page at most: a marketing hero, an empty state | `h1`            |
+| `heading-lg`  | The page title (PageHeader) and section titles         | `h1`, `h2`      |
+| `heading-md`  | Sub-sections, the product name in the TopBar           | `h2`, `h3`      |
+| `heading-sm`  | Card titles                                            | `h3`            |
+| `body-md`     | Default reading text                                   | `p`             |
+| `body-sm`     | Table cells, descriptions, helper text                 | `p`, `td`       |
+| `label-md/sm` | Form labels, buttons, tabs, nav items                  | `label`, `span` |
+| `caption`     | Metadata, timestamps, group headings in nav            | `span`          |
+| `numeric-*`   | KPIs and amounts                                       | `p`, `dd`       |
+| `code`        | IDs, keys, tokens, commands                            | `span`, `code`  |
+
+## Rules
+
+- Do not skip heading levels; the gallery and the reviewer agent check the outline. Each page has exactly one `h1`, and with the system frame it is the PageHeader title.
+- `truncate` only when the full text is available elsewhere (a `title` or a tooltip).
+- Tone conveys emphasis, not meaning on its own. Pair critical text with a word that says what is wrong.
+- Never set a font size, weight or colour outside `<Text>`; the lint config rejects raw values.

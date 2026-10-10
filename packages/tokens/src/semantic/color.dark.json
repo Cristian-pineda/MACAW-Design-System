@@ -5,14 +5,23 @@
       "canvas": {
         "$value": "{color.neutral.1000}"
       },
-      "default": {
+      "layer-1": {
         "$value": "{color.neutral.950}"
       },
-      "raised": {
+      "layer-1-hover": {
         "$value": "{color.neutral.900}"
       },
-      "sunken": {
-        "$value": "{color.neutral.1000}"
+      "layer-2": {
+        "$value": "{color.neutral.900}"
+      },
+      "layer-2-hover": {
+        "$value": "{color.neutral.850}"
+      },
+      "layer-3": {
+        "$value": "{color.neutral.850}"
+      },
+      "layer-3-hover": {
+        "$value": "{color.neutral.800}"
       },
       "overlay": {
         "$value": "{color.neutral.900}"
@@ -58,7 +67,7 @@
         "$value": "{color.neutral.800}"
       },
       "strong": {
-        "$value": "{color.neutral.600}"
+        "$value": "{color.neutral.500}"
       },
       "inverse": {
         "$value": "{color.neutral.300}"

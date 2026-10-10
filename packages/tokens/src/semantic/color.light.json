@@ -2,18 +2,27 @@
   "color": {
     "$type": "color",
     "surface": {
-      "$description": "Backgrounds. canvas is the page; default is the card or panel on it.",
+      "$description": "Depth by tone. canvas is the app background; layer-1 is the first plane on it (nav, header, cards); layer-2 and layer-3 are regions nested inside a layer. overlay floats and also takes a shadow.",
       "canvas": {
         "$value": "{color.neutral.50}"
       },
-      "default": {
+      "layer-1": {
         "$value": "{color.neutral.0}"
       },
-      "raised": {
-        "$value": "{color.neutral.0}"
-      },
-      "sunken": {
+      "layer-1-hover": {
         "$value": "{color.neutral.100}"
+      },
+      "layer-2": {
+        "$value": "{color.neutral.50}"
+      },
+      "layer-2-hover": {
+        "$value": "{color.neutral.100}"
+      },
+      "layer-3": {
+        "$value": "{color.neutral.100}"
+      },
+      "layer-3-hover": {
+        "$value": "{color.neutral.200}"
       },
       "overlay": {
         "$value": "{color.neutral.0}"
@@ -23,7 +32,7 @@
       }
     },
     "fg": {
-      "$description": "Foreground (text and icon) colours. primary and numeric meet 7:1 on surface.default.",
+      "$description": "Foreground (text and icon) colours. primary and numeric meet 7:1 on every surface layer.",
       "primary": {
         "$value": "{color.neutral.950}"
       },
@@ -65,7 +74,7 @@
         "$value": "{color.neutral.200}"
       },
       "strong": {
-        "$value": "{color.neutral.400}"
+        "$value": "{color.neutral.500}"
       },
       "inverse": {
         "$value": "{color.neutral.700}"

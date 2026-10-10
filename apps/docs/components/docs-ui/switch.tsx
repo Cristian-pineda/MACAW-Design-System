@@ -26,7 +26,7 @@ export function Switch({ id, checked, onCheckedChange, disabled }: SwitchProps) 
         focusRing,
       )}
     >
-      <RadixSwitch.Thumb className="block size-4 translate-x-0.5 rounded-full bg-surface-default shadow-xs transition-transform duration-fast ease-standard data-[state=checked]:translate-x-4" />
+      <RadixSwitch.Thumb className="block size-4 translate-x-0.5 rounded-full bg-surface-layer-1 shadow-xs transition-transform duration-fast ease-standard data-[state=checked]:translate-x-4" />
     </RadixSwitch.Root>
   );
 }

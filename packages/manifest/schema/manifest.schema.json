@@ -153,6 +153,28 @@
           "minLength": 1,
           "description": "ARIA role the rendered element exposes, or \"none\" for purely presentational text"
         },
+        "focusable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "whenProp": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A boolean prop that turns this on, e.g. \"interactive\""
+                }
+              },
+              "required": [
+                "whenProp"
+              ],
+              "additionalProperties": false
+            }
+          ],
+          "description": "Whether the component receives keyboard focus. Drives the playground \"Show focus\" control and the focus checks in CI."
+        },
         "keyboard": {
           "type": "array",
           "items": {
@@ -175,8 +197,37 @@
       },
       "required": [
         "role",
+        "focusable",
         "keyboard",
         "name"
+      ],
+      "additionalProperties": false
+    },
+    "motion": {
+      "description": "Present only if the component animates or transitions. Drives the playground \"Reduced motion\" control.",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What moves, in a sentence"
+        },
+        "tokens": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Motion tokens used: duration.*, ease.*, animation.*"
+        },
+        "whenProp": {
+          "description": "A prop that must be on for the motion to be visible, e.g. \"loading\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description",
+        "tokens"
       ],
       "additionalProperties": false
     },

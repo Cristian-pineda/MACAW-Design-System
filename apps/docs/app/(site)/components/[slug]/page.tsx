@@ -1,110 +1,41 @@
 import { inferControl } from '@macaw-ds/manifest';
-import { Button, Text } from '@macaw-ds/ui';
+import { Text } from '@macaw-ds/ui';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { A11yPanel } from '@/components/component-page/a11y-panel';
-import { DoDont } from '@/components/component-page/do-dont';
-import { EjectBox } from '@/components/component-page/eject-box';
-import { PropsTable } from '@/components/component-page/props-table';
-import { RulesList } from '@/components/component-page/rules-list';
 import { Section } from '@/components/component-page/section';
-import { StatusBadge } from '@/components/component-page/status-badge';
-import { TokensUsed } from '@/components/component-page/tokens-used';
+import { ExampleList } from '@/components/gallery/example-list';
 import { Playground, type Control } from '@/components/playground/playground';
-import { loadComponentMdx } from '@/lib/content';
-import { getComponentSlugs, getManifest } from '@/lib/registry';
+import { componentStaticParams, loadComponent, type SlugParams } from './params';
 
 export const dynamicParams = false;
+export const generateStaticParams = componentStaticParams;
 
-export function generateStaticParams() {
-  return getComponentSlugs().map((slug) => ({ slug }));
-}
-
-type Params = { params: Promise<{ slug: string }> };
-
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { slug } = await params;
-  const manifest = await getManifest(slug);
+export async function generateMetadata(props: SlugParams): Promise<Metadata> {
+  const { manifest } = await loadComponent(props);
   return { title: manifest.name, description: manifest.purpose };
 }
 
-export default async function ComponentPage({ params }: Params) {
-  const { slug } = await params;
-  if (!getComponentSlugs().includes(slug)) notFound();
-  const manifest = await getManifest(slug);
-  const Mdx = await loadComponentMdx(slug);
+export default async function ComponentOverviewPage(props: SlugParams) {
+  const { slug, manifest } = await loadComponent(props);
   const controls: Record<string, Control> = Object.fromEntries(
     Object.entries(manifest.props).map(([key, spec]) => [key, inferControl(spec)]),
   );
 
   return (
     <>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <Text as="h1" variant="display-md">
-            {manifest.name}
-          </Text>
-          <StatusBadge status={manifest.status} />
-          <Text as="span" variant="caption" tone="muted">
-            {manifest.package} · since {manifest.since} · {manifest.category}
-          </Text>
-        </div>
-        <Text variant="body-lg" tone="secondary">
-          {manifest.purpose}
-        </Text>
-        <Text tone="secondary">{manifest.description}</Text>
-        <div>
-          <Button asChild variant="secondary" size="sm">
-            <Link href={`/components/${slug}/gallery`}>Open gallery</Link>
-          </Button>
-        </div>
-      </div>
-
+      <Text tone="secondary">{manifest.description}</Text>
       <Section
         id="playground"
         title="Playground"
-        intro="Controls are generated from the manifest; the snippet is what the CLI prints."
+        intro="Controls are generated from the manifest; the snippet is what the CLI prints. Show focus and Reduced motion appear only when they apply."
       >
         <Playground slug={slug} manifest={manifest} controls={controls} />
       </Section>
-
-      {Mdx && (
-        <article className="flex flex-col gap-4">
-          <Mdx />
-        </article>
-      )}
-
-      <Section id="props" title="Props">
-        <PropsTable manifest={manifest} />
-      </Section>
-
-      <Section id="do-dont" title="Do and don't">
-        <DoDont dos={manifest.dos} donts={manifest.donts} />
-      </Section>
-
       <Section
-        id="rules"
-        title="Rules"
-        intro="Hard rules an agent must follow. The reviewer agent and the lint config check the ones that can be checked."
+        id="examples"
+        title="Examples"
+        intro="The named exports of the examples file, rendered as they ship."
       >
-        <RulesList rules={manifest.rules} />
-      </Section>
-
-      <Section id="accessibility" title="Accessibility">
-        <A11yPanel a11y={manifest.a11y} />
-      </Section>
-
-      <Section
-        id="tokens"
-        title="Tokens used"
-        intro="Every value this component renders comes from one of these tokens."
-      >
-        <TokensUsed names={manifest.tokens} />
-      </Section>
-
-      <Section id="eject" title="Eject">
-        <EjectBox slug={slug} budgetGzip={manifest.budget.gzip} />
+        <ExampleList slug={slug} prefix="example" />
       </Section>
     </>
   );

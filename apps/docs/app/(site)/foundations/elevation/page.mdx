@@ -2,16 +2,22 @@ import { ElevationExample } from '@/components/foundations/examples';
 
 export const metadata = { title: 'Elevation' };
 
-# Elevation
+**Tone first, border second, shadow last** (DECISIONS.md #17). Regions separate by stepping the surface tone: the canvas, then layer-1 for the TopBar, SideNav, PageHeader and cards, then layer-2 and layer-3 for regions nested inside them. A 1 px line marks the edge where two tones are close. A shadow is reserved for UI that floats above the page.
 
-Structure comes from a 1 px border, not from shadow. Four elevation tokens exist (`flat`, `raised`, `floating`, `overlay`) and each is a named role: a card on the canvas may be `raised`; a dropdown is `floating`; a dialog is `overlay`. Radii stay at 8 px or less: `shape.control` (4 px) for buttons and inputs, `shape.container` (6 px) for cards, `shape.overlay` (8 px) for menus and dialogs, `shape.pill` for badges.
+Four elevation tokens name those shadows (`flat`, `raised`, `floating`, `overlay`): a card on the canvas may be `raised`, a dropdown is `floating`, a dialog is `overlay`. Radii stay at 8 px or less: `shape.control` (4 px) for buttons and inputs, `shape.container` (6 px) for cards, `shape.overlay` (8 px) for menus and dialogs, `shape.pill` for badges.
+
+## In practice
 
 <ElevationExample />
 
 ## Rules
 
 - Do not use elevation to signal importance; use position and heading level.
-- Do not nest cards.
+- Do not nest cards. Nest a layer-2 region inside the card instead.
 - Shadows are defined once per elevation; components never compose their own.
 
-See [radius](/tokens#radius) and [elevation](/tokens#elevation) in the token reference.
+## In this section
+
+- [Surfaces](/foundations/elevation/surfaces): the layer ladder.
+- [Shadows](/foundations/elevation/shadows): the four roles and the radii.
+- [Z-index](/foundations/elevation/z-index): named stacking layers.

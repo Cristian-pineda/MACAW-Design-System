@@ -9,7 +9,7 @@ export function TokensUsed({ names }: { names: string[] }) {
   return (
     <div className="overflow-x-auto rounded-container border border-line-default">
       <table className="w-full border-collapse">
-        <thead className="bg-surface-sunken">
+        <thead className="bg-surface-layer-2">
           <tr>
             {['Token', 'Light', 'Dark'].map((h) => (
               <th

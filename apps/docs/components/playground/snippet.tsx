@@ -23,7 +23,7 @@ export function Snippet({ code }: { code: string }) {
   }, [code]);
 
   return (
-    <div className="macaw-code relative rounded-container border border-line-default bg-surface-default">
+    <div className="macaw-code relative rounded-container border border-line-default bg-surface-layer-1">
       <div className="absolute top-1 right-1">
         <CopyButton text={code} label="Copy snippet" />
       </div>

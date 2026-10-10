@@ -1,12 +1,13 @@
 'use client';
 
-import { buildJsxSnippet, type Manifest } from '@macaw-ds/manifest';
+import { buildJsxSnippet, previewControls, type Manifest } from '@macaw-ds/manifest';
 import { Button, Input, Text } from '@macaw-ds/ui';
 import { useTheme } from 'next-themes';
 import { useId, useMemo, useState } from 'react';
 import { Segmented } from '@/components/docs-ui/segmented';
 import { Select } from '@/components/docs-ui/select';
 import { Switch } from '@/components/docs-ui/switch';
+import { cn } from '@/lib/cn';
 import { useMounted } from '@/lib/use-mounted';
 import { componentMap, type PlaygroundProps } from './component-map';
 import { Snippet } from './snippet';
@@ -59,11 +60,17 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
 
   const snippet = useMemo(
     () =>
-      buildJsxSnippet(manifest, props, {
-        children: typeof props.children === 'string' ? props.children : undefined,
-      }),
-    [manifest, props],
+      entry?.snippet
+        ? entry.snippet(props)
+        : buildJsxSnippet(manifest, props, {
+            children: typeof props.children === 'string' ? props.children : undefined,
+          }),
+    [entry, manifest, props],
   );
+  // Which preview controls can do anything for this component with these props (DECISIONS.md #20).
+  const preview = useMemo(() => previewControls(manifest, props), [manifest, props]);
+  const forceFocus = preview.focus && showFocus;
+  const motionReduced = preview.motion && reducedMotion;
 
   if (!entry) {
     return (
@@ -78,16 +85,19 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
   const prepared = entry.prepare ? entry.prepare(props) : props;
   const children = prepared.children ?? entry.defaultChildren;
   const element = <Component {...prepared}>{children}</Component>;
-  const preview = entry.wrap ? entry.wrap(element, prepared) : element;
+  const rendered = entry.wrap ? entry.wrap(element, prepared) : element;
 
   const controlEntries = Object.entries(manifest.props).filter(
     ([key]) => (controls[key] ?? 'none') !== 'none',
   );
 
+  // Slot-only components (AppShell, TopBar) have nothing to adjust; give the preview the full width.
+  const hasControls = controlEntries.length > 0;
+
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      <div className="flex min-w-0 flex-col gap-4 lg:col-span-2">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-container border border-line-default bg-surface-default px-4 py-3">
+    <div className={hasControls ? 'grid gap-6 lg:grid-cols-3' : 'flex flex-col gap-6'}>
+      <div className={cn('flex min-w-0 flex-col gap-4', hasControls && 'lg:col-span-2')}>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 rounded-container border border-line-default bg-surface-layer-1 px-4 py-3">
           <div className="flex items-center gap-2">
             <Text as="span" variant="label-sm" tone="secondary" id={`${uid}-frame-theme`}>
               Frame theme
@@ -102,32 +112,46 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
               onValueChange={setFrameOverride}
             />
           </div>
-          <div className="flex items-center gap-2">
-            <Switch id={`${uid}-focus`} checked={showFocus} onCheckedChange={setShowFocus} />
-            <Text as="label" variant="label-sm" tone="secondary" htmlFor={`${uid}-focus`}>
-              Show focus
+          {preview.focus && (
+            <div className="flex items-center gap-2">
+              <Switch id={`${uid}-focus`} checked={showFocus} onCheckedChange={setShowFocus} />
+              <Text as="label" variant="label-sm" tone="secondary" htmlFor={`${uid}-focus`}>
+                Show focus
+              </Text>
+            </div>
+          )}
+          {preview.motion && (
+            <div className="flex items-center gap-2">
+              <Switch
+                id={`${uid}-motion`}
+                checked={reducedMotion}
+                onCheckedChange={setReducedMotion}
+              />
+              <Text as="label" variant="label-sm" tone="secondary" htmlFor={`${uid}-motion`}>
+                Reduced motion
+              </Text>
+            </div>
+          )}
+          {!hasControls && (
+            <Text variant="caption" tone="muted">
+              No adjustable props: the content goes in slots.
             </Text>
-          </div>
-          <div className="flex items-center gap-2">
-            <Switch
-              id={`${uid}-motion`}
-              checked={reducedMotion}
-              onCheckedChange={setReducedMotion}
-            />
-            <Text as="label" variant="label-sm" tone="secondary" htmlFor={`${uid}-motion`}>
-              Reduced motion
+          )}
+          {preview.hints.length > 0 && (
+            <Text variant="caption" tone="muted" data-testid="preview-hints">
+              {preview.hints.join(' ')}
             </Text>
-          </div>
+          )}
         </div>
 
         <div
           data-theme={frameTheme}
-          data-show-focus={showFocus ? '' : undefined}
-          data-reduced-motion={reducedMotion ? '' : undefined}
+          data-force-focus={forceFocus ? '' : undefined}
+          data-motion={motionReduced ? 'reduced' : undefined}
           data-testid="playground-frame"
-          className="flex min-h-56 items-center justify-center overflow-x-auto rounded-container border border-line-default bg-surface-canvas p-8 text-fg-primary"
+          className="isolate flex min-h-56 items-center justify-center overflow-x-auto rounded-container border border-line-default bg-surface-canvas p-8 text-fg-primary"
         >
-          {preview}
+          {rendered}
         </div>
 
         {manifest.examples.length > 0 && (
@@ -154,99 +178,94 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
         <Snippet code={snippet} />
       </div>
 
-      <form
-        aria-label="Playground controls"
-        className="flex flex-col gap-4 self-start rounded-container border border-line-default bg-surface-default p-4"
-        onSubmit={(event) => event.preventDefault()}
-      >
-        <Text as="h3" variant="heading-sm">
-          Controls
-        </Text>
-        {controlEntries.length === 0 && (
-          <Text variant="body-sm" tone="muted">
-            This component has no adjustable props.
-          </Text>
-        )}
-        {controlEntries.map(([key, spec]) => {
-          const control = controls[key] ?? 'none';
-          const labelId = `${uid}-${key}-label`;
-          const inputId = `${uid}-${key}`;
-          const value = props[key];
-          return (
-            <div key={key} className="flex flex-col gap-1.5">
-              {control === 'switch' ? (
-                <div className="flex items-center justify-between gap-3">
-                  <Text as="label" variant="label-sm" htmlFor={inputId}>
-                    {key}
+      {hasControls && (
+        <form
+          aria-label="Playground controls"
+          className="flex flex-col gap-4 self-start rounded-container border border-line-default bg-surface-layer-1 p-4"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <Text variant="heading-sm">Controls</Text>
+          {controlEntries.map(([key, spec]) => {
+            const control = controls[key] ?? 'none';
+            const labelId = `${uid}-${key}-label`;
+            const inputId = `${uid}-${key}`;
+            const value = props[key];
+            return (
+              <div key={key} className="flex flex-col gap-1.5">
+                {control === 'switch' ? (
+                  <div className="flex items-center justify-between gap-3">
+                    <Text as="label" variant="label-sm" htmlFor={inputId}>
+                      {key}
+                    </Text>
+                    <Switch
+                      id={inputId}
+                      checked={Boolean(value)}
+                      onCheckedChange={(checked) => setProp(key, checked)}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {control === 'segmented' ? (
+                      <Text as="span" variant="label-sm" id={labelId}>
+                        {key}
+                      </Text>
+                    ) : (
+                      <Text as="label" variant="label-sm" htmlFor={inputId} id={labelId}>
+                        {key}
+                      </Text>
+                    )}
+                    {control === 'segmented' && spec.values && (
+                      <Segmented
+                        labelledBy={labelId}
+                        options={spec.values.map((v) => ({ value: v, label: v }))}
+                        value={String(value ?? spec.values[0])}
+                        onValueChange={(next) => setProp(key, next)}
+                      />
+                    )}
+                    {control === 'select' && spec.values && (
+                      <Select
+                        id={inputId}
+                        labelledBy={labelId}
+                        options={spec.values.map((v) => ({ value: v, label: v }))}
+                        value={String(value ?? spec.values[0])}
+                        onValueChange={(next) => setProp(key, next)}
+                      />
+                    )}
+                    {control === 'text' && (
+                      <Input
+                        id={inputId}
+                        size="sm"
+                        value={typeof value === 'string' ? value : ''}
+                        onChange={(event) => setProp(key, event.target.value)}
+                      />
+                    )}
+                    {control === 'number' && (
+                      <Input
+                        id={inputId}
+                        size="sm"
+                        type="number"
+                        align="end"
+                        value={typeof value === 'number' ? String(value) : ''}
+                        onChange={(event) =>
+                          setProp(
+                            key,
+                            event.target.value === '' ? undefined : Number(event.target.value),
+                          )
+                        }
+                      />
+                    )}
+                  </>
+                )}
+                {spec.description && (
+                  <Text variant="caption" tone="muted">
+                    {spec.description}
                   </Text>
-                  <Switch
-                    id={inputId}
-                    checked={Boolean(value)}
-                    onCheckedChange={(checked) => setProp(key, checked)}
-                  />
-                </div>
-              ) : (
-                <>
-                  {control === 'segmented' ? (
-                    <Text as="span" variant="label-sm" id={labelId}>
-                      {key}
-                    </Text>
-                  ) : (
-                    <Text as="label" variant="label-sm" htmlFor={inputId} id={labelId}>
-                      {key}
-                    </Text>
-                  )}
-                  {control === 'segmented' && spec.values && (
-                    <Segmented
-                      labelledBy={labelId}
-                      options={spec.values.map((v) => ({ value: v, label: v }))}
-                      value={String(value ?? spec.values[0])}
-                      onValueChange={(next) => setProp(key, next)}
-                    />
-                  )}
-                  {control === 'select' && spec.values && (
-                    <Select
-                      id={inputId}
-                      labelledBy={labelId}
-                      options={spec.values.map((v) => ({ value: v, label: v }))}
-                      value={String(value ?? spec.values[0])}
-                      onValueChange={(next) => setProp(key, next)}
-                    />
-                  )}
-                  {control === 'text' && (
-                    <Input
-                      id={inputId}
-                      size="sm"
-                      value={typeof value === 'string' ? value : ''}
-                      onChange={(event) => setProp(key, event.target.value)}
-                    />
-                  )}
-                  {control === 'number' && (
-                    <Input
-                      id={inputId}
-                      size="sm"
-                      type="number"
-                      align="end"
-                      value={typeof value === 'number' ? String(value) : ''}
-                      onChange={(event) =>
-                        setProp(
-                          key,
-                          event.target.value === '' ? undefined : Number(event.target.value),
-                        )
-                      }
-                    />
-                  )}
-                </>
-              )}
-              {spec.description && (
-                <Text variant="caption" tone="muted">
-                  {spec.description}
-                </Text>
-              )}
-            </div>
-          );
-        })}
-      </form>
+                )}
+              </div>
+            );
+          })}
+        </form>
+      )}
     </div>
   );
 }

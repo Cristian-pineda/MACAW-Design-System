@@ -8,7 +8,7 @@ import type { TokenEntry } from '@/lib/tokens';
 export function MotionDemo({ durations }: { durations: TokenEntry[] }) {
   const [moved, setMoved] = useState(false);
   return (
-    <div className="flex flex-col gap-4 rounded-container border border-line-default bg-surface-default p-4">
+    <div className="flex flex-col gap-4 rounded-container border border-line-default bg-surface-layer-1 p-4">
       <div className="flex items-center justify-between gap-4">
         <Text variant="body-sm" tone="secondary">
           Each bar moves with its own duration and the standard easing. Reduced motion collapses all
@@ -29,9 +29,9 @@ export function MotionDemo({ durations }: { durations: TokenEntry[] }) {
             <Text as="span" variant="code" tone="secondary">
               {d.name}
             </Text>
-            <div className="col-span-3 rounded-sm bg-surface-sunken p-1">
+            <div className="col-span-3 rounded-sm bg-surface-layer-2 p-1">
               <div
-                className={`h-4 w-1/3 rounded-xs bg-action-primary transition-transform ease-standard motion-reduce:transition-none ${moved ? 'translate-x-full' : 'translate-x-0'}`}
+                className={`h-4 w-1/3 rounded-xs bg-action-primary transition-transform ease-standard ${moved ? 'translate-x-full' : 'translate-x-0'}`}
                 style={{ transitionDuration: `var(${d.cssVar})` }}
               />
             </div>

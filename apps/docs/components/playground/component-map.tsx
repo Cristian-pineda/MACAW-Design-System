@@ -1,6 +1,19 @@
 import { Icon, type IconName } from '@macaw-ds/icons';
-import { Badge, Button, Card, Input, Text } from '@macaw-ds/ui';
+import {
+  Badge,
+  Button,
+  Card,
+  Input,
+  PageHeader,
+  SideNav,
+  TabNav,
+  Text,
+  TopBar,
+} from '@macaw-ds/ui';
 import type { ComponentType, ReactElement, ReactNode } from 'react';
+import { focusRing } from '@/components/docs-ui/focus';
+import { cn } from '@/lib/cn';
+import { Default as AppShellPreview } from '../gallery/app-shell-preview';
 
 export type PlaygroundProps = Record<string, unknown>;
 
@@ -18,7 +31,31 @@ export interface ComponentMapEntry {
    * `'use client'` modules, so the gallery renders them from a client component; see gallery/example-list.tsx.
    */
   examples: () => Promise<Record<string, unknown>>;
+  /**
+   * Replaces the generated snippet for compound or slot-based components, where buildJsxSnippet
+   * would put item props (active, title) on the root or omit the required slots.
+   */
+  snippet?: (props: PlaygroundProps) => string;
 }
+
+function str(value: unknown, fallback: string): string {
+  return typeof value === 'string' && value ? value : fallback;
+}
+
+/** Props that belong to SideNav.Item / TabNav.Item / SideNav.Group, never to the root element. */
+function withoutItemProps(props: PlaygroundProps): PlaygroundProps {
+  const { active: _active, asChild: _asChild, title: _title, icon: _icon, ...rest } = props;
+  return rest;
+}
+
+const brand = (
+  <a href="#home" className={cn('inline-flex items-center gap-2 rounded-control', focusRing)}>
+    <span aria-hidden="true" className="inline-block size-3 rounded-xs bg-action-primary" />
+    <Text as="span" variant="heading-md">
+      Perch
+    </Text>
+  </a>
+);
 
 /**
  * The only hand-maintained map from registry slug to component (CLAUDE.md "Always").
@@ -108,6 +145,174 @@ export const componentMap: Record<string, ComponentMapEntry> = {
       name: (typeof props.name === 'string' ? props.name : 'check') as IconName,
       label: props.label || undefined,
     }),
+  },
+  'app-shell': {
+    // The real AppShell renders the page's banner and main landmarks; inside a docs page the
+    // preview composes the same parts instead (see gallery/app-shell-preview.tsx).
+    Component: AppShellPreview as unknown as ComponentType<PlaygroundProps>,
+    examples: () => import('../gallery/app-shell-preview'),
+    snippet: () => `import { AppShell, PageHeader, SideNav, TopBar } from '@macaw-ds/ui';
+
+<AppShell
+  topBar={<TopBar brand={<Brand />} actions={<Actions />} />}
+  sideNav={
+    <SideNav aria-label="Main">
+      <SideNav.Group title="Billing">
+        <SideNav.Item href="/invoices" active>Invoices</SideNav.Item>
+      </SideNav.Group>
+    </SideNav>
+  }
+>
+  <PageHeader title="Invoices" />
+  <div className="layout-grid px-margin py-section">…</div>
+</AppShell>
+`,
+  },
+  'top-bar': {
+    Component: TopBar as unknown as ComponentType<PlaygroundProps>,
+    examples: () => import('@content/top-bar/top-bar.examples.tsx'),
+    prepare: (props) => ({
+      ...props,
+      brand,
+      actions: (
+        <>
+          <Button iconOnly variant="ghost" aria-label="Notifications">
+            <Icon name="bell" />
+          </Button>
+          <Button iconOnly variant="ghost" aria-label="Settings">
+            <Icon name="settings" />
+          </Button>
+        </>
+      ),
+    }),
+    defaultChildren: (
+      <Text as="span" variant="label-sm" tone="muted">
+        Test mode
+      </Text>
+    ),
+    wrap: (element) => (
+      <div className="w-full overflow-hidden rounded-container border border-line-default">
+        {element}
+      </div>
+    ),
+    snippet: () => `import { Button, TopBar } from '@macaw-ds/ui';
+
+<TopBar
+  brand={<Link href="/">Perch</Link>}
+  actions={
+    <Button iconOnly variant="ghost" aria-label="Notifications">
+      <Icon name="bell" />
+    </Button>
+  }
+/>
+`,
+  },
+  'side-nav': {
+    Component: SideNav as unknown as ComponentType<PlaygroundProps>,
+    examples: () => import('@content/side-nav/side-nav.examples.tsx'),
+    prepare: (props) => ({
+      ...withoutItemProps(props),
+      'aria-label': str(props['aria-label'], 'Main'),
+      children: (
+        <SideNav.Group title={str(props.title, 'Billing')}>
+          <SideNav.Item
+            href="#invoices"
+            icon={<Icon name="receipt" />}
+            active={Boolean(props.active)}
+          >
+            Invoices
+          </SideNav.Item>
+          <SideNav.Item href="#customers" icon={<Icon name="users" />}>
+            Customers
+          </SideNav.Item>
+          <SideNav.Item href="#payouts" icon={<Icon name="landmark" />}>
+            Payouts
+          </SideNav.Item>
+        </SideNav.Group>
+      ),
+    }),
+    wrap: (element) => (
+      <div className="w-sidenav rounded-container border border-line-default bg-surface-layer-1">
+        {element}
+      </div>
+    ),
+    snippet: (props) => `import { SideNav } from '@macaw-ds/ui';
+
+<SideNav aria-label="${str(props['aria-label'], 'Main')}">
+  <SideNav.Group title="${str(props.title, 'Billing')}">
+    <SideNav.Item asChild${props.active ? ' active' : ''}>
+      <Link href="/invoices">Invoices</Link>
+    </SideNav.Item>
+    <SideNav.Item asChild>
+      <Link href="/customers">Customers</Link>
+    </SideNav.Item>
+  </SideNav.Group>
+</SideNav>
+`,
+  },
+  'tab-nav': {
+    Component: TabNav as unknown as ComponentType<PlaygroundProps>,
+    examples: () => import('@content/tab-nav/tab-nav.examples.tsx'),
+    prepare: (props) => ({
+      ...withoutItemProps(props),
+      'aria-label': str(props['aria-label'], 'Page sections'),
+      children: (
+        <>
+          <TabNav.Item href="#overview" active={Boolean(props.active)}>
+            Overview
+          </TabNav.Item>
+          <TabNav.Item href="#line-items">Line items</TabNav.Item>
+          <TabNav.Item href="#payments">Payments</TabNav.Item>
+        </>
+      ),
+    }),
+    wrap: (element) => <div className="w-full border-b border-line-default">{element}</div>,
+    snippet: (props) => `import { TabNav } from '@macaw-ds/ui';
+
+<TabNav aria-label="${str(props['aria-label'], 'Page sections')}">
+  <TabNav.Item asChild${props.active ? ' active' : ''}>
+    <Link href="/invoices/inv-0041">Overview</Link>
+  </TabNav.Item>
+  <TabNav.Item asChild>
+    <Link href="/invoices/inv-0041/payments">Payments</Link>
+  </TabNav.Item>
+</TabNav>
+`,
+  },
+  'page-header': {
+    Component: PageHeader as unknown as ComponentType<PlaygroundProps>,
+    examples: () => import('@content/page-header/page-header.examples.tsx'),
+    prepare: (props) => ({
+      ...props,
+      title: str(props.title, 'Invoices'),
+      actions: (
+        <>
+          <Button variant="secondary" iconStart={<Icon name="download" />}>
+            Export
+          </Button>
+          <Button iconStart={<Icon name="plus" />}>New invoice</Button>
+        </>
+      ),
+    }),
+    wrap: (element) => (
+      <div className="w-full overflow-hidden rounded-container border border-line-default">
+        {element}
+      </div>
+    ),
+    snippet: (props) => {
+      const level = props.headingLevel === 'h2' ? ' headingLevel="h2"' : '';
+      const description =
+        typeof props.description === 'string' && props.description
+          ? `\n  description="${props.description}"`
+          : '';
+      return `import { Button, PageHeader } from '@macaw-ds/ui';
+
+<PageHeader
+  title="${str(props.title, 'Invoices')}"${description}${level}
+  actions={<Button>New invoice</Button>}
+/>
+`;
+    },
   },
 };
 
