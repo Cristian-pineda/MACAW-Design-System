@@ -1,0 +1,142 @@
+{
+  "$schema": "../../../manifest/schema/manifest.schema.json",
+  "name": "Input",
+  "slug": "input",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "form",
+  "purpose": "Single-line text entry: names, emails, references, amounts. Not for multi-line text, dates or selections.",
+  "description": "The text field primitive. Labelled by contract (TypeScript requires an id for a visible label, or aria-label / aria-labelledby), with adornments for currency symbols and units, an `invalid` state wired to aria-invalid, and `align=\"end\"` for money. Formatting of money and numbers belongs to the consumer until the NumberField ships.",
+  "exports": ["Input", "inputVariants"],
+  "props": {
+    "type": {
+      "type": "enum",
+      "values": ["text", "email", "password", "search", "url", "tel", "number"],
+      "default": "text",
+      "description": "HTML input type. number is unformatted; for currency, format in the consumer and keep type=\"text\" with inputMode=\"decimal\".",
+      "control": "select"
+    },
+    "size": {
+      "type": "enum",
+      "values": ["sm", "md", "lg"],
+      "default": "md",
+      "description": "28, 32 or 40 px tall, matching Button sizes so they line up in a row.",
+      "a11y": "All sizes meet the 24 px minimum target size."
+    },
+    "align": {
+      "type": "enum",
+      "values": ["start", "end"],
+      "default": "start",
+      "description": "end switches on tabular numerals and right-aligns. Use for amounts."
+    },
+    "invalid": {
+      "type": "boolean",
+      "default": false,
+      "description": "Shows the critical border and sets aria-invalid. Always pair with a visible message linked via aria-describedby.",
+      "a11y": "aria-invalid=true is announced; the message must be in the DOM and linked."
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Not editable and not focusable.",
+      "a11y": "Disabled fields leave the tab order. Prefer readOnly when the value must still be readable."
+    },
+    "readOnly": {
+      "type": "boolean",
+      "default": false,
+      "description": "Readable and focusable, not editable. Sunken background.",
+      "a11y": "Read-only fields stay in the tab order and are announced as read-only."
+    },
+    "placeholder": {
+      "type": "string",
+      "description": "Example value, not a label. Meets 4.5:1 but disappears on typing.",
+      "default": "0.00",
+      "a11y": "Never the only label."
+    },
+    "startAdornment": {
+      "type": "node",
+      "description": "Decorative prefix: an Icon or a currency symbol.",
+      "control": "none"
+    },
+    "endAdornment": {
+      "type": "node",
+      "description": "Decorative suffix: a unit such as USD or %.",
+      "control": "none"
+    },
+    "id": {
+      "type": "string",
+      "description": "Required when a visible label uses htmlFor.",
+      "control": "none"
+    }
+  },
+  "slots": ["startAdornment", "endAdornment"],
+  "tokens": [
+    "input.radius",
+    "input.height.sm",
+    "input.height.md",
+    "input.height.lg",
+    "input.bg.default",
+    "input.bg.disabled",
+    "input.line.default",
+    "input.line.hover",
+    "input.line.invalid",
+    "input.line.disabled",
+    "input.fg.default",
+    "input.fg.placeholder",
+    "input.fg.disabled",
+    "color.focus.ring",
+    "color.surface.sunken",
+    "color.fg.muted"
+  ],
+  "a11y": {
+    "role": "textbox (searchbox for type=\"search\")",
+    "keyboard": [
+      "Tab: focus",
+      "Typing edits the value",
+      "Escape clears a type=\"search\" field in most browsers"
+    ],
+    "name": "From a visible label via id + htmlFor (preferred), or aria-label / aria-labelledby. TypeScript requires one of the three.",
+    "notes": [
+      "Border meets 3:1 non-text contrast against the field background in both themes; the invalid border is the critical colour.",
+      "Placeholder text meets 4.5:1 but is never the label.",
+      "Adornments are aria-hidden. If the unit matters, say it in the label: \"Amount (USD)\".",
+      "Error messages are linked with aria-describedby so they are announced with the field."
+    ]
+  },
+  "budget": { "gzip": 2500 },
+  "rules": [
+    "Every Input has a visible label (Text as=\"label\" htmlFor) unless it is a search box with aria-label.",
+    "Amounts use align=\"end\" and inputMode=\"decimal\"; the consumer formats the value.",
+    "invalid is always accompanied by a message linked via aria-describedby.",
+    "Use readOnly, not disabled, for values the user must still be able to read and copy."
+  ],
+  "dos": [
+    "Put the currency symbol in startAdornment and the code in endAdornment: $ … USD.",
+    "Match Input size to the Button beside it."
+  ],
+  "donts": [
+    "Do not use placeholder as the label.",
+    "Do not use type=\"number\" for money; it strips formatting and spinners misfire."
+  ],
+  "examples": [
+    {
+      "name": "Default",
+      "description": "With a visible label.",
+      "props": { "id": "ref", "placeholder": "INV-0041" }
+    },
+    {
+      "name": "Amount",
+      "props": { "id": "amount", "align": "end", "placeholder": "0.00", "inputMode": "decimal" }
+    },
+    {
+      "name": "Invalid",
+      "props": { "id": "email", "type": "email", "invalid": true, "defaultValue": "not-an-email" }
+    },
+    { "name": "Disabled", "props": { "id": "d", "disabled": true, "defaultValue": "Locked" } },
+    { "name": "Read only", "props": { "id": "r", "readOnly": true, "defaultValue": "acct_1Nv2hZ" } }
+  ],
+  "registryDependencies": [],
+  "dependencies": ["class-variance-authority"],
+  "related": ["text", "button"]
+}

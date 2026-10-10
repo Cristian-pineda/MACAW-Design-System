@@ -1,0 +1,46 @@
+{
+  "name": "@macaw-ds/cli",
+  "version": "0.0.0",
+  "description": "The one door into the MACAW design system: init, add, add --eject, diff",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git",
+    "directory": "packages/cli"
+  },
+  "type": "module",
+  "bin": {
+    "macaw": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsx scripts/copy-templates.ts && tsdown",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.8.1",
+    "@macaw-ds/manifest": "workspace:^",
+    "citty": "^0.2.2"
+  },
+  "devDependencies": {
+    "@macaw-ds/eslint-config": "workspace:*",
+    "@types/node": "^24.0.0",
+    "tsdown": "^0.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

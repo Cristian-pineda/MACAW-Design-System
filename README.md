@@ -26,23 +26,23 @@ npx @macaw-ds/cli add button --eject  # copies the source in; recorded in .macaw
 Then import the stylesheets once, in your root CSS:
 
 ```css
-@import "tailwindcss";
-@import "@macaw-ds/tokens/tokens.css";
-@import "@macaw-ds/tokens/theme.css";
-@import "@macaw-ds/ui/styles.css";
+@import 'tailwindcss';
+@import '@macaw-ds/tokens/tokens.css';
+@import '@macaw-ds/tokens/theme.css';
+@import '@macaw-ds/ui/styles.css';
 ```
 
 ## What is in the box
 
-| Package | Purpose |
-|---|---|
-| `@macaw-ds/tokens` | DTCG JSON tokens → CSS variables, Tailwind v4 theme, TypeScript constants |
-| `@macaw-ds/ui` | Primitives and composed components on Radix, styled with token utilities only |
-| `@macaw-ds/icons` | A curated Lucide subset behind `<Icon name />` |
-| `@macaw-ds/manifest` | The component manifest schema and helpers |
-| `@macaw-ds/eslint-config` | The rules, as lint: no raw values, no `className` on system components |
-| `@macaw-ds/cli` | The one door: `init`, `add`, `add --eject`, `diff` |
-| `@macaw-ds/mcp` | The same door for agents: `list_components`, `get_component`, `get_tokens`, `validate` |
+| Package                   | Purpose                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| `@macaw-ds/tokens`        | DTCG JSON tokens → CSS variables, Tailwind v4 theme, TypeScript constants              |
+| `@macaw-ds/ui`            | Primitives and composed components on Radix, styled with token utilities only          |
+| `@macaw-ds/icons`         | A curated Lucide subset behind `<Icon name />`                                         |
+| `@macaw-ds/manifest`      | The component manifest schema and helpers                                              |
+| `@macaw-ds/eslint-config` | The rules, as lint: no raw values, no `className` on system components                 |
+| `@macaw-ds/cli`           | The one door: `init`, `add`, `add --eject`, `diff`                                     |
+| `@macaw-ds/mcp`           | The same door for agents: `list_components`, `get_component`, `get_tokens`, `validate` |
 
 Docs, playground and the component registry live in `apps/docs` and deploy to Vercel. The registry at `/r/<name>.json` is shadcn-compatible, so `npx shadcn add <url>` also works.
 

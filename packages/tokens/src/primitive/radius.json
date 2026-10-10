@@ -1,0 +1,13 @@
+{
+  "radius": {
+    "$type": "dimension",
+    "$description": "Tight radii for a financial feel. Nothing above 8px except pills.",
+    "none": { "$value": "0px" },
+    "xs": { "$value": "2px" },
+    "sm": { "$value": "3px" },
+    "md": { "$value": "4px" },
+    "lg": { "$value": "6px" },
+    "xl": { "$value": "8px" },
+    "full": { "$value": "9999px" }
+  }
+}

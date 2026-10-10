@@ -1,0 +1,9 @@
+{
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Desktop-first with a 1024px floor (DECISIONS.md #3).",
+    "md": { "$value": "64rem" },
+    "lg": { "$value": "80rem" },
+    "xl": { "$value": "96rem" }
+  }
+}

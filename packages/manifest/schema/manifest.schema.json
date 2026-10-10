@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Cristian-pineda/MACAW-Design-System/packages/manifest/schema/manifest.schema.json",
+  "title": "MACAW component manifest",
+  "description": "The contract every MACAW component ships with. Read by the docs playground, the registry builder, the CLI, the MCP server and CI.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Display name, e.g. \"Button\""
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Folder and registry name, e.g. \"button\""
+    },
+    "package": {
+      "type": "string",
+      "pattern": "^@macaw-ds\\/[a-z-]+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "alpha",
+        "beta",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "since": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "primitive",
+        "typography",
+        "form",
+        "feedback",
+        "layout",
+        "navigation",
+        "overlay",
+        "data",
+        "composed"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "description": "One sentence: what it is for and what it is not for"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exports": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "props": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "enum",
+              "boolean",
+              "string",
+              "number",
+              "node",
+              "function"
+            ]
+          },
+          "values": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          },
+          "required": {
+            "default": false,
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "a11y": {
+            "type": "string"
+          },
+          "control": {
+            "type": "string",
+            "enum": [
+              "segmented",
+              "select",
+              "switch",
+              "text",
+              "number",
+              "none"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "description"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "slots": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Token names without the prefix, e.g. \"color.action.primary\""
+    },
+    "a11y": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ARIA role the rendered element exposes, or \"none\" for purely presentational text"
+        },
+        "keyboard": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Every key the component handles, e.g. \"Enter, Space: activate\""
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "How the accessible name is computed"
+        },
+        "notes": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "role",
+        "keyboard",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "budget": {
+      "type": "object",
+      "properties": {
+        "gzip": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Bundle budget in bytes, gzipped"
+        }
+      },
+      "required": [
+        "gzip"
+      ],
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hard rules an agent must follow"
+    },
+    "dos": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "donts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "examples": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "props": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          },
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "registryDependencies": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "slug",
+    "package",
+    "status",
+    "since",
+    "category",
+    "purpose",
+    "description",
+    "exports",
+    "props",
+    "tokens",
+    "a11y",
+    "budget",
+    "rules",
+    "donts",
+    "examples"
+  ],
+  "additionalProperties": false
+}

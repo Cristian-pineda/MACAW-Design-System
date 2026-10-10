@@ -1,0 +1,27 @@
+export const meta = {
+  title: 'Text',
+  description: 'The typography primitive: roles, tones and tabular numerals.',
+};
+
+## When to use
+
+Every string on screen. Headings, body copy, labels, captions, money, dates, IDs. `Text` is how the type scale and the colour tokens reach the page, so there is no other way to set a font size in MACAW.
+
+## When not to use
+
+- Inside `Button`, `Badge` and other components that already style their own label. Pass plain children.
+- For long-form prose with its own markup (articles, help centres). MACAW is for product UI; use a prose stylesheet there.
+
+## Anatomy
+
+One element, chosen with `as`. The variant sets size, line height, weight and tracking together, so a variant is a complete decision rather than four separate ones.
+
+## Numbers
+
+`numeric` turns on tabular numerals and the 7:1 numeric colour. Use it, or a `numeric-*` variant, for every value a reader might scan down a column: balances, counts, percentages, dates. Align money to the end.
+
+## Accessibility
+
+- Choose `as` for structure. Screen readers navigate by heading level; the variant is visual only.
+- Never signal a state by tone alone. Pair `tone="critical"` with words such as "Overdue".
+- `truncate` hides text. Put the full value in `title` or a tooltip.

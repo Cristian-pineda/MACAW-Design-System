@@ -1,0 +1,57 @@
+{
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif"
+        ]
+      },
+      "mono": {
+        "$value": ["Geist Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"]
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "medium": { "$value": 500 },
+      "semibold": { "$value": 600 }
+    },
+    "scale": {
+      "$type": "dimension",
+      "$description": "Type scale in rem (11 to 30 px). Dense by design.",
+      "11": { "$value": "0.6875rem" },
+      "12": { "$value": "0.75rem" },
+      "13": { "$value": "0.8125rem" },
+      "14": { "$value": "0.875rem" },
+      "16": { "$value": "1rem" },
+      "18": { "$value": "1.125rem" },
+      "20": { "$value": "1.25rem" },
+      "24": { "$value": "1.5rem" },
+      "30": { "$value": "1.875rem" }
+    },
+    "leading": {
+      "$type": "dimension",
+      "16": { "$value": "1rem" },
+      "18": { "$value": "1.125rem" },
+      "20": { "$value": "1.25rem" },
+      "24": { "$value": "1.5rem" },
+      "28": { "$value": "1.75rem" },
+      "32": { "$value": "2rem" },
+      "36": { "$value": "2.25rem" }
+    },
+    "tracking": {
+      "$type": "dimension",
+      "tight": { "$value": "-0.02em" },
+      "snug": { "$value": "-0.01em" },
+      "normal": { "$value": "0em" },
+      "wide": { "$value": "0.04em" }
+    }
+  }
+}

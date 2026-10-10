@@ -1,0 +1,53 @@
+{
+  "name": "@macaw-ds/eslint-config",
+  "version": "0.0.0",
+  "description": "ESLint flat config for MACAW: token utilities only, no raw values, no className on system components, strict jsx-a11y",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git",
+    "directory": "packages/eslint-config"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./rules/*": "./rules/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "rules",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-plugin-better-tailwindcss": "^4.9.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "typescript-eslint": "^8.71.1"
+  },
+  "peerDependencies": {
+    "eslint": ">=10"
+  },
+  "devDependencies": {
+    "eslint": "^10.12.0",
+    "typescript": "5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3",
+    "@types/eslint": "^9.6.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "./index.d.ts"
+}

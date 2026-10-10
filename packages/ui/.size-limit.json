@@ -1,0 +1,44 @@
+[
+  {
+    "name": "barrel",
+    "path": "dist/index.js",
+    "import": "*",
+    "limit": "12 kB"
+  },
+  {
+    "name": "button",
+    "path": "dist/button/index.js",
+    "import": "{ Button }",
+    "limit": "4 kB"
+  },
+  {
+    "name": "text",
+    "path": "dist/text/index.js",
+    "import": "{ Text }",
+    "limit": "3 kB"
+  },
+  {
+    "name": "input",
+    "path": "dist/input/index.js",
+    "import": "{ Input }",
+    "limit": "3 kB"
+  },
+  {
+    "name": "badge",
+    "path": "dist/badge/index.js",
+    "import": "{ Badge }",
+    "limit": "3 kB"
+  },
+  {
+    "name": "card",
+    "path": "dist/card/index.js",
+    "import": "{ Card }",
+    "limit": "3 kB"
+  },
+  {
+    "name": "styles",
+    "path": "dist/styles.css",
+    "limit": "6 kB",
+    "rolldown": false
+  }
+]

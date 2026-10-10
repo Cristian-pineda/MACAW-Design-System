@@ -1,8 +1,9 @@
 ---
 paths:
-  - "packages/ui/**"
-  - "packages/icons/**"
+  - 'packages/ui/**'
+  - 'packages/icons/**'
 ---
+
 # Component rules (packages/ui, packages/icons)
 
 - Manifest first. The `cva` variants must match `props` in the manifest; the unit test enforces it.

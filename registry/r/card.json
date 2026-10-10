@@ -1,0 +1,181 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card",
+  "type": "registry:ui",
+  "title": "Card",
+  "description": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://macaw-design-system.vercel.app/r/macaw-lib.json",
+    "https://macaw-design-system.vercel.app/r/tokens.json",
+    "https://macaw-design-system.vercel.app/r/text.json"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/ui/card.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/macaw/card.tsx",
+      "content": "'use client';\n\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport { Slot } from 'radix-ui';\nimport * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport { focusRing } from '@/lib/macaw/focus';\nimport type { NativeProps } from '@/lib/macaw/types';\nimport { Text, type TextProps } from '@/components/ui/macaw/text';\n\ntype Padding = 'none' | 'sm' | 'md';\nconst PaddingContext = React.createContext<Padding>('md');\n\nexport const cardVariants = cva(\n  'overflow-hidden rounded-container border border-line-default bg-surface-default text-fg-primary',\n  {\n    variants: {\n      elevation: { flat: 'shadow-flat', raised: 'shadow-raised' },\n      padding: { none: '', sm: '', md: '' },\n      interactive: {\n        true: cn(\n          'block w-full cursor-pointer text-start transition-colors duration-fast ease-standard hover:border-line-strong',\n          focusRing,\n        ),\n        false: '',\n      },\n    },\n    defaultVariants: { elevation: 'flat', padding: 'md', interactive: false },\n  },\n);\n\nconst PAD_X: Record<Padding, string> = { none: '', sm: 'px-4', md: 'px-5' };\nconst PAD_Y: Record<Padding, string> = { none: '', sm: 'py-3', md: 'py-4' };\n\nexport interface CardProps\n  extends NativeProps<'div'>, Omit<VariantProps<typeof cardVariants>, 'interactive' | 'padding'> {\n  /** Inner padding applied by Card.Header, Card.Body and Card.Footer. */\n  padding?: Padding;\n  /** Hover and focus affordances for a card that is a link or a button. Use with asChild. */\n  interactive?: boolean;\n  /** Render the child (an anchor or button) as the card itself. */\n  asChild?: boolean;\n  children?: React.ReactNode;\n}\n\nfunction CardRoot({\n  elevation,\n  padding = 'md',\n  interactive = false,\n  asChild,\n  children,\n  ...rest\n}: CardProps) {\n  const Comp = asChild ? Slot.Root : 'div';\n  return (\n    <PaddingContext.Provider value={padding}>\n      <Comp className={cn(cardVariants({ elevation, padding, interactive }))} {...rest}>\n        {children}\n      </Comp>\n    </PaddingContext.Provider>\n  );\n}\n\nfunction usePadding(): Padding {\n  return React.useContext(PaddingContext);\n}\n\nfunction CardHeader({ children, ...rest }: NativeProps<'div'> & { children?: React.ReactNode }) {\n  const p = usePadding();\n  return (\n    <div\n      className={cn(\n        'flex items-start justify-between gap-4',\n        PAD_X[p],\n        p === 'none' ? '' : 'pt-4 pb-3',\n      )}\n      {...rest}\n    >\n      {children}\n    </div>\n  );\n}\n\nfunction CardTitle({ as = 'h3', variant = 'heading-sm', ...rest }: TextProps) {\n  return <Text as={as} variant={variant} {...rest} />;\n}\n\nfunction CardDescription({ variant = 'body-sm', tone = 'muted', ...rest }: TextProps) {\n  return <Text variant={variant} tone={tone} {...rest} />;\n}\n\nfunction CardBody({ children, ...rest }: NativeProps<'div'> & { children?: React.ReactNode }) {\n  const p = usePadding();\n  return (\n    <div className={cn(PAD_X[p], PAD_Y[p])} {...rest}>\n      {children}\n    </div>\n  );\n}\n\nfunction CardFooter({ children, ...rest }: NativeProps<'div'> & { children?: React.ReactNode }) {\n  const p = usePadding();\n  return (\n    <div\n      className={cn(\n        'flex items-center justify-end gap-2 border-t border-line-subtle bg-surface-sunken',\n        PAD_X[p],\n        p === 'none' ? '' : 'py-3',\n      )}\n      {...rest}\n    >\n      {children}\n    </div>\n  );\n}\n\n/** A bordered surface that groups related content: a KPI, a form section, a record summary. */\nexport const Card = Object.assign(CardRoot, {\n  Header: CardHeader,\n  Title: CardTitle,\n  Description: CardDescription,\n  Body: CardBody,\n  Footer: CardFooter,\n});\n"
+    }
+  ],
+  "docs": "Ejected from @macaw-ds/ui@0.0.0. Use the sections (Header, Body, Footer) rather than custom padding; the Card owns its spacing. Card.Title sets the heading level with `as` to fit the page outline.",
+  "categories": [
+    "layout"
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "package": "@macaw-ds/ui",
+      "status": "beta",
+      "slug": "card",
+      "manifest": {
+        "$schema": "../../../manifest/schema/manifest.schema.json",
+        "name": "Card",
+        "slug": "card",
+        "package": "@macaw-ds/ui",
+        "status": "beta",
+        "since": "0.1.0",
+        "category": "layout",
+        "purpose": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
+        "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring.",
+        "exports": [
+          "Card",
+          "cardVariants"
+        ],
+        "props": {
+          "padding": {
+            "type": "enum",
+            "values": [
+              "none",
+              "sm",
+              "md"
+            ],
+            "default": "md",
+            "required": false,
+            "description": "Inner padding for the sections. none when the body is a table or an image that should touch the edges."
+          },
+          "elevation": {
+            "type": "enum",
+            "values": [
+              "flat",
+              "raised"
+            ],
+            "default": "flat",
+            "required": false,
+            "description": "flat relies on the border; raised adds a subtle shadow for cards that float over the canvas."
+          },
+          "interactive": {
+            "type": "boolean",
+            "default": false,
+            "required": false,
+            "description": "Hover border and the focus ring. Use with asChild so the card is an anchor or a button.",
+            "a11y": "An interactive card must be an anchor or a button (asChild) so it has a role and keyboard activation."
+          },
+          "asChild": {
+            "type": "boolean",
+            "default": false,
+            "required": false,
+            "description": "Render the child element as the card.",
+            "control": "none"
+          },
+          "children": {
+            "type": "node",
+            "required": false,
+            "description": "Card.Header, Card.Body, Card.Footer in that order.",
+            "control": "none"
+          }
+        },
+        "slots": [
+          "Header",
+          "Title",
+          "Description",
+          "Body",
+          "Footer"
+        ],
+        "tokens": [
+          "card.radius",
+          "card.padding.sm",
+          "card.padding.md",
+          "card.bg.default",
+          "card.line",
+          "card.shadow.flat",
+          "card.shadow.raised",
+          "color.line.subtle",
+          "color.line.strong",
+          "color.surface.sunken",
+          "color.focus.ring"
+        ],
+        "a11y": {
+          "role": "none for a static card; link or button when interactive with asChild",
+          "keyboard": [
+            "Static cards are not focusable",
+            "Interactive cards (asChild anchor or button): Tab to focus, Enter (and Space for buttons) to activate"
+          ],
+          "name": "Static cards have none. Interactive cards take the name from their text content; keep the title first so it is read first.",
+          "notes": [
+            "Card.Title renders an h3 by default. Set `as` to keep heading levels in order on the page.",
+            "Do not nest interactive elements inside an interactive card; a card that is a link cannot contain buttons.",
+            "The footer's sunken background keeps 4.5:1 for primary and secondary text."
+          ]
+        },
+        "budget": {
+          "gzip": 3000
+        },
+        "rules": [
+          "Use the sections (Header, Body, Footer) rather than custom padding; the Card owns its spacing.",
+          "Card.Title sets the heading level with `as` to fit the page outline.",
+          "Interactive cards use asChild with an anchor or a button and contain no other interactive elements.",
+          "One primary action per card footer at most."
+        ],
+        "dos": [
+          "Use padding=\"none\" and put a table in Card.Body so rows run edge to edge.",
+          "Use Card.Description for a one-line summary under the title."
+        ],
+        "donts": [
+          "Do not nest cards.",
+          "Do not use elevation to signal importance; use position and heading level."
+        ],
+        "examples": [
+          {
+            "name": "Default",
+            "props": {}
+          },
+          {
+            "name": "Raised",
+            "props": {
+              "elevation": "raised"
+            }
+          },
+          {
+            "name": "Compact",
+            "props": {
+              "padding": "sm"
+            }
+          },
+          {
+            "name": "Interactive",
+            "description": "The whole card is a link.",
+            "props": {
+              "interactive": true
+            }
+          }
+        ],
+        "registryDependencies": [
+          "text"
+        ],
+        "dependencies": [
+          "radix-ui",
+          "class-variance-authority"
+        ],
+        "related": [
+          "text",
+          "button",
+          "badge"
+        ]
+      }
+    }
+  }
+}

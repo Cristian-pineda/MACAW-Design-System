@@ -1,0 +1,18 @@
+{
+  "text-component": {
+    "$description": "Component aliases for Text tones.",
+    "$type": "color",
+    "tone": {
+      "primary": { "$value": "{color.fg.primary}" },
+      "secondary": { "$value": "{color.fg.secondary}" },
+      "muted": { "$value": "{color.fg.muted}" },
+      "inverse": { "$value": "{color.fg.inverse}" },
+      "numeric": { "$value": "{color.fg.numeric}" },
+      "success": { "$value": "{color.status.success-fg}" },
+      "warning": { "$value": "{color.status.warning-fg}" },
+      "critical": { "$value": "{color.status.critical-fg}" },
+      "info": { "$value": "{color.status.info-fg}" },
+      "accent": { "$value": "{color.status.accent-fg}" }
+    }
+  }
+}

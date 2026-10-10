@@ -1,0 +1,59 @@
+name: e2e
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      update-baselines:
+        description: Regenerate visual regression baselines and commit them
+        type: boolean
+        default: false
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: a11y, keyboard, visual
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter=docs...
+      - name: Run Playwright
+        if: ${{ !inputs.update-baselines }}
+        run: pnpm test:e2e
+        env:
+          HOME: /root
+      - name: Update baselines
+        if: ${{ inputs.update-baselines }}
+        run: pnpm test:e2e --update-snapshots
+        env:
+          HOME: /root
+      - name: Commit baselines
+        if: ${{ inputs.update-baselines }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add e2e/__screenshots__
+          git commit -m "test: update visual baselines" || echo "no changes"
+          git push
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 14

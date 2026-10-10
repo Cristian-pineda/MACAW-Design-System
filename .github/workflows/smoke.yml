@@ -1,0 +1,25 @@
+name: smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_run:
+    workflows: [release]
+    types: [completed]
+
+jobs:
+  consumer:
+    name: fresh consumer app
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter='./packages/*'
+      - run: pnpm smoke:consumer

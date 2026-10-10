@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "@testing-library/jest-dom", "jest-axe"],
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "src",
+    "scripts",
+    "icons.config.ts",
+    "tsdown.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ]
+}

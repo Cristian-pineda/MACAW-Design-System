@@ -1,0 +1,17 @@
+{
+  "layout": {
+    "$type": "dimension",
+    "$description": "Named layout rhythm on top of the 4px grid.",
+    "gutter": { "$value": "{space.6}" },
+    "section": { "$value": "{space.8}" },
+    "stack-xs": { "$value": "{space.1}" },
+    "stack-sm": { "$value": "{space.2}" },
+    "stack-md": { "$value": "{space.4}" },
+    "stack-lg": { "$value": "{space.6}" },
+    "inline-sm": { "$value": "{space.2}" },
+    "inline-md": { "$value": "{space.3}" },
+    "control-gap": { "$value": "{space.2}" },
+    "control-padding-x": { "$value": "{space.3}" },
+    "card-padding": { "$value": "{space.5}" }
+  }
+}

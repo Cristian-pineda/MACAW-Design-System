@@ -1,0 +1,19 @@
+{
+  "elevation": {
+    "$type": "shadow",
+    "flat": {
+      "$value": [
+        {
+          "color": "oklch(0 0 0 / 0)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "raised": { "$value": "{shadow.sm}" },
+    "floating": { "$value": "{shadow.md}" },
+    "overlay": { "$value": "{shadow.lg}" }
+  }
+}

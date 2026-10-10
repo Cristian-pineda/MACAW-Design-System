@@ -1,0 +1,10 @@
+{
+  "name": "macaw",
+  "version": "0.0.0",
+  "description": "Build financial UI with the MACAW design system: the using-macaw skill, lint and verify hooks, a fresh-context reviewer agent and the MACAW MCP server.",
+  "author": { "name": "Cristian Pineda" },
+  "homepage": "https://github.com/Cristian-pineda/MACAW-Design-System",
+  "repository": "https://github.com/Cristian-pineda/MACAW-Design-System",
+  "license": "Apache-2.0",
+  "keywords": ["design-system", "react", "tailwind", "financial", "ui"]
+}

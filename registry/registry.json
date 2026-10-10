@@ -1,0 +1,236 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "macaw",
+  "homepage": "https://macaw-design-system.vercel.app",
+  "items": [
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A short, non-interactive status label such as Paid, Overdue or Draft. Not a button, not a counter.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/badge.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/badge.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "feedback",
+          "since": "0.1.0",
+          "exports": [
+            "Badge",
+            "badgeVariants"
+          ],
+          "budget": {
+            "gzip": 2500
+          },
+          "file": "packages/ui/src/badge/badge.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Triggers an action. Not navigation; for links use asChild with an anchor.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/button.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "primitive",
+          "since": "0.1.0",
+          "exports": [
+            "Button",
+            "buttonVariants"
+          ],
+          "budget": {
+            "gzip": 4000
+          },
+          "file": "packages/ui/src/button/button.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/card.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/card.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "layout",
+          "since": "0.1.0",
+          "exports": [
+            "Card",
+            "cardVariants"
+          ],
+          "budget": {
+            "gzip": 3000
+          },
+          "file": "packages/ui/src/card/card.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Icon",
+      "description": "Renders one icon from the curated set, bound to size and tone tokens. Not for logos or illustrations.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/icon.tsx"
+        },
+        {
+          "path": "registry/macaw/ui/names.ts",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/names.ts"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/icons",
+          "status": "beta",
+          "category": "primitive",
+          "since": "0.1.0",
+          "exports": [
+            "Icon",
+            "iconNames"
+          ],
+          "budget": {
+            "gzip": 14000
+          },
+          "file": "packages/icons/src/icon.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Single-line text entry: names, emails, references, amounts. Not for multi-line text, dates or selections.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/input.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "form",
+          "since": "0.1.0",
+          "exports": [
+            "Input",
+            "inputVariants"
+          ],
+          "budget": {
+            "gzip": 2500
+          },
+          "file": "packages/ui/src/input/input.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "text",
+      "type": "registry:ui",
+      "title": "Text",
+      "description": "Renders text in a named typographic role and tone. Every string on screen goes through it; nothing else sets font size or colour.",
+      "files": [
+        {
+          "path": "registry/macaw/ui/text.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/macaw/text.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "package": "@macaw-ds/ui",
+          "status": "beta",
+          "category": "typography",
+          "since": "0.1.0",
+          "exports": [
+            "Text",
+            "textVariants"
+          ],
+          "budget": {
+            "gzip": 2000
+          },
+          "file": "packages/ui/src/text/text.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "macaw-lib",
+      "type": "registry:lib",
+      "title": "MACAW helpers",
+      "description": "cn, focusRing and NativeProps used by every ejected MACAW component.",
+      "files": [
+        {
+          "path": "registry/macaw/lib/cn.ts",
+          "type": "registry:lib",
+          "target": "lib/macaw/cn.ts"
+        },
+        {
+          "path": "registry/macaw/lib/focus.ts",
+          "type": "registry:lib",
+          "target": "lib/macaw/focus.ts"
+        },
+        {
+          "path": "registry/macaw/lib/types.ts",
+          "type": "registry:lib",
+          "target": "lib/macaw/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "tokens",
+      "type": "registry:style",
+      "title": "MACAW tokens",
+      "description": "CSS variables and the Tailwind theme for MACAW components."
+    }
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "scope": "@macaw-ds",
+      "generatedFrom": "packages/ui, packages/icons, packages/tokens",
+      "components": [
+        "badge",
+        "button",
+        "card",
+        "icon",
+        "input",
+        "text"
+      ]
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "border": {
+    "width": {
+      "$type": "dimension",
+      "default": { "$value": "1px" },
+      "strong": { "$value": "2px" }
+    }
+  }
+}

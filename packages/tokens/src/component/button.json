@@ -1,0 +1,39 @@
+{
+  "button": {
+    "$description": "Component aliases for Button. Reference semantic tokens only.",
+    "radius": { "$type": "dimension", "$value": "{shape.control}" },
+    "height": {
+      "$type": "dimension",
+      "sm": { "$value": "{size.control.sm}" },
+      "md": { "$value": "{size.control.md}" },
+      "lg": { "$value": "{size.control.lg}" }
+    },
+    "bg": {
+      "$type": "color",
+      "primary": { "$value": "{color.action.primary}" },
+      "primary-hover": { "$value": "{color.action.primary-hover}" },
+      "primary-active": { "$value": "{color.action.primary-active}" },
+      "secondary": { "$value": "{color.action.secondary}" },
+      "secondary-hover": { "$value": "{color.action.secondary-hover}" },
+      "secondary-active": { "$value": "{color.action.secondary-active}" },
+      "ghost-hover": { "$value": "{color.action.ghost-hover}" },
+      "ghost-active": { "$value": "{color.action.ghost-active}" },
+      "destructive": { "$value": "{color.action.destructive}" },
+      "destructive-hover": { "$value": "{color.action.destructive-hover}" },
+      "destructive-active": { "$value": "{color.action.destructive-active}" },
+      "disabled": { "$value": "{color.action.disabled}" }
+    },
+    "fg": {
+      "$type": "color",
+      "primary": { "$value": "{color.action.primary-fg}" },
+      "secondary": { "$value": "{color.action.secondary-fg}" },
+      "ghost": { "$value": "{color.fg.primary}" },
+      "destructive": { "$value": "{color.action.destructive-fg}" },
+      "disabled": { "$value": "{color.action.disabled-fg}" }
+    },
+    "line": {
+      "$type": "color",
+      "secondary": { "$value": "{color.action.secondary-line}" }
+    }
+  }
+}

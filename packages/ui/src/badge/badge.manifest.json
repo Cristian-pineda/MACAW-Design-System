@@ -1,0 +1,101 @@
+{
+  "$schema": "../../../manifest/schema/manifest.schema.json",
+  "name": "Badge",
+  "slug": "badge",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "feedback",
+  "purpose": "A short, non-interactive status label such as Paid, Overdue or Draft. Not a button, not a counter.",
+  "description": "Status labels for records and rows. Six tones map to the status colour tokens; three variants trade emphasis for density. The text carries the meaning so colour is never the only signal.",
+  "exports": ["Badge", "badgeVariants"],
+  "props": {
+    "tone": {
+      "type": "enum",
+      "values": ["neutral", "success", "warning", "critical", "info", "accent"],
+      "default": "neutral",
+      "description": "Meaning. success for settled or active, warning for pending or attention, critical for failed or overdue, info for informational, accent for highlighted, neutral for draft or archived.",
+      "control": "select"
+    },
+    "variant": {
+      "type": "enum",
+      "values": ["soft", "solid", "outline"],
+      "default": "soft",
+      "description": "Emphasis. soft (tinted) is the default in tables; solid for a single prominent status on a detail page; outline for the quietest option."
+    },
+    "size": {
+      "type": "enum",
+      "values": ["sm", "md"],
+      "default": "md",
+      "description": "20 or 24 px tall. sm inside dense table rows."
+    },
+    "dot": {
+      "type": "boolean",
+      "default": false,
+      "description": "Leading dot in the tone colour, for live or state indicators.",
+      "a11y": "Decorative (aria-hidden). The text must still say the state."
+    },
+    "children": { "type": "node", "description": "The status word or two.", "default": "Paid" }
+  },
+  "slots": ["children"],
+  "tokens": [
+    "badge.radius",
+    "badge.height.sm",
+    "badge.height.md",
+    "color.status.success-bg",
+    "color.status.success-fg",
+    "color.status.success-solid",
+    "color.status.success-solid-fg",
+    "color.status.success-line",
+    "color.status.warning-bg",
+    "color.status.warning-fg",
+    "color.status.critical-bg",
+    "color.status.critical-fg",
+    "color.status.info-bg",
+    "color.status.info-fg",
+    "color.status.neutral-bg",
+    "color.status.neutral-fg",
+    "color.status.accent-bg",
+    "color.status.accent-fg",
+    "text.size.label-sm",
+    "text.size.caption"
+  ],
+  "a11y": {
+    "role": "none (a span with text)",
+    "keyboard": [],
+    "name": "The text content. A badge has no role; it reads as part of the surrounding text.",
+    "notes": [
+      "Every tone pairing meets 4.5:1 for text in both themes.",
+      "Colour reinforces the word; it never replaces it. \"Overdue\" in critical, not a red dot alone.",
+      "Badges are not interactive. For a filter chip or a removable tag, a different component is needed (not in the system yet)."
+    ]
+  },
+  "budget": { "gzip": 2500 },
+  "rules": [
+    "The label is a word or two that states the status in plain language.",
+    "Tone follows meaning, not decoration: critical means failed or overdue, never \"important\".",
+    "One badge per status; do not stack badges to combine meanings."
+  ],
+  "dos": [
+    "Use soft badges in tables and solid on a record's header.",
+    "Use dot with neutral for \"Draft\" and with success for \"Active\"."
+  ],
+  "donts": [
+    "Do not make badges clickable; they have no role and no focus style.",
+    "Do not use badges as counters; a count is Text numeric."
+  ],
+  "examples": [
+    { "name": "Default", "props": { "children": "Paid", "tone": "success" } },
+    { "name": "Overdue", "props": { "children": "Overdue", "tone": "critical" } },
+    { "name": "Solid", "props": { "children": "Refunded", "tone": "info", "variant": "solid" } },
+    {
+      "name": "Outline",
+      "props": { "children": "Draft", "tone": "neutral", "variant": "outline" }
+    },
+    { "name": "With dot", "props": { "children": "Active", "tone": "success", "dot": true } },
+    { "name": "Small", "props": { "children": "Pending", "tone": "warning", "size": "sm" } }
+  ],
+  "registryDependencies": [],
+  "dependencies": ["class-variance-authority"],
+  "related": ["text"]
+}

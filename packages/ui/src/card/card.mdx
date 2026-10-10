@@ -1,0 +1,47 @@
+export const meta = {
+  title: 'Card',
+  description: 'A bordered surface that groups related content.',
+};
+
+## When to use
+
+To group one idea on a dashboard or record page: a KPI, a form section, a summary of a related object, a short table. The border does the work; elevation is optional.
+
+## When not to use
+
+- **As the page.** A page is the canvas; cards sit on it. Do not wrap a whole page in one card.
+- **Nested.** A card inside a card is a sign the inner one wants to be a section with a heading instead.
+- **As a modal or popover.** Those need focus management and a backdrop (later components).
+
+## Anatomy
+
+```tsx
+<Card>
+  <Card.Header>
+    <div>
+      <Card.Title>Gross volume</Card.Title>
+      <Card.Description>Last 30 days</Card.Description>
+    </div>
+    <Badge tone="success" dot>
+      Live
+    </Badge>
+  </Card.Header>
+  <Card.Body>…</Card.Body>
+  <Card.Footer>
+    <Button variant="ghost">Cancel</Button>
+    <Button>Save</Button>
+  </Card.Footer>
+</Card>
+```
+
+`padding` is set once on the Card and every section follows it. `padding="none"` lets a table or image run edge to edge.
+
+## KPI card recipe
+
+Label in `label-sm` secondary, value in `numeric-lg`, delta in `caption` with a status tone. Three to four across in a grid with `gap-4`.
+
+## Accessibility
+
+- `Card.Title` is an `h3` by default. Set `as` so heading levels stay in order on the page.
+- An interactive card is an anchor or a button rendered through `asChild`. It gets the shared focus ring and must not contain other interactive elements.
+- Static cards have no role and are not focusable; screen readers read them as regular content.

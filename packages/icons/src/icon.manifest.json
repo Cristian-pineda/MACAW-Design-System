@@ -1,0 +1,163 @@
+{
+  "$schema": "../../manifest/schema/manifest.schema.json",
+  "name": "Icon",
+  "slug": "icon",
+  "package": "@macaw-ds/icons",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "primitive",
+  "purpose": "Renders one icon from the curated set, bound to size and tone tokens. Not for logos or illustrations.",
+  "description": "A thin wrapper over a curated Lucide subset. Decorative by default (aria-hidden); pass `label` when the icon carries meaning on its own. The set is deliberately small: adding an icon is a PR with a screenshot of where it is used.",
+  "exports": ["Icon", "iconNames"],
+  "props": {
+    "name": {
+      "type": "enum",
+      "values": [
+        "arrow-up-right",
+        "arrow-down-right",
+        "arrow-up",
+        "arrow-down",
+        "arrow-left",
+        "arrow-right",
+        "trending-up",
+        "trending-down",
+        "check",
+        "check-circle",
+        "x",
+        "x-circle",
+        "alert-triangle",
+        "alert-circle",
+        "info",
+        "help-circle",
+        "chevron-down",
+        "chevron-up",
+        "chevron-left",
+        "chevron-right",
+        "chevrons-up-down",
+        "search",
+        "filter",
+        "download",
+        "upload",
+        "plus",
+        "minus",
+        "more-horizontal",
+        "more-vertical",
+        "settings",
+        "user",
+        "users",
+        "building",
+        "calendar",
+        "clock",
+        "credit-card",
+        "wallet",
+        "receipt",
+        "banknote",
+        "landmark",
+        "dollar-sign",
+        "percent",
+        "refresh",
+        "copy",
+        "external-link",
+        "link",
+        "eye",
+        "eye-off",
+        "lock",
+        "unlock",
+        "loader",
+        "file-text",
+        "bell",
+        "home",
+        "dashboard",
+        "table",
+        "mail",
+        "trash",
+        "pencil",
+        "sun",
+        "moon"
+      ],
+      "default": "check",
+      "required": true,
+      "description": "Which icon to render.",
+      "control": "select"
+    },
+    "size": {
+      "type": "enum",
+      "values": ["sm", "md", "lg", "xl"],
+      "default": "md",
+      "description": "14, 16, 20 or 24 px. md matches body text; sm matches label-sm."
+    },
+    "tone": {
+      "type": "enum",
+      "values": [
+        "inherit",
+        "primary",
+        "secondary",
+        "muted",
+        "success",
+        "warning",
+        "critical",
+        "info",
+        "accent"
+      ],
+      "default": "inherit",
+      "description": "Colour. inherit takes the surrounding text colour, which is right inside buttons and text."
+    },
+    "label": {
+      "type": "string",
+      "description": "Accessible name. Only when the icon is the sole content; otherwise leave empty so it stays decorative.",
+      "a11y": "Sets role=img and aria-label; without it the icon is aria-hidden."
+    },
+    "strokeWidth": {
+      "type": "number",
+      "default": 1.5,
+      "description": "1.5 for dense UI, 2 for emphasis.",
+      "control": "none"
+    }
+  },
+  "tokens": [
+    "color.fg.primary",
+    "color.fg.secondary",
+    "color.fg.muted",
+    "color.status.success",
+    "color.status.warning",
+    "color.status.critical",
+    "color.status.info",
+    "color.status.accent"
+  ],
+  "a11y": {
+    "role": "img when label is set; otherwise none (aria-hidden)",
+    "keyboard": [],
+    "name": "From the label prop. Decorative icons have no name and are hidden from assistive technology.",
+    "notes": [
+      "Never rely on an icon alone to convey status; pair it with text or a Badge.",
+      "Status tones meet 3:1 against surface.default in both themes."
+    ]
+  },
+  "budget": { "gzip": 14000 },
+  "rules": [
+    "Icons next to visible text are decorative: do not pass label.",
+    "An icon that is the only content of a control needs a label, or the control needs aria-label.",
+    "Use tone=\"inherit\" inside buttons and text so the icon follows the text colour."
+  ],
+  "dos": ["Use size=\"sm\" inside label-sm text and size=\"md\" inside body text."],
+  "donts": [
+    "Do not import from lucide-react directly in a consumer; the curated set is the contract.",
+    "Do not use icons for logos or illustrations."
+  ],
+  "examples": [
+    { "name": "Default", "props": { "name": "check" } },
+    {
+      "name": "Status tones",
+      "description": "Each status tone on the default surface.",
+      "props": { "name": "alert-triangle", "tone": "warning" }
+    },
+    {
+      "name": "Labelled",
+      "description": "Meaningful on its own, so it gets a name.",
+      "props": { "name": "lock", "label": "Locked" }
+    }
+  ],
+  "registryDependencies": [],
+  "dependencies": ["lucide-react", "class-variance-authority"],
+  "related": ["button"]
+}

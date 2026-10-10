@@ -1,0 +1,36 @@
+{
+  "space": {
+    "$type": "dimension",
+    "$description": "4px grid. Tailwind's --spacing multiplier is 0.25rem, so p-4 is space.4.",
+    "0": { "$value": "0px" },
+    "px": { "$value": "1px" },
+    "0-5": { "$value": "2px" },
+    "1": { "$value": "4px" },
+    "1-5": { "$value": "6px" },
+    "2": { "$value": "8px" },
+    "2-5": { "$value": "10px" },
+    "3": { "$value": "12px" },
+    "4": { "$value": "16px" },
+    "5": { "$value": "20px" },
+    "6": { "$value": "24px" },
+    "7": { "$value": "28px" },
+    "8": { "$value": "32px" },
+    "9": { "$value": "36px" },
+    "10": { "$value": "40px" },
+    "12": { "$value": "48px" },
+    "16": { "$value": "64px" },
+    "20": { "$value": "80px" },
+    "24": { "$value": "96px" }
+  },
+  "size": {
+    "$type": "dimension",
+    "target": {
+      "min": { "$value": "24px", "$description": "WCAG 2.2 SC 2.5.8 minimum target size" }
+    },
+    "control": {
+      "sm": { "$value": "28px" },
+      "md": { "$value": "32px" },
+      "lg": { "$value": "40px" }
+    }
+  }
+}

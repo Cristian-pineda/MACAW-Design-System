@@ -1,0 +1,11 @@
+{
+  "badge": {
+    "$description": "Component aliases for Badge.",
+    "radius": { "$type": "dimension", "$value": "{shape.pill}" },
+    "height": {
+      "$type": "dimension",
+      "sm": { "$value": "{space.5}" },
+      "md": { "$value": "{space.6}" }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "macaw-lib",
+  "type": "registry:lib",
+  "title": "MACAW helpers",
+  "description": "cn, focusRing and NativeProps used by every ejected MACAW component.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/lib/cn.ts",
+      "type": "registry:lib",
+      "target": "lib/macaw/cn.ts",
+      "content": "import { cx } from 'class-variance-authority';\n\ntype ClassValue = Parameters<typeof cx>[number];\n\n/**\n * Joins class names. This is cva's `cx`, not tailwind-merge: MACAW components never accept\n * external classes, so nothing needs merging (DECISIONS.md #9).\n */\nexport function cn(...inputs: ClassValue[]): string {\n  return cx(...inputs);\n}\n"
+    },
+    {
+      "path": "registry/macaw/lib/focus.ts",
+      "type": "registry:lib",
+      "target": "lib/macaw/focus.ts",
+      "content": "/**\n * The one focus style every interactive component uses (DECISIONS.md #8).\n * Rendered with `outline` so it survives forced-colors mode; ring colour meets 3:1 on every surface.\n */\nexport const focusRing =\n  'outline-none focus-visible:outline-focus focus-visible:outline-offset-focus focus-visible:outline-solid focus-visible:outline-focus-ring';\n"
+    },
+    {
+      "path": "registry/macaw/lib/types.ts",
+      "type": "registry:lib",
+      "target": "lib/macaw/types.ts",
+      "content": "import type * as React from 'react';\n\n/**\n * Native props for an element minus the attributes MACAW components never expose:\n * className and style (DECISIONS.md #9) and the legacy `color` attribute.\n */\nexport type NativeProps<T extends keyof React.JSX.IntrinsicElements> = Omit<\n  React.ComponentPropsWithoutRef<T>,\n  'className' | 'style' | 'color'\n>;\n"
+    }
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0"
+    }
+  }
+}

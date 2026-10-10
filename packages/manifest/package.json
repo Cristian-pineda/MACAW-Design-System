@@ -1,0 +1,48 @@
+{
+  "name": "@macaw-ds/manifest",
+  "version": "0.0.0",
+  "description": "The MACAW component manifest: schema, loader and snippet builder shared by the docs, CLI, MCP server and CI",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git",
+    "directory": "packages/manifest"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./schema.json": "./schema/manifest.schema.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "schema",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown && tsx scripts/emit-schema.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@macaw-ds/eslint-config": "workspace:*",
+    "@types/node": "^24.0.0",
+    "tsdown": "^0.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

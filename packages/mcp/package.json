@@ -1,0 +1,49 @@
+{
+  "name": "@macaw-ds/mcp",
+  "version": "0.0.0",
+  "description": "MCP server for the MACAW design system: list_components, get_component, get_tokens, validate",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git",
+    "directory": "packages/mcp"
+  },
+  "type": "module",
+  "bin": {
+    "macaw-mcp": "./dist/server.js"
+  },
+  "files": [
+    "dist",
+    "registry",
+    "styles",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsx scripts/copy-registry.ts && tsdown",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@macaw-ds/eslint-config": "workspace:^",
+    "@macaw-ds/tokens": "workspace:^",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "eslint": "^10.12.0",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsdown": "^0.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

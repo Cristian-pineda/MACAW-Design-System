@@ -1,0 +1,15 @@
+{
+  "duration": {
+    "$type": "duration",
+    "instant": { "$value": "0ms" },
+    "fast": { "$value": "100ms" },
+    "base": { "$value": "160ms" },
+    "slow": { "$value": "240ms" }
+  },
+  "ease": {
+    "$type": "cubicBezier",
+    "standard": { "$value": [0.2, 0, 0, 1] },
+    "enter": { "$value": [0, 0, 0.2, 1] },
+    "exit": { "$value": [0.4, 0, 1, 1] }
+  }
+}

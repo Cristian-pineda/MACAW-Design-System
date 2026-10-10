@@ -1,0 +1,206 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "title": "Badge",
+  "description": "A short, non-interactive status label such as Paid, Overdue or Draft. Not a button, not a counter.",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://macaw-design-system.vercel.app/r/macaw-lib.json",
+    "https://macaw-design-system.vercel.app/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/ui/badge.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/macaw/badge.tsx",
+      "content": "import { cva, type VariantProps } from 'class-variance-authority';\nimport type * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nconst TONES = ['neutral', 'success', 'warning', 'critical', 'info', 'accent'] as const;\nexport type BadgeTone = (typeof TONES)[number];\n\nexport const badgeVariants = cva(\n  'inline-flex shrink-0 items-center rounded-pill border font-sans whitespace-nowrap',\n  {\n    variants: {\n      tone: Object.fromEntries(TONES.map((t) => [t, ''])) as Record<BadgeTone, string>,\n      variant: {\n        soft: 'border-transparent',\n        solid: 'border-transparent',\n        outline: 'bg-transparent',\n      },\n      size: { sm: 'h-5 gap-1 px-1.5 text-caption', md: 'h-6 gap-1.5 px-2 text-label-sm' },\n    },\n    compoundVariants: [\n      { tone: 'neutral', variant: 'soft', class: 'bg-status-neutral-bg text-status-neutral-fg' },\n      { tone: 'success', variant: 'soft', class: 'bg-status-success-bg text-status-success-fg' },\n      { tone: 'warning', variant: 'soft', class: 'bg-status-warning-bg text-status-warning-fg' },\n      { tone: 'critical', variant: 'soft', class: 'bg-status-critical-bg text-status-critical-fg' },\n      { tone: 'info', variant: 'soft', class: 'bg-status-info-bg text-status-info-fg' },\n      { tone: 'accent', variant: 'soft', class: 'bg-status-accent-bg text-status-accent-fg' },\n      {\n        tone: 'neutral',\n        variant: 'solid',\n        class: 'bg-status-neutral-solid text-status-neutral-solid-fg',\n      },\n      {\n        tone: 'success',\n        variant: 'solid',\n        class: 'bg-status-success-solid text-status-success-solid-fg',\n      },\n      {\n        tone: 'warning',\n        variant: 'solid',\n        class: 'bg-status-warning-solid text-status-warning-solid-fg',\n      },\n      {\n        tone: 'critical',\n        variant: 'solid',\n        class: 'bg-status-critical-solid text-status-critical-solid-fg',\n      },\n      { tone: 'info', variant: 'solid', class: 'bg-status-info-solid text-status-info-solid-fg' },\n      {\n        tone: 'accent',\n        variant: 'solid',\n        class: 'bg-status-accent-solid text-status-accent-solid-fg',\n      },\n      {\n        tone: 'neutral',\n        variant: 'outline',\n        class: 'border-status-neutral-line text-status-neutral-fg',\n      },\n      {\n        tone: 'success',\n        variant: 'outline',\n        class: 'border-status-success-line text-status-success-fg',\n      },\n      {\n        tone: 'warning',\n        variant: 'outline',\n        class: 'border-status-warning-line text-status-warning-fg',\n      },\n      {\n        tone: 'critical',\n        variant: 'outline',\n        class: 'border-status-critical-line text-status-critical-fg',\n      },\n      { tone: 'info', variant: 'outline', class: 'border-status-info-line text-status-info-fg' },\n      {\n        tone: 'accent',\n        variant: 'outline',\n        class: 'border-status-accent-line text-status-accent-fg',\n      },\n    ],\n    defaultVariants: { tone: 'neutral', variant: 'soft', size: 'md' },\n  },\n);\n\nconst DOT: Record<BadgeTone, string> = {\n  neutral: 'bg-status-neutral',\n  success: 'bg-status-success',\n  warning: 'bg-status-warning',\n  critical: 'bg-status-critical',\n  info: 'bg-status-info',\n  accent: 'bg-status-accent',\n};\n\nexport interface BadgeProps extends NativeProps<'span'>, VariantProps<typeof badgeVariants> {\n  /** A small leading dot in the tone colour. Use for live or state indicators (\"Active\"). */\n  dot?: boolean;\n  children: React.ReactNode;\n}\n\n/** A short status label: Paid, Overdue, Draft. Text carries the meaning; colour reinforces it. */\nexport function Badge({\n  tone = 'neutral',\n  variant,\n  size,\n  dot = false,\n  children,\n  ...rest\n}: BadgeProps) {\n  const resolvedTone: BadgeTone = tone ?? 'neutral';\n  return (\n    <span className={cn(badgeVariants({ tone: resolvedTone, variant, size }))} {...rest}>\n      {dot && (\n        <span\n          aria-hidden=\"true\"\n          className={cn('size-1.5 shrink-0 rounded-full', DOT[resolvedTone])}\n        />\n      )}\n      {children}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "docs": "Ejected from @macaw-ds/ui@0.0.0. The label is a word or two that states the status in plain language. Tone follows meaning, not decoration: critical means failed or overdue, never \"important\".",
+  "categories": [
+    "feedback"
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "package": "@macaw-ds/ui",
+      "status": "beta",
+      "slug": "badge",
+      "manifest": {
+        "$schema": "../../../manifest/schema/manifest.schema.json",
+        "name": "Badge",
+        "slug": "badge",
+        "package": "@macaw-ds/ui",
+        "status": "beta",
+        "since": "0.1.0",
+        "category": "feedback",
+        "purpose": "A short, non-interactive status label such as Paid, Overdue or Draft. Not a button, not a counter.",
+        "description": "Status labels for records and rows. Six tones map to the status colour tokens; three variants trade emphasis for density. The text carries the meaning so colour is never the only signal.",
+        "exports": [
+          "Badge",
+          "badgeVariants"
+        ],
+        "props": {
+          "tone": {
+            "type": "enum",
+            "values": [
+              "neutral",
+              "success",
+              "warning",
+              "critical",
+              "info",
+              "accent"
+            ],
+            "default": "neutral",
+            "required": false,
+            "description": "Meaning. success for settled or active, warning for pending or attention, critical for failed or overdue, info for informational, accent for highlighted, neutral for draft or archived.",
+            "control": "select"
+          },
+          "variant": {
+            "type": "enum",
+            "values": [
+              "soft",
+              "solid",
+              "outline"
+            ],
+            "default": "soft",
+            "required": false,
+            "description": "Emphasis. soft (tinted) is the default in tables; solid for a single prominent status on a detail page; outline for the quietest option."
+          },
+          "size": {
+            "type": "enum",
+            "values": [
+              "sm",
+              "md"
+            ],
+            "default": "md",
+            "required": false,
+            "description": "20 or 24 px tall. sm inside dense table rows."
+          },
+          "dot": {
+            "type": "boolean",
+            "default": false,
+            "required": false,
+            "description": "Leading dot in the tone colour, for live or state indicators.",
+            "a11y": "Decorative (aria-hidden). The text must still say the state."
+          },
+          "children": {
+            "type": "node",
+            "default": "Paid",
+            "required": false,
+            "description": "The status word or two."
+          }
+        },
+        "slots": [
+          "children"
+        ],
+        "tokens": [
+          "badge.radius",
+          "badge.height.sm",
+          "badge.height.md",
+          "color.status.success-bg",
+          "color.status.success-fg",
+          "color.status.success-solid",
+          "color.status.success-solid-fg",
+          "color.status.success-line",
+          "color.status.warning-bg",
+          "color.status.warning-fg",
+          "color.status.critical-bg",
+          "color.status.critical-fg",
+          "color.status.info-bg",
+          "color.status.info-fg",
+          "color.status.neutral-bg",
+          "color.status.neutral-fg",
+          "color.status.accent-bg",
+          "color.status.accent-fg",
+          "text.size.label-sm",
+          "text.size.caption"
+        ],
+        "a11y": {
+          "role": "none (a span with text)",
+          "keyboard": [],
+          "name": "The text content. A badge has no role; it reads as part of the surrounding text.",
+          "notes": [
+            "Every tone pairing meets 4.5:1 for text in both themes.",
+            "Colour reinforces the word; it never replaces it. \"Overdue\" in critical, not a red dot alone.",
+            "Badges are not interactive. For a filter chip or a removable tag, a different component is needed (not in the system yet)."
+          ]
+        },
+        "budget": {
+          "gzip": 2500
+        },
+        "rules": [
+          "The label is a word or two that states the status in plain language.",
+          "Tone follows meaning, not decoration: critical means failed or overdue, never \"important\".",
+          "One badge per status; do not stack badges to combine meanings."
+        ],
+        "dos": [
+          "Use soft badges in tables and solid on a record's header.",
+          "Use dot with neutral for \"Draft\" and with success for \"Active\"."
+        ],
+        "donts": [
+          "Do not make badges clickable; they have no role and no focus style.",
+          "Do not use badges as counters; a count is Text numeric."
+        ],
+        "examples": [
+          {
+            "name": "Default",
+            "props": {
+              "children": "Paid",
+              "tone": "success"
+            }
+          },
+          {
+            "name": "Overdue",
+            "props": {
+              "children": "Overdue",
+              "tone": "critical"
+            }
+          },
+          {
+            "name": "Solid",
+            "props": {
+              "children": "Refunded",
+              "tone": "info",
+              "variant": "solid"
+            }
+          },
+          {
+            "name": "Outline",
+            "props": {
+              "children": "Draft",
+              "tone": "neutral",
+              "variant": "outline"
+            }
+          },
+          {
+            "name": "With dot",
+            "props": {
+              "children": "Active",
+              "tone": "success",
+              "dot": true
+            }
+          },
+          {
+            "name": "Small",
+            "props": {
+              "children": "Pending",
+              "tone": "warning",
+              "size": "sm"
+            }
+          }
+        ],
+        "registryDependencies": [],
+        "dependencies": [
+          "class-variance-authority"
+        ],
+        "related": [
+          "text"
+        ]
+      }
+    }
+  }
+}

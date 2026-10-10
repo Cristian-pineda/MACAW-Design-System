@@ -1,0 +1,28 @@
+export const meta = { title: 'Badge', description: 'Short status labels: Paid, Overdue, Draft.' };
+
+## When to use
+
+A record's state, shown as a word or two: Paid, Pending, Overdue, Refunded, Draft, Active. Badges sit in table cells, card headers and detail pages next to the thing they describe.
+
+## When not to use
+
+- **Counts.** "12 unread" is `Text numeric`, not a badge.
+- **Actions or filters.** Badges are not interactive. A removable chip or a filter toggle is a different component (not in the system yet; report `not-in-system`).
+- **Emphasis.** A badge means a state. Do not use `critical` to mean "important".
+
+## Tone means something
+
+| Tone       | Means                              |
+| ---------- | ---------------------------------- |
+| `success`  | Settled, paid, active              |
+| `warning`  | Pending, needs attention, expiring |
+| `critical` | Failed, overdue, blocked           |
+| `info`     | Refunded, informational            |
+| `accent`   | Highlighted, new                   |
+| `neutral`  | Draft, archived, inactive          |
+
+## Accessibility
+
+- The word carries the meaning; colour only reinforces it. Every tone pairing meets 4.5:1 in both themes.
+- The dot is decorative and hidden from assistive technology.
+- A badge has no role and is not focusable. Screen readers read it inline with the surrounding text.

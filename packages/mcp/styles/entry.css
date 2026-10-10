@@ -1,0 +1,3 @@
+/* Tailwind entry used by the validate tool so unknown classes (bg-red-500, bg-action-primry) are reported. */
+@import 'tailwindcss';
+@import '@macaw-ds/tokens/theme.css';

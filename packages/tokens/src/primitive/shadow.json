@@ -1,0 +1,71 @@
+{
+  "shadow": {
+    "$type": "shadow",
+    "$description": "Low-alpha, neutral-tinted elevation. Borders carry most of the structure; shadows are secondary.",
+    "xs": {
+      "$value": [
+        {
+          "color": "oklch(0.15 0.012 250 / 0.06)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "sm": {
+      "$value": [
+        {
+          "color": "oklch(0.15 0.012 250 / 0.06)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        },
+        {
+          "color": "oklch(0.15 0.012 250 / 0.06)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "-1px"
+        }
+      ]
+    },
+    "md": {
+      "$value": [
+        {
+          "color": "oklch(0.15 0.012 250 / 0.08)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "12px",
+          "spread": "-2px"
+        },
+        {
+          "color": "oklch(0.15 0.012 250 / 0.05)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "4px",
+          "spread": "-1px"
+        }
+      ]
+    },
+    "lg": {
+      "$value": [
+        {
+          "color": "oklch(0.15 0.012 250 / 0.12)",
+          "offsetX": "0px",
+          "offsetY": "12px",
+          "blur": "32px",
+          "spread": "-4px"
+        },
+        {
+          "color": "oklch(0.15 0.012 250 / 0.06)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "8px",
+          "spread": "-2px"
+        }
+      ]
+    }
+  }
+}

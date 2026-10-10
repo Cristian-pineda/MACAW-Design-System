@@ -1,0 +1,15 @@
+node_modules
+dist
+.next
+.turbo
+pnpm-lock.yaml
+registry/
+plugin/skills/using-macaw/reference/
+packages/manifest/schema/
+packages/icons/src/generated/
+packages/cli/templates/
+packages/mcp/registry/
+apps/docs/public/r/
+e2e/__screenshots__/
+CHANGELOG.md
+LICENSE

@@ -1,0 +1,52 @@
+{
+  "name": "@macaw-ds/tokens",
+  "version": "0.0.0",
+  "description": "MACAW design tokens: DTCG JSON compiled to CSS variables, a Tailwind v4 theme and TypeScript constants",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git",
+    "directory": "packages/tokens"
+  },
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/tokens.js",
+  "types": "./dist/tokens.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./meta.json": "./dist/tokens.meta.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsx sd.config.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@types/culori": "^4.0.1",
+    "@types/node": "^24.0.0",
+    "culori": "^4.0.2",
+    "style-dictionary": "^5.6.1",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "^5.0.3",
+    "vite": "^8.3.4",
+    "@macaw-ds/eslint-config": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

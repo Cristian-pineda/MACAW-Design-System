@@ -12,14 +12,14 @@ pnpm dev                                 # docs site at http://localhost:3000
 
 ## Scripts
 
-| Script | What it does |
-|---|---|
-| `pnpm dev` | Runs the docs site (and watches packages) |
-| `pnpm build` | Builds every package, the registry, the plugin reference files and the docs |
-| `pnpm verify` | Lint, typecheck, unit tests, builds, manifest checks, registry and plugin builds, bundle budgets. Must pass before a PR. |
-| `pnpm test:e2e` | Playwright: axe on every page, keyboard paths, visual regression (CI generates baselines in the Playwright container) |
-| `pnpm changeset` | Records a change for the release train. Required for any change under `packages/`. |
-| `pnpm smoke:consumer` | Creates a fresh Next.js app in a temp dir and installs the packed packages |
+| Script                | What it does                                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm dev`            | Runs the docs site (and watches packages)                                                                                |
+| `pnpm build`          | Builds every package, the registry, the plugin reference files and the docs                                              |
+| `pnpm verify`         | Lint, typecheck, unit tests, builds, manifest checks, registry and plugin builds, bundle budgets. Must pass before a PR. |
+| `pnpm test:e2e`       | Playwright: axe on every page, keyboard paths, visual regression (CI generates baselines in the Playwright container)    |
+| `pnpm changeset`      | Records a change for the release train. Required for any change under `packages/`.                                       |
+| `pnpm smoke:consumer` | Creates a fresh Next.js app in a temp dir and installs the packed packages                                               |
 
 ## Adding a component
 

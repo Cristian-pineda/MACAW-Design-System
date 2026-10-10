@@ -1,0 +1,22 @@
+{
+  "card": {
+    "$description": "Component aliases for Card.",
+    "radius": { "$type": "dimension", "$value": "{shape.container}" },
+    "padding": {
+      "$type": "dimension",
+      "sm": { "$value": "{space.4}" },
+      "md": { "$value": "{layout.card-padding}" }
+    },
+    "bg": {
+      "$type": "color",
+      "default": { "$value": "{color.surface.default}" },
+      "raised": { "$value": "{color.surface.raised}" }
+    },
+    "line": { "$type": "color", "$value": "{color.line.default}" },
+    "shadow": {
+      "$type": "shadow",
+      "flat": { "$value": "{elevation.flat}" },
+      "raised": { "$value": "{elevation.raised}" }
+    }
+  }
+}

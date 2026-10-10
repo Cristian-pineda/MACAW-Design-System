@@ -1,3 +1,59 @@
 {
-  "packageManager": "pnpm@11.28.5+sha512.484563d30b4c2ad27cb48aa94ff2b302dbcebc8ff6bf28816c2589886e146ce7f76f354f3bc1a438e6f5e9768c302aa0a6f7add8232903cd4cf81426cbc14d9e"
+  "name": "macaw-design-system",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "MACAW: an agentic design system for financial software",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cristian-pineda/MACAW-Design-System.git"
+  },
+  "engines": {
+    "node": ">=24.11",
+    "pnpm": ">=11"
+  },
+  "packageManager": "pnpm@11.28.5+sha512.484563d30b4c2ad27cb48aa94ff2b302dbcebc8ff6bf28816c2589886e146ce7f76f354f3bc1a438e6f5e9768c302aa0a6f7add8232903cd4cf81426cbc14d9e",
+  "scripts": {
+    "dev": "turbo run dev --filter=docs",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "size": "turbo run size",
+    "manifest:check": "tsx tooling/manifest/check.ts",
+    "registry:build": "tsx tooling/registry/build.ts",
+    "plugin:build": "tsx tooling/plugin/build-reference.ts",
+    "generated:check": "git diff --exit-code --stat -- registry plugin/skills/using-macaw/reference packages/manifest/schema packages/icons/src/generated",
+    "verify": "turbo run build lint typecheck test size manifest:check registry:build plugin:build && pnpm generated:check",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "changeset": "changeset",
+    "release": "turbo run build --filter='./packages/*' && changeset publish",
+    "smoke:consumer": "bash tooling/smoke/consumer.sh"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
+    "@eslint/js": "^10.0.1",
+    "@macaw-ds/eslint-config": "workspace:*",
+    "@macaw-ds/manifest": "workspace:*",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^24.0.0",
+    "ajv": "^8.20.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-better-tailwindcss": "^4.9.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "tsx": "^4.23.15",
+    "turbo": "^2.11.7",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.71.1",
+    "zod": "^4.6.5"
+  }
 }

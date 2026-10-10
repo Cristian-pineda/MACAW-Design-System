@@ -1,0 +1,39 @@
+export const meta = {
+  title: 'Input',
+  description: 'Single-line text entry, labelled by contract.',
+};
+
+## When to use
+
+Short, free-form values: a name, an email, an invoice reference, an amount. Pair it with `Text as="label"` above and, when needed, a caption or an error below.
+
+## When not to use
+
+- **Multi-line text.** Textarea is a later component.
+- **Dates and money with formatting.** DatePicker and NumberField are later components built on `@internationalized/*`. Until then, format amounts in the consumer and use `align="end"` with `inputMode="decimal"`.
+- **Choosing from options.** Select is a later component.
+
+## Anatomy
+
+The field, an optional start adornment (currency symbol, icon) and an optional end adornment (unit). Adornments are decorative; the label says what the unit is.
+
+## Form row recipe
+
+```tsx
+<div className="flex flex-col gap-1">
+  <Text as="label" role="label-sm" htmlFor="amount">
+    Amount (USD)
+  </Text>
+  <Input id="amount" align="end" inputMode="decimal" startAdornment="$" endAdornment="USD" />
+  <Text id="amount-help" role="caption" tone="muted">
+    Charged on the 1st of each month.
+  </Text>
+</div>
+```
+
+## Accessibility
+
+- TypeScript requires `id` (for a visible label), `aria-label` or `aria-labelledby`. The visible label is the default choice.
+- `invalid` sets `aria-invalid`; link the message with `aria-describedby` so it is announced.
+- The border meets 3:1 against the field in both themes; placeholder text meets 4.5:1 but is never the label.
+- Read-only fields stay focusable so their value can be read and copied.

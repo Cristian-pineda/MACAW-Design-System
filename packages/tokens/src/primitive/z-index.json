@@ -1,0 +1,14 @@
+{
+  "z": {
+    "$type": "number",
+    "base": { "$value": 0 },
+    "raised": { "$value": 10 },
+    "sticky": { "$value": 100 },
+    "dropdown": { "$value": 1000 },
+    "overlay": { "$value": 1100 },
+    "modal": { "$value": 1200 },
+    "popover": { "$value": 1300 },
+    "toast": { "$value": 1400 },
+    "tooltip": { "$value": 1500 }
+  }
+}

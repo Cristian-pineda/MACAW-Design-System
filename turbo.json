@@ -1,0 +1,60 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "tui",
+  "globalEnv": ["REGISTRY_BASE_URL", "NODE_ENV"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "schema/**", "src/generated/**"]
+    },
+    "@macaw-ds/cli#build": {
+      "dependsOn": ["^build", "//#plugin:build"],
+      "outputs": ["dist/**", "templates/**"]
+    },
+    "@macaw-ds/mcp#build": {
+      "dependsOn": ["^build", "//#registry:build"],
+      "outputs": ["dist/**", "registry/**"]
+    },
+    "docs#build": {
+      "dependsOn": ["^build", "//#registry:build"],
+      "outputs": [".next/**", "!.next/cache/**", "public/r/**"]
+    },
+    "//#manifest:check": {
+      "dependsOn": ["@macaw-ds/ui#build", "@macaw-ds/icons#build", "@macaw-ds/tokens#build", "@macaw-ds/manifest#build"]
+    },
+    "//#registry:build": {
+      "dependsOn": ["//#manifest:check"],
+      "outputs": ["registry/**"]
+    },
+    "//#plugin:build": {
+      "dependsOn": ["//#registry:build"],
+      "outputs": ["plugin/skills/using-macaw/reference/**"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "@macaw-ds/tokens#test": {
+      "dependsOn": ["build"]
+    },
+    "@macaw-ds/cli#test": {
+      "dependsOn": ["build"]
+    },
+    "@macaw-ds/mcp#test": {
+      "dependsOn": ["build"]
+    },
+    "size": {
+      "dependsOn": ["build"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build", "//#registry:build"]
+    }
+  }
+}

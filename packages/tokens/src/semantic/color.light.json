@@ -1,0 +1,297 @@
+{
+  "color": {
+    "$type": "color",
+    "surface": {
+      "$description": "Backgrounds. canvas is the page; default is the card or panel on it.",
+      "canvas": {
+        "$value": "{color.neutral.50}"
+      },
+      "default": {
+        "$value": "{color.neutral.0}"
+      },
+      "raised": {
+        "$value": "{color.neutral.0}"
+      },
+      "sunken": {
+        "$value": "{color.neutral.100}"
+      },
+      "overlay": {
+        "$value": "{color.neutral.0}"
+      },
+      "inverse": {
+        "$value": "{color.neutral.950}"
+      }
+    },
+    "fg": {
+      "$description": "Foreground (text and icon) colours. primary and numeric meet 7:1 on surface.default.",
+      "primary": {
+        "$value": "{color.neutral.950}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.700}"
+      },
+      "muted": {
+        "$value": "{color.neutral.600}"
+      },
+      "placeholder": {
+        "$value": "{color.neutral.500}"
+      },
+      "disabled": {
+        "$value": "{color.neutral.400}"
+      },
+      "inverse": {
+        "$value": "{color.neutral.0}"
+      },
+      "numeric": {
+        "$value": "{color.neutral.1000}",
+        "$description": "Financial numerals. 7:1 minimum on every surface."
+      },
+      "link": {
+        "$value": "{color.accent.700}"
+      },
+      "link-hover": {
+        "$value": "{color.accent.800}"
+      },
+      "on-accent": {
+        "$value": "{color.neutral.0}"
+      }
+    },
+    "line": {
+      "$description": "Borders and dividers. strong meets 3:1 non-text contrast for form boundaries.",
+      "subtle": {
+        "$value": "{color.neutral.100}"
+      },
+      "default": {
+        "$value": "{color.neutral.200}"
+      },
+      "strong": {
+        "$value": "{color.neutral.400}"
+      },
+      "inverse": {
+        "$value": "{color.neutral.700}"
+      }
+    },
+    "action": {
+      "$description": "Interactive fills for buttons and similar controls.",
+      "primary": {
+        "$value": "{color.accent.600}"
+      },
+      "primary-hover": {
+        "$value": "{color.accent.700}"
+      },
+      "primary-active": {
+        "$value": "{color.accent.800}"
+      },
+      "primary-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.0}"
+      },
+      "secondary-hover": {
+        "$value": "{color.neutral.50}"
+      },
+      "secondary-active": {
+        "$value": "{color.neutral.100}"
+      },
+      "secondary-fg": {
+        "$value": "{color.neutral.950}"
+      },
+      "secondary-line": {
+        "$value": "{color.neutral.400}"
+      },
+      "ghost-hover": {
+        "$value": "{color.neutral.100}"
+      },
+      "ghost-active": {
+        "$value": "{color.neutral.200}"
+      },
+      "destructive": {
+        "$value": "{color.critical.600}"
+      },
+      "destructive-hover": {
+        "$value": "{color.critical.700}"
+      },
+      "destructive-active": {
+        "$value": "{color.critical.800}"
+      },
+      "destructive-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "disabled": {
+        "$value": "{color.neutral.200}"
+      },
+      "disabled-fg": {
+        "$value": "{color.neutral.500}"
+      }
+    },
+    "status": {
+      "$description": "Semantic status colours. *-bg with *-fg is the soft pairing; *-solid with *-solid-fg is the filled pairing.",
+      "neutral": {
+        "$value": "{color.neutral.600}"
+      },
+      "neutral-bg": {
+        "$value": "{color.neutral.100}"
+      },
+      "neutral-fg": {
+        "$value": "{color.neutral.800}"
+      },
+      "neutral-line": {
+        "$value": "{color.neutral.400}"
+      },
+      "neutral-solid": {
+        "$value": "{color.neutral.700}"
+      },
+      "neutral-solid-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "success": {
+        "$value": "{color.success.600}"
+      },
+      "success-bg": {
+        "$value": "{color.success.50}"
+      },
+      "success-fg": {
+        "$value": "{color.success.800}"
+      },
+      "success-line": {
+        "$value": "{color.success.500}"
+      },
+      "success-solid": {
+        "$value": "{color.success.700}"
+      },
+      "success-solid-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "warning": {
+        "$value": "{color.warning.600}"
+      },
+      "warning-bg": {
+        "$value": "{color.warning.50}"
+      },
+      "warning-fg": {
+        "$value": "{color.warning.800}"
+      },
+      "warning-line": {
+        "$value": "{color.warning.600}"
+      },
+      "warning-solid": {
+        "$value": "{color.warning.300}"
+      },
+      "warning-solid-fg": {
+        "$value": "{color.neutral.1000}"
+      },
+      "critical": {
+        "$value": "{color.critical.600}"
+      },
+      "critical-bg": {
+        "$value": "{color.critical.50}"
+      },
+      "critical-fg": {
+        "$value": "{color.critical.800}"
+      },
+      "critical-line": {
+        "$value": "{color.critical.500}"
+      },
+      "critical-solid": {
+        "$value": "{color.critical.600}"
+      },
+      "critical-solid-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "info": {
+        "$value": "{color.info.600}"
+      },
+      "info-bg": {
+        "$value": "{color.info.50}"
+      },
+      "info-fg": {
+        "$value": "{color.info.800}"
+      },
+      "info-line": {
+        "$value": "{color.info.500}"
+      },
+      "info-solid": {
+        "$value": "{color.info.600}"
+      },
+      "info-solid-fg": {
+        "$value": "{color.neutral.0}"
+      },
+      "accent": {
+        "$value": "{color.accent.600}"
+      },
+      "accent-bg": {
+        "$value": "{color.accent.50}"
+      },
+      "accent-fg": {
+        "$value": "{color.accent.800}"
+      },
+      "accent-line": {
+        "$value": "{color.accent.500}"
+      },
+      "accent-solid": {
+        "$value": "{color.accent.600}"
+      },
+      "accent-solid-fg": {
+        "$value": "{color.neutral.0}"
+      }
+    },
+    "field": {
+      "$description": "Form fields.",
+      "bg": {
+        "$value": "{color.neutral.0}"
+      },
+      "bg-hover": {
+        "$value": "{color.neutral.50}"
+      },
+      "bg-disabled": {
+        "$value": "{color.neutral.100}"
+      },
+      "line": {
+        "$value": "{color.neutral.400}"
+      },
+      "line-hover": {
+        "$value": "{color.neutral.500}"
+      },
+      "line-invalid": {
+        "$value": "{color.critical.600}"
+      },
+      "line-disabled": {
+        "$value": "{color.neutral.300}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.accent.600}",
+        "$description": "Focus indicator. 3:1 minimum against every surface."
+      }
+    },
+    "data": {
+      "$description": "Ordinal palette for charts and series, in order of use.",
+      "1": {
+        "$value": "{color.accent.600}"
+      },
+      "2": {
+        "$value": "{color.info.500}"
+      },
+      "3": {
+        "$value": "{color.success.500}"
+      },
+      "4": {
+        "$value": "{color.warning.600}"
+      },
+      "5": {
+        "$value": "{color.critical.500}"
+      },
+      "6": {
+        "$value": "{color.neutral.500}"
+      },
+      "positive": {
+        "$value": "{color.success.700}"
+      },
+      "negative": {
+        "$value": "{color.critical.700}"
+      }
+    }
+  }
+}

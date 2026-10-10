@@ -1,0 +1,9 @@
+{
+  "shape": {
+    "$type": "dimension",
+    "control": { "$value": "{radius.md}", "$description": "Buttons, inputs, selects." },
+    "container": { "$value": "{radius.lg}", "$description": "Cards, panels, popovers." },
+    "overlay": { "$value": "{radius.xl}", "$description": "Dialogs, sheets." },
+    "pill": { "$value": "{radius.full}" }
+  }
+}

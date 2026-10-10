@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build, lint, typecheck, test, size
+        run: pnpm turbo run build lint typecheck test size
+      - name: Manifest, registry and plugin checks
+        run: |
+          pnpm manifest:check
+          pnpm registry:build
+          pnpm plugin:build
+          pnpm generated:check
+      - name: Format check
+        run: pnpm format:check
+      - name: Changeset status
+        if: github.event_name == 'pull_request'
+        run: pnpm changeset status --since=origin/main

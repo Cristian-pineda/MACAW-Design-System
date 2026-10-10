@@ -1,0 +1,207 @@
+{
+  "name": "Button",
+  "slug": "button",
+  "package": "@macaw-ds/ui",
+  "status": "beta",
+  "since": "0.1.0",
+  "category": "primitive",
+  "purpose": "Triggers an action. Not navigation; for links use asChild with an anchor.",
+  "description": "The action primitive. Four variants carry the weight of an action (one primary per view), three sizes match the control heights, and `loading` turns the button busy without losing its label. Icon-only buttons require an accessible name at the type level.",
+  "exports": [
+    "Button",
+    "buttonVariants"
+  ],
+  "props": {
+    "variant": {
+      "type": "enum",
+      "values": [
+        "primary",
+        "secondary",
+        "ghost",
+        "destructive"
+      ],
+      "default": "primary",
+      "required": false,
+      "description": "Visual weight. primary is the one main action on a view; secondary for the rest; ghost for low-emphasis actions in toolbars and rows; destructive for irreversible actions, always behind confirmation."
+    },
+    "size": {
+      "type": "enum",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "default": "md",
+      "required": false,
+      "description": "28, 32 or 40 px tall. md is the default for forms and toolbars; sm inside table rows; lg for page-level calls to action.",
+      "a11y": "All sizes meet the 24 px minimum target size (WCAG 2.2 2.5.8)."
+    },
+    "loading": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Shows a spinner in place of the start icon, disables the button and sets aria-busy. The label stays visible.",
+      "a11y": "aria-busy=true is announced; the label is not replaced, so the purpose remains readable."
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Not interactive. Prefer explaining why nearby.",
+      "a11y": "Disabled buttons are skipped in the tab order; if the reason matters, show it as text."
+    },
+    "iconOnly": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Square button whose only child is an Icon. Requires aria-label.",
+      "a11y": "TypeScript requires aria-label when iconOnly is true."
+    },
+    "asChild": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Render the child element (an anchor, a Next.js Link) with the button's styling.",
+      "control": "none"
+    },
+    "iconStart": {
+      "type": "node",
+      "required": false,
+      "description": "Decorative Icon before the label.",
+      "control": "none"
+    },
+    "iconEnd": {
+      "type": "node",
+      "required": false,
+      "description": "Decorative Icon after the label.",
+      "control": "none"
+    },
+    "children": {
+      "type": "node",
+      "default": "Pay invoice",
+      "required": false,
+      "description": "The label. Verb first: \"Pay invoice\", \"Export\"."
+    }
+  },
+  "slots": [
+    "children",
+    "iconStart",
+    "iconEnd"
+  ],
+  "tokens": [
+    "button.bg.primary",
+    "button.bg.primary-hover",
+    "button.bg.primary-active",
+    "button.fg.primary",
+    "button.bg.secondary",
+    "button.line.secondary",
+    "button.bg.ghost-hover",
+    "button.bg.destructive",
+    "button.radius",
+    "button.height.sm",
+    "button.height.md",
+    "button.height.lg",
+    "color.action.disabled",
+    "color.action.disabled-fg",
+    "color.focus.ring",
+    "duration.fast",
+    "ease.standard",
+    "shadow.xs"
+  ],
+  "a11y": {
+    "role": "button (or the child's role with asChild)",
+    "keyboard": [
+      "Tab: focus",
+      "Enter, Space: activate",
+      "Disabled and loading buttons are removed from the tab order"
+    ],
+    "name": "From the visible label (children). Icon-only buttons take it from aria-label, which TypeScript requires.",
+    "notes": [
+      "Focus ring is 2 px outline with 2 px offset at 3:1 or better against every surface.",
+      "loading keeps the label visible and sets aria-busy; it never swaps the label for a spinner alone.",
+      "Use a real button for actions and an anchor (asChild) for navigation so assistive technology announces the right thing."
+    ]
+  },
+  "budget": {
+    "gzip": 4000
+  },
+  "rules": [
+    "One primary button per view. Everything else is secondary or ghost.",
+    "Label is a verb phrase: \"Pay invoice\", not \"OK\" or \"Submit\".",
+    "Icon-only buttons set iconOnly and aria-label.",
+    "Destructive actions sit behind a confirmation step.",
+    "Navigation uses asChild with an anchor; never a button with an onClick that routes."
+  ],
+  "dos": [
+    "Group a primary and a secondary button with gap-2, primary last in LTR layouts.",
+    "Use size=\"sm\" ghost buttons for row actions in tables."
+  ],
+  "donts": [
+    "Do not pass className or style; use a variant or propose one in DECISIONS.md.",
+    "Do not place two primary buttons side by side.",
+    "Do not use loading for operations under 300 ms; it flickers."
+  ],
+  "examples": [
+    {
+      "name": "Default",
+      "props": {
+        "children": "Pay invoice"
+      }
+    },
+    {
+      "name": "Secondary",
+      "props": {
+        "variant": "secondary",
+        "children": "Download PDF"
+      }
+    },
+    {
+      "name": "Ghost",
+      "props": {
+        "variant": "ghost",
+        "children": "Cancel"
+      }
+    },
+    {
+      "name": "Destructive",
+      "props": {
+        "variant": "destructive",
+        "children": "Void invoice"
+      }
+    },
+    {
+      "name": "Loading",
+      "props": {
+        "loading": true,
+        "children": "Processing"
+      }
+    },
+    {
+      "name": "Small",
+      "props": {
+        "size": "sm",
+        "variant": "secondary",
+        "children": "Remind"
+      }
+    },
+    {
+      "name": "Icon only",
+      "description": "Square, with a required accessible name.",
+      "props": {
+        "iconOnly": true,
+        "variant": "ghost",
+        "aria-label": "More actions"
+      }
+    }
+  ],
+  "registryDependencies": [],
+  "dependencies": [
+    "radix-ui",
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "related": [
+    "icon",
+    "card"
+  ]
+}

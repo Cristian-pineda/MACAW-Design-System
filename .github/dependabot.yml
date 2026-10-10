@@ -1,0 +1,44 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      next:
+        patterns: ['next', '@next/*', 'eslint-config-next']
+      tailwind:
+        patterns:
+          [
+            'tailwindcss',
+            '@tailwindcss/*',
+            'prettier-plugin-tailwindcss',
+            'eslint-plugin-better-tailwindcss',
+          ]
+      testing:
+        patterns:
+          [
+            'vitest',
+            'vite',
+            '@vitejs/*',
+            'jsdom',
+            '@testing-library/*',
+            'jest-axe',
+            '@types/jest-axe',
+            '@playwright/test',
+            '@axe-core/*',
+          ]
+      lint:
+        patterns: ['eslint', '@eslint/*', 'typescript-eslint', 'eslint-plugin-*', 'prettier']
+      build:
+        patterns: ['tsdown', 'turbo', '@changesets/*', 'tsx', 'size-limit', '@size-limit/*']
+    ignore:
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly

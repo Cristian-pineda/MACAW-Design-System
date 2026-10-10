@@ -1,0 +1,31 @@
+{
+  "input": {
+    "$description": "Component aliases for Input.",
+    "radius": { "$type": "dimension", "$value": "{shape.control}" },
+    "height": {
+      "$type": "dimension",
+      "sm": { "$value": "{size.control.sm}" },
+      "md": { "$value": "{size.control.md}" },
+      "lg": { "$value": "{size.control.lg}" }
+    },
+    "bg": {
+      "$type": "color",
+      "default": { "$value": "{color.field.bg}" },
+      "hover": { "$value": "{color.field.bg-hover}" },
+      "disabled": { "$value": "{color.field.bg-disabled}" }
+    },
+    "line": {
+      "$type": "color",
+      "default": { "$value": "{color.field.line}" },
+      "hover": { "$value": "{color.field.line-hover}" },
+      "invalid": { "$value": "{color.field.line-invalid}" },
+      "disabled": { "$value": "{color.field.line-disabled}" }
+    },
+    "fg": {
+      "$type": "color",
+      "default": { "$value": "{color.fg.primary}" },
+      "placeholder": { "$value": "{color.fg.placeholder}" },
+      "disabled": { "$value": "{color.fg.disabled}" }
+    }
+  }
+}

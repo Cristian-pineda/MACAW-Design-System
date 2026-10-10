@@ -1,0 +1,15 @@
+{
+  "name": "macaw",
+  "owner": { "name": "Cristian Pineda" },
+  "metadata": {
+    "description": "MACAW design system: skills, hooks, reviewer agent and MCP server for building financial UI with Claude"
+  },
+  "plugins": [
+    {
+      "name": "macaw",
+      "source": "./plugin",
+      "description": "Build UI with the MACAW design system: using-macaw skill, lint and verify hooks, macaw-reviewer agent, MCP server",
+      "category": "design"
+    }
+  ]
+}

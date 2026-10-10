@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "Cristian-pineda/MACAW-Design-System" }],
+  "commit": false,
+  "format": "auto",
+  "access": "public",
+  "baseBranch": "main",
+  "fixed": [["@macaw-ds/*"]],
+  "updateInternalDependencies": "patch",
+  "privatePackages": { "version": false, "tag": false },
+  "ignore": ["docs"]
+}

@@ -1,0 +1,4 @@
+/* Precompiled utilities for @macaw-ds/ui. Consumers import this after the token files. */
+@import '@macaw-ds/tokens/theme.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
+@source './';

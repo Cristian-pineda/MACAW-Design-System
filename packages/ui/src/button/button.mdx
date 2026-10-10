@@ -1,0 +1,31 @@
+export const meta = { title: 'Button', description: 'Triggers an action. One primary per view.' };
+
+## When to use
+
+Any action the user takes: pay, export, save, void. A button changes something; it does not take the user somewhere.
+
+## When not to use
+
+- **Navigation.** Use an anchor or your router's Link, wrapped with `asChild` if you want button styling.
+- **Toggles.** A setting that stays on or off is a Switch (coming in a later release), not a button.
+- **Menus.** A button that only opens a menu belongs to Dropdown Menu (coming later), which handles the aria wiring.
+
+## Choosing a variant
+
+| Variant       | Use for                                                          | Per view    |
+| ------------- | ---------------------------------------------------------------- | ----------- |
+| `primary`     | The one action the screen exists for                             | Exactly one |
+| `secondary`   | Alternatives next to the primary                                 | Any         |
+| `ghost`       | Low-emphasis actions in toolbars, table rows and dialogs' cancel | Any         |
+| `destructive` | Irreversible actions, always behind a confirmation               | Rare        |
+
+## Anatomy
+
+An optional start icon, the label, an optional end icon. When `loading` is true the start icon becomes a spinner, the button is disabled, and the label stays where it was so nothing shifts.
+
+## Accessibility
+
+- The accessible name is the label. Icon-only buttons require `aria-label`, and TypeScript enforces it when `iconOnly` is set.
+- Enter and Space activate. Disabled and loading buttons leave the tab order.
+- `loading` sets `aria-busy`. The label is never replaced by the spinner alone.
+- The focus ring is the shared 2 px outline at 3:1 against every surface, including in forced-colors mode.
