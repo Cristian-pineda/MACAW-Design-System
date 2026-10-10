@@ -49,7 +49,7 @@ jobs:
           git add e2e/__screenshots__
           git commit -m "test: update visual baselines" || echo "no changes"
           git push
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
