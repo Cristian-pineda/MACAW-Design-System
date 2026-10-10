@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build outputs
+dist/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+.vitest/
+playwright-report/
+test-results/
+e2e/__diff__/
+
+# generated at build time (committed generated dirs are listed in CONTRIBUTING.md)
+packages/cli/templates/
+packages/mcp/registry/
+apps/docs/public/r/
+
+# env and local
+.env
+.env.*
+!.env.example
+.vercel
+.DS_Store
+*.log
+.claude/settings.local.json
+CLAUDE.local.md
