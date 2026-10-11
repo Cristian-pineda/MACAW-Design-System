@@ -165,6 +165,13 @@ describe('density and motion modes', () => {
       names(block('[data-density="compact"]')),
     );
   });
+  it('every animation token names keyframes that ship in tokens.css', () => {
+    const animations = meta.tokens.filter((t) => t.name.startsWith('animation.'));
+    for (const t of animations) {
+      const name = String(t.value.light).split(/\s+/)[0];
+      expect(css, `${t.name} uses "${name}"`).toMatch(new RegExp(`@keyframes ${name}\\s*\\{`));
+    }
+  });
   it('reduced motion zeroes every duration and disables every animation', () => {
     const reduced = block('[data-motion="reduced"]');
     const durations = meta.tokens.filter(

@@ -98,6 +98,31 @@ for (const slug of componentSlugs) {
         before.running.length + before.timed,
         'the component should move before Reduced motion is on',
       ).toBeGreaterThan(0);
+      // A declared animation must actually run; a transition elsewhere must not stand in for it.
+      if (manifest.motion.tokens.some((t) => t.startsWith('animation.'))) {
+        expect(
+          before.running.length,
+          'declared animations running before Reduced motion',
+        ).toBeGreaterThan(0);
+        // Running is not enough: the keyframes must exist and the element must actually rotate.
+        const advanced = await frame.evaluate(async (root) => {
+          const anims = document.getAnimations().filter((a) => {
+            const target = (a.effect as KeyframeEffect | null)?.target;
+            return target instanceof Element && root.contains(target);
+          });
+          const t0 = anims.map((a) => Number(a.currentTime ?? 0));
+          await new Promise((r) => setTimeout(r, 300));
+          const keyframes = anims.map((a) => (a.effect as KeyframeEffect).getKeyframes().length);
+          return {
+            moved: anims.some((a, i) => Number(a.currentTime ?? 0) > (t0[i] ?? 0)),
+            keyframes,
+          };
+        });
+        expect(advanced.moved, 'declared animation advances over time').toBe(true);
+        expect(Math.min(...advanced.keyframes), 'declared animation has keyframes').toBeGreaterThan(
+          0,
+        );
+      }
 
       await reduced.click();
       await expect(frame).toHaveAttribute('data-motion', 'reduced');

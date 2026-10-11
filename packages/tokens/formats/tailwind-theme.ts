@@ -79,9 +79,7 @@ export const tailwindTheme: Format = {
       }
     }
 
-    // Only utilities.css is imported by @macaw-ds/ui, so the keyframes Tailwind's own theme would
-    // provide must live here. One animation: the loading spinner.
-    theme.push('  @keyframes spin {\n    to {\n      transform: rotate(360deg);\n    }\n  }');
+    // Keyframes for animation tokens ship in tokens.css (see sd.config.ts), not here.
     utilities.push(
       `@utility h-below-topbar {\n  height: calc(100dvh - var(--macaw-size-topbar));\n}`,
     );

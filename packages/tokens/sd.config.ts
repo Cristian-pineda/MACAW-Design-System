@@ -118,6 +118,16 @@ const reducedMotion = `
 
 const extras = `
 /*
+ * Keyframes for the animation tokens. Plain CSS on purpose: Tailwind drops keyframes declared
+ * inside @theme unless a theme variable names them literally, and ours point at token variables.
+ */
+@keyframes ${PREFIX}-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
  * Reduced motion. One mechanism for both the OS preference and an explicit scope:
  * data-motion="reduced" on any element (a user setting, a preview frame), or the OS setting
  * unless a scope opts back in with data-motion="full". Components only animate through these

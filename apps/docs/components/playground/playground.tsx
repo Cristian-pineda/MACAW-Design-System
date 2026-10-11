@@ -142,6 +142,16 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
               {preview.hints.join(' ')}
             </Text>
           )}
+          {preview.motion && manifest.motion && (
+            <Text variant="caption" tone="muted" data-testid="preview-motion">
+              {`What moves: ${manifest.motion.description} `}
+              {reducedMotion
+                ? 'Reduced motion is on: animations stop and transitions are instant.'
+                : manifest.motion.tokens.some((t) => t.startsWith('animation.'))
+                  ? ''
+                  : 'Hover transitions are 100 ms, so the difference is subtle by design.'}
+            </Text>
+          )}
         </div>
 
         <div

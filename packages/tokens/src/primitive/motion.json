@@ -33,7 +33,8 @@
   "animation": {
     "$description": "Named animations. Reduced motion sets each to none.",
     "spin": {
-      "$value": "spin 1000ms linear infinite"
+      "$value": "macaw-spin 1000ms linear infinite",
+      "$description": "Loading spinner. Keyframes ship in tokens.css as macaw-spin."
     }
   }
 }
