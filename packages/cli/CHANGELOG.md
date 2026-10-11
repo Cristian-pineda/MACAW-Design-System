@@ -1,5 +1,17 @@
 # @macaw-ds/cli
 
+## 0.2.0
+
+### Minor Changes
+
+- [#15](https://github.com/Cristian-pineda/MACAW-Design-System/pull/15) [`56db594`](https://github.com/Cristian-pineda/MACAW-Design-System/commit/56db594a57f47e00adc94a38c77f34916a4e0725) Thanks [@Cristian-pineda](https://github.com/Cristian-pineda)! - `macaw init` adds the MACAW stylesheet imports to your root CSS (after the Tailwind import, between `/* macaw:start */` and `/* macaw:end */`), stops with a clear message on Tailwind CSS v3 projects, and flags create-next-app starter styles that override the tokens. Pass `--no-css` to keep wiring the imports yourself.
+
+### Patch Changes
+
+- [#13](https://github.com/Cristian-pineda/MACAW-Design-System/pull/13) [`54a02ab`](https://github.com/Cristian-pineda/MACAW-Design-System/commit/54a02ab5d488237a223765811dca1e8cb2f6bea6) Thanks [@Cristian-pineda](https://github.com/Cristian-pineda)! - `macaw init` installs `eslint@^10` when the app has no ESLint, so the `verify` script and the lint hook it sets up work on a fresh app.
+- Updated dependencies []:
+  - @macaw-ds/manifest@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
