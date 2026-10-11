@@ -51,6 +51,12 @@ export const init = defineCommand({
       `${scope}/icons@${version}`,
     ];
     const dev = [`${scope}/eslint-config@${version}`];
+    // The verify script and the lint hook call eslint; the config only declares it as a peer.
+    const consumer = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
+    };
+    if (!consumer.dependencies?.eslint && !consumer.devDependencies?.eslint) dev.push('eslint@^10');
     if (args['skip-install'])
       log(
         `• skip-install: would run ${addCommand(pm, runtime).join(' ')} and ${addCommand(pm, dev, true).join(' ')}`,
