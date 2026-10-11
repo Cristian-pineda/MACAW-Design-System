@@ -12,7 +12,9 @@ npx @macaw-ds/cli init
 
 ## Stylesheets
 
-Import the four files once, in your root CSS, in this order. Tailwind v4 reads the theme from `theme.css`, so only token utilities exist afterwards.
+`init` adds these imports to your root CSS for you, right after your Tailwind import, between `/* macaw:start */` and `/* macaw:end */`. It looks in the usual places (`src/app/globals.css`, `app/globals.css`, `src/index.css`, `app/app.css` and a few more); if it finds none or several, or you pass `--no-css`, add them yourself in this order. Tailwind v4 reads the theme from `theme.css`, so only token utilities exist afterwards. MACAW needs Tailwind CSS v4, and `init` stops on a v3 project.
+
+If your root CSS still has a starter template's `:root` colours, `@theme` fonts or `body` styles (create-next-app ships them), delete them; they override the tokens.
 
 ```css
 @import 'tailwindcss';
