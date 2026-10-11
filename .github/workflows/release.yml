@@ -30,7 +30,8 @@ jobs:
       - name: Create release PR or publish
         uses: changesets/action@v2
         with:
-          version-script: pnpm changeset version && pnpm install --lockfile-only
+          # The action runs this without a shell, so `&&` must live inside a package script.
+          version-script: pnpm version-packages
           publish-script: pnpm release
           create-github-releases: true
           commit-message: 'chore(release): version packages'
