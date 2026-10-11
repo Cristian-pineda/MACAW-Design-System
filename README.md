@@ -67,7 +67,7 @@ tooling/    build scripts for the registry, plugin reference files, manifest che
 evals/      "build me X" tasks run against each release
 ```
 
-Read `DECISIONS.md` before proposing a change; half of the answers are already there. `CONTRIBUTING.md` has the setup and the component checklist.
+Status and next steps are in `ROADMAP.md`. Read `DECISIONS.md` before proposing a change; half of the answers are already there. `CONTRIBUTING.md` has the setup and the component checklist.
 
 ## License
 
