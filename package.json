@@ -30,6 +30,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --lockfile-only",
     "release": "turbo run build --filter='./packages/*' && changeset publish",
     "smoke:consumer": "bash tooling/smoke/consumer.sh",
     "brand:build": "tsx tooling/brand/build.ts"
