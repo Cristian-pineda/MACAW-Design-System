@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "MACAW React components: primitives and composed components on Radix, styled with token utilities only",
   "license": "Apache-2.0",
   "repository": {
