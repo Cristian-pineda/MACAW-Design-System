@@ -12,14 +12,14 @@ pnpm dev                                 # docs site at http://localhost:3000
 
 ## Scripts
 
-| Script                | What it does                                                                                                             |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `pnpm dev`            | Runs the docs site (and watches packages)                                                                                |
-| `pnpm build`          | Builds every package, the registry, the plugin reference files and the docs                                              |
-| `pnpm verify`         | Lint, typecheck, unit tests, builds, manifest checks, registry and plugin builds, bundle budgets. Must pass before a PR. |
-| `pnpm test:e2e`       | Playwright: axe on every page, keyboard paths, visual regression (CI generates baselines in the Playwright container)    |
-| `pnpm changeset`      | Records a change for the release train. Required for any change under `packages/`.                                       |
-| `pnpm smoke:consumer` | Creates a fresh Next.js app in a temp dir and installs the packed packages                                               |
+| Script                | What it does                                                                                                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`            | Runs the docs site (and watches packages)                                                                                                                                          |
+| `pnpm build`          | Builds every package, the registry, the plugin reference files and the docs                                                                                                        |
+| `pnpm verify`         | Lint, typecheck, unit tests, builds, manifest checks, registry and plugin builds, bundle budgets. Must pass before a PR.                                                           |
+| `pnpm test:e2e`       | Playwright: axe on every page in both themes, keyboard paths, reflow at 320 px, focus not obscured, preview controls, and visual regression (visual runs on Linux only; see below) |
+| `pnpm changeset`      | Records a change for the release train. Required for any change under `packages/`.                                                                                                 |
+| `pnpm smoke:consumer` | Creates a fresh Next.js app in a temp dir and installs the packed packages                                                                                                         |
 
 ## Adding a component
 
@@ -32,6 +32,14 @@ pnpm dev                                 # docs site at http://localhost:3000
 7. Register the component in `apps/docs/components/playground/component-map.tsx`.
 8. `pnpm verify`, then `pnpm changeset`.
 9. Open a PR with a screenshot of the playground. For interactive components, complete the screen reader checklist in the PR template.
+
+## Visual regression baselines
+
+The screenshots in `e2e/__screenshots__/` are Linux renders from the Playwright container, so visual tests run in CI and skip on macOS and Windows. When a change alters how something looks on purpose:
+
+1. Push your branch and open the PR. The `e2e` check attaches the visual diffs as artifacts.
+2. Actions → **e2e** → **Run workflow** on your branch with **update-baselines** ticked. It commits fresh screenshots to the branch.
+3. Review the new PNGs in the PR diff before merging.
 
 ## Generated directories (never edit by hand)
 
