@@ -1,5 +1,6 @@
 import { Icon } from '@macaw-ds/icons';
 import { AppShell, Button, Text, TopBar } from '@macaw-ds/ui';
+import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { focusRing } from '@/components/docs-ui/focus';
@@ -15,7 +16,15 @@ import { ThemeToggle } from './theme-toggle';
 function Brand() {
   return (
     <Link href="/" className={cn('inline-flex items-center gap-2 rounded-control', focusRing)}>
-      <span aria-hidden="true" className="inline-block size-3 rounded-xs bg-action-primary" />
+      {/* Decorative: the link's text already says MACAW. */}
+      <Image
+        src="/brand/macaw-avatar.png"
+        alt=""
+        width={28}
+        height={28}
+        priority
+        className="size-7 shrink-0"
+      />
       <Text as="span" variant="heading-md">
         {SITE_NAME}
       </Text>

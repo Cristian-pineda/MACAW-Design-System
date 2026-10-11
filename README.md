@@ -1,4 +1,8 @@
-# MACAW Design System
+<p align="center">
+  <img src="brand/macaw-logo-512.png" width="128" height="128" alt="MACAW logo: a parrot inside a navy ring">
+</p>
+
+<h1 align="center">MACAW Design System</h1>
 
 An **agentic design system for financial software**: tokens, React components, and the agent layer (manifests, skills, hooks, an MCP server) that lets Claude build correct screens with it without a human explaining it first.
 

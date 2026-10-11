@@ -31,7 +31,8 @@
     "format:check": "prettier --check .",
     "changeset": "changeset",
     "release": "turbo run build --filter='./packages/*' && changeset publish",
-    "smoke:consumer": "bash tooling/smoke/consumer.sh"
+    "smoke:consumer": "bash tooling/smoke/consumer.sh",
+    "brand:build": "tsx tooling/brand/build.ts"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -50,6 +51,7 @@
     "globals": "^17.13.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.5",
     "tsx": "^4.23.15",
     "turbo": "^2.11.7",
     "typescript": "5.9.3",

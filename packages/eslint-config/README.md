@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/Cristian-pineda/MACAW-Design-System/main/brand/macaw-logo-512.png" width="64" height="64" alt="MACAW logo">
+
 # @macaw-ds/eslint-config
 
 The MACAW rules, as lint. Flat config for ESLint 10.

@@ -1,5 +1,6 @@
 import { Icon } from '@macaw-ds/icons';
 import { Badge, Button, Text } from '@macaw-ds/ui';
+import Image from 'next/image';
 import Link from 'next/link';
 import { CodeBlock } from '@/components/docs-ui/code-block';
 import { InvoiceSummary, LinkCards } from '@/components/home/showcase';
@@ -12,9 +13,19 @@ export default function HomePage() {
     <div className="flex max-w-page flex-col gap-section px-margin py-section">
       <section aria-labelledby="hero-title" className="layout-grid items-center gap-y-section">
         <div className="col-span-12 flex flex-col gap-stack-md lg:col-span-6">
-          <Badge tone="accent" variant="outline">
-            Pre-release 0.x
-          </Badge>
+          <div className="flex items-center gap-stack-md">
+            <Image
+              src="/brand/macaw-mark-512.png"
+              alt="MACAW"
+              width={72}
+              height={72}
+              priority
+              className="size-18 shrink-0"
+            />
+            <Badge tone="accent" variant="outline">
+              Pre-release 0.x
+            </Badge>
+          </div>
           <Text as="h1" variant="display-lg" id="hero-title">
             An agentic design system for financial software.
           </Text>

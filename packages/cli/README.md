@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/Cristian-pineda/MACAW-Design-System/main/brand/macaw-logo-512.png" width="64" height="64" alt="MACAW logo">
+
 # @macaw-ds/cli
 
 The one door into the MACAW design system.

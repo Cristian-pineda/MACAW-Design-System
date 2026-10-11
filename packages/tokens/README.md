@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/Cristian-pineda/MACAW-Design-System/main/brand/macaw-logo-512.png" width="64" height="64" alt="MACAW logo">
+
 # @macaw-ds/tokens
 
 Design tokens for the MACAW design system, authored in W3C DTCG JSON (`src/`) and compiled to:
