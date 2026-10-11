@@ -27,7 +27,7 @@ npx @macaw-ds/cli add button          # wires the import, prints a starter snipp
 npx @macaw-ds/cli add button --eject  # copies the source in; recorded in .macaw/ejected.json
 ```
 
-Then import the stylesheets once, in your root CSS:
+`init` also adds the stylesheet imports to your root CSS (`src/app/globals.css`, `src/index.css` and the other usual places), right after `@import 'tailwindcss'`, between `/* macaw:start */` markers. It needs Tailwind CSS v4 and stops on a v3 project. Pass `--no-css` to wire them yourself, in this order:
 
 ```css
 @import 'tailwindcss';

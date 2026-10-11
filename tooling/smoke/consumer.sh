@@ -48,12 +48,10 @@ pnpm exec macaw init >/dev/null
 test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-reviewer.md && test -f .mcp.json && grep -q "macaw:start" CLAUDE.md && grep -q '"macaw"' .claude/settings.json
 echo "smoke: macaw init ok"
 
-cat > src/app/globals.css <<'CSS'
-@import "tailwindcss";
-@import "@macaw-ds/tokens/tokens.css";
-@import "@macaw-ds/tokens/theme.css";
-@import "@macaw-ds/ui/styles.css";
-CSS
+# init wired the root CSS: the MACAW block sits after create-next-app's Tailwind import.
+grep -q "macaw:start" src/app/globals.css && test "$(grep -c '@import "tailwindcss"' src/app/globals.css)" = 1
+echo "smoke: root CSS wired by init"
+
 cat > src/app/page.tsx <<'TSX'
 // A React Server Component rendering every MACAW component, including the client ones
 // (Button, Card) in states that attach handlers. This is the check jsdom unit tests cannot do.

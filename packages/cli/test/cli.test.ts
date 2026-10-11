@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -106,4 +106,102 @@ describe('macaw cli', () => {
       expect(readFileSync(join(dir, '.macaw/ejected.json'), 'utf8')).toBe(before);
     },
   );
+});
+
+describe('macaw init: root CSS', () => {
+  // create-next-app's starter globals.css
+  const nextStarter = `@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+`;
+  const dirs: string[] = [];
+  function app(tailwind: string | null, files: Record<string, string>): string {
+    const dir = mkdtempSync(join(tmpdir(), 'macaw-css-'));
+    dirs.push(dir);
+    const devDependencies = tailwind ? { tailwindcss: tailwind } : {};
+    writeFileSync(
+      join(dir, 'package.json'),
+      JSON.stringify({ name: 'consumer', private: true, scripts: {}, devDependencies }),
+    );
+    writeFileSync(join(dir, 'pnpm-lock.yaml'), '');
+    for (const [path, content] of Object.entries(files)) {
+      mkdirSync(join(dir, path, '..'), { recursive: true });
+      writeFileSync(join(dir, path), content);
+    }
+    return dir;
+  }
+  afterAll(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })));
+
+  it('adds the imports after the Tailwind import, once, and flags the Next starter styles', () => {
+    const dir = app('^4.1.0', { 'src/app/globals.css': nextStarter });
+    const out = macaw(['init', '--skip-install'], dir);
+    const css = readFileSync(join(dir, 'src/app/globals.css'), 'utf8');
+    expect(
+      css.startsWith(
+        '@import "tailwindcss";\n/* macaw:start */\n@import "@macaw-ds/tokens/tokens.css";',
+      ),
+    ).toBe(true);
+    expect(css.match(/@import "tailwindcss"/g)).toHaveLength(1);
+    expect(css).toContain('@import "@macaw-ds/ui/styles.css";\n/* macaw:end */');
+    expect(css).toContain('font-family: Arial');
+    expect(out).toContain('create-next-app starter styles');
+    expect(out).not.toContain('Import the styles once');
+    expect(readFileSync(join(dir, 'eslint.config.mjs'), 'utf8')).toContain(
+      "tailwindEntry: 'src/app/globals.css'",
+    );
+
+    macaw(['init', '--skip-install'], dir);
+    expect(readFileSync(join(dir, 'src/app/globals.css'), 'utf8')).toBe(css);
+  });
+
+  it('keeps options on an existing Tailwind import', () => {
+    const dir = app('^4.1.0', {
+      'src/index.css': '@import "tailwindcss" source("../src");\n\nh1 { margin: 0; }\n',
+    });
+    macaw(['init', '--skip-install'], dir);
+    const css = readFileSync(join(dir, 'src/index.css'), 'utf8');
+    expect(css).toMatch(/^@import "tailwindcss" source\("\.\.\/src"\);\n\/\* macaw:start \*\//);
+    expect(css).toContain('h1 { margin: 0; }');
+  });
+
+  it('puts the Tailwind import in the block when the file has none', () => {
+    const dir = app('^4.1.0', { 'app/app.css': 'h1 { margin: 0; }\n' });
+    macaw(['init', '--skip-install'], dir);
+    const css = readFileSync(join(dir, 'app/app.css'), 'utf8');
+    expect(css).toMatch(/^\/\* macaw:start \*\/\n@import "tailwindcss";\n/);
+    expect(css).toMatch(/macaw:end \*\/\n\nh1 \{ margin: 0; \}\n$/);
+  });
+
+  it('refuses a Tailwind v3 project before changing anything', () => {
+    const dir = app('^3.4.17', { 'src/index.css': '@tailwind base;\n@tailwind utilities;\n' });
+    expect(() => macaw(['init', '--skip-install'], dir)).toThrow(/Tailwind CSS v4/);
+    expect(existsSync(join(dir, '.claude'))).toBe(false);
+    expect(readFileSync(join(dir, 'src/index.css'), 'utf8')).toBe(
+      '@tailwind base;\n@tailwind utilities;\n',
+    );
+  });
+
+  it('leaves CSS alone with --no-css, with several candidates, or without Tailwind', () => {
+    const noCss = app('^4.1.0', { 'src/index.css': nextStarter });
+    expect(macaw(['init', '--skip-install', '--no-css'], noCss)).toContain(
+      'Import the styles once',
+    );
+    expect(readFileSync(join(noCss, 'src/index.css'), 'utf8')).toBe(nextStarter);
+
+    const several = app('^4.1.0', { 'src/index.css': nextStarter, 'app/globals.css': nextStarter });
+    expect(macaw(['init', '--skip-install'], several)).toContain('Found several root CSS files');
+    expect(readFileSync(join(several, 'src/index.css'), 'utf8')).toBe(nextStarter);
+
+    const noTailwind = app(null, { 'src/index.css': 'h1 {}\n' });
+    expect(macaw(['init', '--skip-install'], noTailwind)).toContain('Tailwind CSS v4 not found');
+    expect(readFileSync(join(noTailwind, 'src/index.css'), 'utf8')).toBe('h1 {}\n');
+  });
 });

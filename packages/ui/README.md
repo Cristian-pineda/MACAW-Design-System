@@ -11,4 +11,4 @@ import { Button, Text } from '@macaw-ds/ui';
 <Text numeric>$12,480.00</Text>
 ```
 
-Import the styles once: `@import "@macaw-ds/ui/styles.css";` after the token files. Full setup: `npx @macaw-ds/cli init`.
+Setup: `npx @macaw-ds/cli init` installs the packages and adds the stylesheet imports to your root CSS. By hand, import `@macaw-ds/ui/styles.css` once, after the token files.

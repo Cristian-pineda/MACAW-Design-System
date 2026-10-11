@@ -2,6 +2,13 @@ import { existsSync } from 'node:fs';
 import { chmod, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { defineCommand } from 'citty';
+import {
+  findRootCss,
+  hasNextStarterStyles,
+  tailwindMajor,
+  usesTailwindV3Directives,
+  wireCss,
+} from '../lib/css.ts';
 import { copyDir, readJsonIfExists, upsertBlock, writeJson } from '../lib/fsx.ts';
 import { pluginDir } from '../lib/paths.ts';
 import { loadIndex } from '../lib/registry.ts';
@@ -31,6 +38,11 @@ export const init = defineCommand({
       description: 'Do not run the package manager',
       default: false,
     },
+    css: {
+      type: 'boolean',
+      description: 'Add the MACAW imports to the root CSS file (--no-css to skip)',
+      default: true,
+    },
     quiet: { type: 'boolean', default: false },
   },
   async run({ args }) {
@@ -43,6 +55,19 @@ export const init = defineCommand({
 
     if (!existsSync(join(cwd, 'package.json')))
       throw new Error(`No package.json in ${cwd}. Run init inside your app.`);
+    const consumer = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
+    };
+
+    // 0. Tailwind v4 is required; stop before installing anything into a v3 project.
+    const rootCss = findRootCss(cwd);
+    const cssText = 'path' in rootCss ? await readFile(join(cwd, rootCss.path), 'utf8') : '';
+    const twMajor = tailwindMajor(consumer);
+    if ((twMajor !== undefined && twMajor < 4) || usesTailwindV3Directives(cssText))
+      throw new Error(
+        'MACAW needs Tailwind CSS v4; this project uses v3. Upgrade first (https://tailwindcss.com/docs/upgrade-guide), then run init again.',
+      );
 
     // 1. Packages
     const runtime = [
@@ -52,10 +77,6 @@ export const init = defineCommand({
     ];
     const dev = [`${scope}/eslint-config@${version}`];
     // The verify script and the lint hook call eslint; the config only declares it as a peer.
-    const consumer = JSON.parse(await readFile(join(cwd, 'package.json'), 'utf8')) as {
-      dependencies?: Record<string, string>;
-      devDependencies?: Record<string, string>;
-    };
     if (!consumer.dependencies?.eslint && !consumer.devDependencies?.eslint) dev.push('eslint@^10');
     if (args['skip-install'])
       log(
@@ -138,7 +159,7 @@ export const init = defineCommand({
     if (!hasEslint) {
       await writeFile(
         join(cwd, 'eslint.config.mjs'),
-        `import macaw from '${scope}/eslint-config';\n\nexport default [{ ignores: ['.next/**', 'node_modules/**'] }, ...macaw({ tailwindEntry: 'src/app/globals.css' })];\n`,
+        `import macaw from '${scope}/eslint-config';\n\nexport default [{ ignores: ['.next/**', 'node_modules/**'] }, ...macaw({ tailwindEntry: '${'path' in rootCss ? rootCss.path : 'src/app/globals.css'}' })];\n`,
       );
       log(
         '• Created eslint.config.mjs with the MACAW rules (adjust tailwindEntry if your CSS lives elsewhere)',
@@ -157,16 +178,46 @@ export const init = defineCommand({
       log('• Registered @macaw in components.json for `npx shadcn add @macaw/button`');
     }
 
-    log(`
-Done. Next:
-  1. Import the styles once in your root CSS:
+    // 9. Root CSS: the MACAW imports in a marked block after the Tailwind import
+    let cssWired = false;
+    if (!args.css) log('• --no-css: left your CSS alone');
+    else if (twMajor === undefined)
+      log(
+        '• Tailwind CSS v4 not found in package.json; install it, then run init again to wire the styles',
+      );
+    else if ('path' in rootCss) {
+      const result = await wireCss(join(cwd, rootCss.path), scope);
+      cssWired = true;
+      log(
+        `• ${rootCss.path}: MACAW imports ${result} (between /* macaw:start */ and /* macaw:end */)`,
+      );
+      if (hasNextStarterStyles(cssText))
+        log(
+          `  ! ${rootCss.path} still has the create-next-app starter styles (:root colours, @theme fonts, body font). Delete them so the MACAW tokens show through.`,
+        );
+    } else if (rootCss.reason === 'multiple')
+      log(
+        `• Found several root CSS files (${rootCss.found.join(', ')}); add the imports to the one your app loads`,
+      );
+    else
+      log(
+        '• No root CSS file found in the usual places; add the imports to the one your app loads',
+      );
+
+    const steps = [
+      ...(cssWired
+        ? []
+        : [
+            `Import the styles once in your root CSS:
        @import "tailwindcss";
        @import "${scope}/tokens/tokens.css";
        @import "${scope}/tokens/theme.css";
-       @import "${scope}/ui/styles.css";
-  2. Set <html data-theme="light"> (or "dark", or omit to follow the OS). Load Inter and Geist Mono if you want the intended type (next/font/google).
-  3. Start a new Claude session: the using-macaw skill, the reviewer agent and the macaw MCP server are ready.
-  4. ${runScript(pm, 'verify')} runs lint and types; the Stop hook runs it before Claude reports done.
-`);
+       @import "${scope}/ui/styles.css";`,
+          ]),
+      'Optional: set <html data-theme="light"> or "dark" (omit it to follow the OS). Load Inter and Geist Mono for the intended type (next/font/google).',
+      'Start a new Claude session: the using-macaw skill, the reviewer agent and the macaw MCP server are ready.',
+      `${runScript(pm, 'verify')} runs lint and types; the Stop hook runs it before Claude reports done.`,
+    ];
+    log(`\nDone. Next:\n${steps.map((s, i) => `  ${i + 1}. ${s}`).join('\n')}\n`);
   },
 });
