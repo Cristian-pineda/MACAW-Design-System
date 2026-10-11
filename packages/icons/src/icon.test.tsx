@@ -26,7 +26,8 @@ describe('Icon', () => {
     );
     expect(container.querySelectorAll('svg')).toHaveLength(iconNames.length);
     expect(await axe(container)).toHaveNoViolations();
-  });
+    // axe over the whole set takes ~6 s on a busy CI runner; the 5 s default flakes.
+  }, 20000);
   it('keeps the manifest in step with the curated set', () => {
     expect(manifest.props.name.values).toEqual(iconNames);
   });

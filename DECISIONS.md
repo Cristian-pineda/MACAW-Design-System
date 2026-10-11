@@ -189,6 +189,33 @@ Decision. Every component manifest declares `level`: atom (Text, Icon, Button, I
 
 Consequences. The docs navigation, the components index, the registry, the MCP server and the agent skill all group by the same field. Blocks are never package exports, so they carry no semver obligations; they are starting points.
 
+## 23. A base layer for the page
+
+Status: proposed · 2026-10-11 · by Claude, from the first fresh-app install of 0.1.0
+
+Context. MACAW sets no `html` or `body` styles. A fresh app with correct imports still renders on the framework's starter background in its starter font (create-next-app: `#ffffff`/`#0a0a0a` and Arial) until someone writes the base styles by hand, and agents improvise them with raw values. `init` now warns about the create-next-app starter block but does not delete user CSS.
+
+Decision. `@macaw-ds/ui/styles.css` gains a small `@layer base` block: `html` gets `background-color: var(--color-surface-canvas)`, `color: var(--color-fg-primary)`, `font-family: var(--font-sans)`, `color-scheme` per theme, and font smoothing. No other element selectors and no resets beyond Tailwind's preflight. It ships in the stylesheet consumers already import, so there is no new import line.
+
+Consequences. A page looks like MACAW as soon as `init` finishes. Because the block is layered, any unlayered rule in the app wins, so the create-next-app starter `body` rule still overrides it and `init` keeps the warning. Apps that mount MACAW in part of a page (an embedded widget, a micro-frontend) inherit page-level colours; they can opt out by not importing `styles.css` and compiling utilities themselves (see Getting started). Changing the base layer later is a visual change to every consumer, so it follows the same release rules as a token change.
+
+## 24. Upgrades and health checks: `macaw upgrade` and `macaw doctor`
+
+Status: proposed · 2026-10-11 · by Claude
+
+Context. Decision 6 gives consumers one door in; nothing yet keeps them current. An install has several parts that must move together: the lockstep packages (decision 7), the agent files `init` copies into `.claude/`, the `CLAUDE.md` block, the MCP version pinned in `.mcp.json`, the root CSS block and any ejected components. Today a consumer who bumps `@macaw-ds/ui` alone gets new components with a stale skill and a stale MCP server, and nobody can tell from outside whether an install is healthy. CONTRIBUTING promises codemods for breaking changes, but there is no command to run them. `macaw diff` is a placeholder.
+
+Decision.
+
+- `init` records what it installed in `.macaw/install.json`: version, root CSS path, and which steps it skipped.
+- `macaw doctor` is read-only and exits non-zero on errors, so it can run in CI or a Claude hook. Checks: all `@macaw-ds/*` packages on one version; installed versus the latest on npm; Tailwind v4; the CSS block present, in order and after the Tailwind import; starter styles overriding tokens; `.claude/` files, the `CLAUDE.md` block and the `.mcp.json` pin matching the installed version; hooks wired; ejected components behind upstream; imports of components whose manifest status is `deprecated`. `--json` for machines.
+- `macaw upgrade` moves every `@macaw-ds/*` package to the newest version within the current major by default, re-runs the `init` steps to refresh the agent layer, the MCP pin and the CSS block, then runs `doctor` and the project's `verify`. It prints the plan first, applies it with `--yes`, and crosses a major only with `--major`, running that release's codemods.
+- `macaw diff <name>` ships with it, comparing an ejected component with the version it came from and with the latest.
+- The maintainer side enforces "non-breaking within a major": a CI check compares each component's manifest with the last published registry and fails a minor or patch changeset that removes or renames a prop, variant value or export.
+- Docs give a Renovate and Dependabot group for `@macaw-ds/*`, so automated PRs bump every package together and run `doctor` in CI.
+
+Consequences. Upgrading stays one command and keeps the agent layer in step with the code. `doctor` becomes the support answer to "is my install right?", and `using-macaw` tells Claude to run it when something looks off. The manifest-diff check makes semver a test rather than a promise. Cost: two CLI commands, a state file, and a CI job on our side. `install.json` must remain readable across majors.
+
 ---
 
 ## Proposal template
