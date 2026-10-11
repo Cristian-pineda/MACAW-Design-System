@@ -1,4 +1,4 @@
-# MACAW tokens (generated, v0.0.0)
+# MACAW tokens (generated, v0.1.0)
 
 Prefix: `--macaw-`. Use the Tailwind utility, never the raw value. Light and dark are modes; never branch on theme.
 

@@ -18,13 +18,13 @@
       "content": "import type * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport type { NativeProps } from '@/lib/macaw/types';\nimport { Text, type TextElement } from '@/components/ui/macaw/text';\n\nexport interface PageHeaderProps extends Omit<NativeProps<'div'>, 'title'> {\n  /** The page title. */\n  title: React.ReactNode;\n  /** One line under the title. */\n  description?: React.ReactNode;\n  /** Small context next to the title: a status Badge, a version, an ID. */\n  meta?: React.ReactNode;\n  /** Page-level actions, right aligned: the page's one primary Button and its secondaries. */\n  actions?: React.ReactNode;\n  /** A TabNav for the page's sections. Sticks below the TopBar while the page scrolls. */\n  tabs?: React.ReactNode;\n  /** Heading element for the title. h1 unless the page already has one. */\n  headingLevel?: Extract<TextElement, 'h1' | 'h2'>;\n}\n\n/**\n * The page's own header, under the TopBar: title, description, meta, actions and section tabs.\n * Compact by design. The tab row is rendered as a sibling so it can stick for the whole page.\n */\nexport function PageHeader({\n  title,\n  description,\n  meta,\n  actions,\n  tabs,\n  headingLevel = 'h1',\n  ...rest\n}: PageHeaderProps) {\n  return (\n    <>\n      <div\n        className={cn(\n          'border-line-default bg-surface-layer-1 px-margin pt-stack-lg',\n          tabs ? 'pb-stack-sm' : 'border-b pb-stack-lg',\n        )}\n        {...rest}\n      >\n        <div className=\"flex flex-wrap items-start justify-between gap-4\">\n          <div className=\"flex min-w-0 flex-col gap-1\">\n            <div className=\"flex flex-wrap items-center gap-2\">\n              <Text as={headingLevel} variant=\"heading-lg\">\n                {title}\n              </Text>\n              {meta}\n            </div>\n            {description && (\n              <Text variant=\"body-md\" tone=\"secondary\">\n                {description}\n              </Text>\n            )}\n          </div>\n          {actions && <div className=\"flex flex-wrap items-center gap-2\">{actions}</div>}\n        </div>\n      </div>\n      {tabs && (\n        <div\n          className=\"z-sticky border-b border-line-default bg-surface-layer-1 px-margin md:sticky md:top-topbar\"\n          data-page-header-tabs=\"\"\n        >\n          {tabs}\n        </div>\n      )}\n    </>\n  );\n}\n"
     }
   ],
-  "docs": "Ejected from @macaw-ds/ui@0.0.0. One PageHeader per page, first inside main. The title is the page's only h1.",
+  "docs": "Ejected from @macaw-ds/ui@0.1.0. One PageHeader per page, first inside main. The title is the page's only h1.",
   "categories": [
     "layout"
   ],
   "meta": {
     "macaw": {
-      "version": "0.0.0",
+      "version": "0.1.0",
       "kind": "component",
       "level": "organism",
       "package": "@macaw-ds/ui",
