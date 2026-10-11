@@ -39,13 +39,14 @@ if [ -z "$FROM_NPM" ]; then
       echo "  \"@macaw-ds/$p\": \"file:$(ls "$PACKS"/macaw-ds-$p-*.tgz)\""
     done
   } > pnpm-workspace.yaml
-  pnpm add "$PACKS"/macaw-ds-tokens-*.tgz "$PACKS"/macaw-ds-icons-*.tgz "$PACKS"/macaw-ds-ui-*.tgz >/dev/null
-  pnpm add -D "$PACKS"/macaw-ds-eslint-config-*.tgz "$PACKS"/macaw-ds-cli-*.tgz >/dev/null
+  pnpm add -D "$PACKS"/macaw-ds-cli-*.tgz >/dev/null
 else
-  pnpm add "@macaw-ds/tokens@$FROM_NPM" "@macaw-ds/icons@$FROM_NPM" "@macaw-ds/ui@$FROM_NPM" >/dev/null
-  pnpm add -D "@macaw-ds/eslint-config@$FROM_NPM" "@macaw-ds/cli@$FROM_NPM" >/dev/null
+  pnpm add -D "@macaw-ds/cli@$FROM_NPM" >/dev/null
 fi
-pnpm install >/dev/null
+# The one door: init installs ui, tokens, icons, eslint-config (+ eslint) and the plugin.
+pnpm exec macaw init >/dev/null
+test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-reviewer.md && test -f .mcp.json && grep -q "macaw:start" CLAUDE.md && grep -q '"macaw"' .claude/settings.json
+echo "smoke: macaw init ok"
 
 cat > src/app/globals.css <<'CSS'
 @import "tailwindcss";
@@ -94,10 +95,9 @@ TSX
 pnpm exec next build >/dev/null
 echo "smoke: consumer build ok"
 
-# The CLI's one door, in the consumer repo.
-pnpm exec macaw init --skip-install >/dev/null
-test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-reviewer.md && test -f .mcp.json && grep -q "macaw:start" CLAUDE.md && grep -q '"macaw"' .claude/settings.json
-echo "smoke: macaw init ok"
+# What init sets up for Claude must pass on a fresh app (the Stop hook runs it).
+pnpm verify >/dev/null
+echo "smoke: verify ok (eslint + tsc)"
 
 # A page block through the one door: copies the page and the template it fills.
 pnpm exec macaw add billing-dashboard --skip-install >/dev/null

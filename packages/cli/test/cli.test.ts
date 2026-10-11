@@ -33,6 +33,7 @@ describe('macaw cli', () => {
   it('init installs the plugin into .claude/, CLAUDE.md, .mcp.json and the verify script', () => {
     const out = macaw(['init', '--skip-install'], dir);
     expect(out).toContain('Done');
+    expect(out).toMatch(/would run .*eslint-config@\S+ eslint@\^10/);
     expect(existsSync(join(dir, '.claude/skills/using-macaw/SKILL.md'))).toBe(true);
     expect(existsSync(join(dir, '.claude/skills/using-macaw/reference/components.md'))).toBe(true);
     expect(existsSync(join(dir, '.claude/agents/macaw-reviewer.md'))).toBe(true);
