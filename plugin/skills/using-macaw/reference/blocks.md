@@ -1,4 +1,4 @@
-# MACAW templates and pages (generated, v0.1.0)
+# MACAW templates and pages (generated, v0.2.0)
 
 Templates are page structure with placeholder content; pages are templates filled with realistic content. Both are compositions you copy in and own; the components inside still come from `@macaw-ds/ui`. Start a new screen from the closest template instead of composing from scratch, and read the page examples to see how a template is filled.
 

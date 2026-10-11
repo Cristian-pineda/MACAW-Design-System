@@ -1,5 +1,13 @@
 # @macaw-ds/mcp
 
+## 0.2.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @macaw-ds/eslint-config@0.2.0
+  - @macaw-ds/tokens@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes

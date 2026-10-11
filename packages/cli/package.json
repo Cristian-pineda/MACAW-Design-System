@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The one door into the MACAW design system: init, add, add --eject, diff",
   "license": "Apache-2.0",
   "repository": {
