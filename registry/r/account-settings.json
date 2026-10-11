@@ -1,0 +1,79 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "account-settings",
+  "type": "registry:block",
+  "title": "Account settings",
+  "description": "Account settings for a billing product: business details, the payout account and notification recipients.",
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons",
+    "@macaw-ds/tokens"
+  ],
+  "registryDependencies": [
+    "https://macaw-design-system.vercel.app/r/tokens.json",
+    "https://macaw-design-system.vercel.app/r/settings-template.json"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/blocks/account-settings.tsx",
+      "type": "registry:block",
+      "target": "components/macaw/blocks/account-settings.tsx",
+      "content": "import { SettingsTemplate, type SettingsSection } from '@/components/macaw/blocks/settings-template';\n\nconst SECTIONS: SettingsSection[] = [\n  {\n    id: 'business',\n    title: 'Business details',\n    description: 'Shown on invoices, receipts and your customers’ card statements.',\n    fields: [\n      {\n        id: 'business-legal-name',\n        label: 'Legal name',\n        defaultValue: 'Perch Analytics, Inc.',\n        autoComplete: 'organization',\n      },\n      {\n        id: 'business-display-name',\n        label: 'Statement descriptor',\n        defaultValue: 'PERCH ANALYTICS',\n        hint: 'Up to 22 characters. Customers see this on their card statements.',\n      },\n      {\n        id: 'business-support-email',\n        label: 'Support email',\n        type: 'email',\n        defaultValue: 'billing@perch.test',\n        autoComplete: 'email',\n      },\n      {\n        id: 'business-address',\n        label: 'Registered address',\n        defaultValue: '500 Market Street, Suite 300, San Francisco, CA 94105',\n        autoComplete: 'street-address',\n      },\n    ],\n    saveLabel: 'Save details',\n  },\n  {\n    id: 'payout',\n    title: 'Payout account',\n    description: 'Where your balance is paid out. Changes take effect from the next payout.',\n    fields: [\n      {\n        id: 'payout-account-holder',\n        label: 'Account holder',\n        defaultValue: 'Perch Analytics, Inc.',\n      },\n      {\n        id: 'payout-account',\n        label: 'Bank account',\n        defaultValue: 'Chase ···· 4421',\n        readOnly: true,\n        hint: 'To change the account, verify a new one from the Payouts page.',\n      },\n      {\n        id: 'payout-schedule',\n        label: 'Payout schedule',\n        defaultValue: 'Weekly, every Tuesday',\n      },\n      {\n        id: 'payout-minimum',\n        label: 'Minimum payout (USD)',\n        type: 'text',\n        defaultValue: '500.00',\n        align: 'end',\n        startAdornment: '$',\n        hint: 'Balances below this amount roll over to the next payout.',\n      },\n    ],\n    saveLabel: 'Save payout account',\n  },\n  {\n    id: 'notifications',\n    title: 'Notifications',\n    description: 'Who hears about payments, disputes and overdue invoices.',\n    fields: [\n      {\n        id: 'notifications-billing-email',\n        label: 'Billing alerts email',\n        type: 'email',\n        defaultValue: 'finance@perch.test',\n      },\n      {\n        id: 'notifications-reminder-days',\n        label: 'Overdue reminder delay (days)',\n        type: 'text',\n        defaultValue: '3',\n        align: 'end',\n        hint: 'Days after the due date. Customers get at most one reminder a week.',\n      },\n      {\n        id: 'notifications-payout-email',\n        label: 'Payout receipts email',\n        type: 'email',\n        defaultValue: 'treasury@perch.test',\n      },\n    ],\n    saveLabel: 'Save notifications',\n  },\n];\n\n/** Account settings: business details, the payout account and notification recipients. */\nexport function AccountSettings() {\n  return (\n    <SettingsTemplate\n      title=\"Account settings\"\n      description=\"Business details, payouts and notifications for Perch Analytics.\"\n      sections={SECTIONS}\n    />\n  );\n}\n"
+    }
+  ],
+  "docs": "A page from MACAW 0.0.0. Components come from @macaw-ds/ui and stay on the upgrade path; this composition is yours to edit.",
+  "categories": [
+    "page"
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "kind": "block",
+      "level": "page",
+      "slug": "account-settings",
+      "uses": [
+        "page-header",
+        "card",
+        "text",
+        "input",
+        "button"
+      ],
+      "template": "settings-template",
+      "block": {
+        "$schema": "../../../manifest/schema/block.schema.json",
+        "name": "Account settings",
+        "slug": "account-settings",
+        "level": "page",
+        "status": "beta",
+        "since": "0.1.0",
+        "purpose": "Account settings for a billing product: business details, the payout account and notification recipients.",
+        "description": "The settings template filled with three sections: Business details (legal name, statement descriptor, support email, address), Payout account (holder, read-only bank account, schedule, minimum payout) and Notifications (alert, reminder and receipt recipients).",
+        "exports": [
+          "AccountSettings"
+        ],
+        "uses": [
+          "page-header",
+          "card",
+          "text",
+          "input",
+          "button"
+        ],
+        "template": "settings-template",
+        "whenToUse": [
+          "Starting point for the settings area of a billing or payments product."
+        ],
+        "whenNotToUse": [
+          "As a component: copy it and wire each section's Save to your API."
+        ],
+        "rules": [
+          "Amounts use align end with a currency adornment.",
+          "Read-only values say how to change them in a hint.",
+          "Save notifications, the last section's button, is the page's only primary Button."
+        ],
+        "dependencies": [
+          "@macaw-ds/ui"
+        ]
+      }
+    }
+  }
+}

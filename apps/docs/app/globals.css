@@ -2,6 +2,7 @@
 @import '@macaw-ds/tokens/tokens.css';
 @import '@macaw-ds/tokens/theme.css';
 @source '../../../packages/ui/src';
+@source '../../../packages/blocks/src';
 @source '../';
 
 @layer base {

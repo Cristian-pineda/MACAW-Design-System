@@ -4,6 +4,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "template",
   "category": "layout",
   "purpose": "The application frame: skip link, sticky TopBar, full-height SideNav column and the main area. One per app, at the root layout.",
   "description": "Lays out the product chrome with depth by tone: the canvas is the background, the TopBar and SideNav column sit on layer-1. The SideNav column is sticky, exactly the viewport height below the TopBar, and scrolls on its own; the window scrolls the main area. A skip link is the first Tab stop.",
@@ -35,6 +36,12 @@
       "default": "main",
       "required": false,
       "description": "id of the main element; the skip link targets it.",
+      "control": "none"
+    },
+    "mainLabel": {
+      "type": "string",
+      "required": false,
+      "description": "Accessible name for main. Only when several apps share one landmark list, such as an app embedded in an iframe.",
       "control": "none"
     },
     "skipLinkLabel": {
@@ -75,7 +82,9 @@
     "notes": [
       "The skip link satisfies WCAG 2.4.1 Bypass Blocks; it is visually hidden until focused.",
       "main has tabIndex=-1 so the skip link can move focus to it.",
-      "Sticky chrome is offset with size.topbar so focused content is never obscured (WCAG 2.2 SC 2.4.11)."
+      "Sticky chrome is offset with size.topbar so focused content is never obscured (WCAG 2.2 SC 2.4.11).",
+      "Below 1024px nothing is sticky and the side column stacks above main, so the page reflows at 320px wide (WCAG 1.4.10). At desktop widths, scroll padding keeps focused elements clear of the sticky chrome (WCAG 2.4.11).",
+      "Screen readers list an iframe's landmarks with the host page's; an embedded app should name its banner (TopBar aria-label) and main (mainLabel) so landmarks stay unique."
     ]
   },
   "budget": {

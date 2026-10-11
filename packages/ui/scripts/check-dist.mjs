@@ -14,6 +14,20 @@ function walk(dir, out = []) {
 }
 
 const failures = [];
+
+// Components that attach event handlers or use client-only hooks must be client modules, or any
+// React Server Component that renders them fails ("Event handlers cannot be passed to Client
+// Component props"). jsdom unit tests cannot see this, so check the source.
+const CLIENT_ONLY =
+  /\bon[A-Z][A-Za-z]*=\{|\buse(?:State|Effect|LayoutEffect|Reducer|Ref|Context|ImperativeHandle|SyncExternalStore|Transition|Optimistic|ActionState)\b/;
+for (const src of walk('src').filter(
+  (f) => /\.tsx$/.test(f) && !/\.test\.|\.examples\.|\/lib\//.test(f),
+)) {
+  const text = readFileSync(src, 'utf8');
+  const isClient = /^\s*['"]use client['"]/.test(text);
+  const match = text.match(CLIENT_ONLY);
+  if (match && !isClient) failures.push(`${src}: uses ${match[0]} but is not marked "use client"`);
+}
 for (const src of walk('src').filter(
   (f) => /\.tsx?$/.test(f) && !/\.test\.|\.examples\./.test(f),
 )) {

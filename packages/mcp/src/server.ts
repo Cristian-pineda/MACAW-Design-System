@@ -2,7 +2,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import { listManifests, loadIndex, loadManifest, loadTokens } from './registry.ts';
+import { listManifests, loadBlock, loadIndex, loadManifest, loadTokens } from './registry.ts';
 import { validate } from './tools/validate.ts';
 
 export function createServer(): McpServer {
@@ -13,7 +13,7 @@ export function createServer(): McpServer {
     {
       title: 'List MACAW components',
       description:
-        'Every component in the installed MACAW version with its purpose, status, exports and budget. Call before choosing a component; anything not listed is not-in-system.',
+        'Every component in the installed MACAW version grouped by atomic level (atom, molecule, organism, template) with purpose, status, exports and budget, plus the templates and pages you can copy in with `macaw add`. Call before choosing a component; anything not listed is not-in-system.',
       inputSchema: {},
     },
     async () => {
@@ -34,7 +34,17 @@ export function createServer(): McpServer {
               {
                 version: index.meta.macaw.version,
                 scope: index.meta.macaw.scope,
+                levels: ['atom', 'molecule', 'organism', 'template', 'page'],
                 components: items,
+                blocks: index.items
+                  .filter((i) => i.type === 'registry:block')
+                  .map((i) => ({
+                    name: i.name,
+                    title: i.title,
+                    purpose: i.description,
+                    install: `npx @macaw-ds/cli add ${i.name}`,
+                    ...(i.meta?.macaw ?? {}),
+                  })),
               },
               null,
               2,
@@ -50,12 +60,20 @@ export function createServer(): McpServer {
     {
       title: 'Get a MACAW component manifest',
       description:
-        'The full contract for one component: props with allowed values and defaults, slots, tokens, accessibility (role, keyboard, name), rules, dos, donts and examples. Read it before using the component.',
-      inputSchema: { name: z.string().describe('Component slug, e.g. "button"') },
+        'The full contract for one component: props with allowed values and defaults, slots, tokens, accessibility (role, keyboard, name), rules, dos, donts and examples. For a template or page, returns its manifest and source code to start a screen from. Read it before using the component.',
+      inputSchema: {
+        name: z
+          .string()
+          .describe('Component, template or page slug, e.g. "button" or "dashboard-template"'),
+      },
     },
     async ({ name }) => {
       const slugs = await listManifests();
       const slug = name.toLowerCase().replace(/\s+/g, '-');
+      const block = await loadBlock(slug);
+      if (block) {
+        return { content: [{ type: 'text', text: JSON.stringify(block, null, 2) }] };
+      }
       if (!slugs.includes(slug)) {
         return {
           content: [

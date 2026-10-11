@@ -1,60 +1,54 @@
-'use client';
-
 import { Icon } from '@macaw-ds/icons';
-import { Card, Text } from '@macaw-ds/ui';
+import { Card, CardBody, CardFooter, CardHeader, CardTitle, Text } from '@macaw-ds/ui';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { LevelBadge } from '@/components/component-page/level-badge';
 import { StatusBadge } from '@/components/component-page/status-badge';
-import { Segmented } from '@/components/docs-ui/segmented';
-import type { ComponentSummary } from '@/lib/registry';
+import type { Level } from '@macaw-ds/manifest';
+import type { RegistryStatus } from '@/lib/registry';
 
-export function ComponentsGrid({ items }: { items: ComponentSummary[] }) {
-  const categories = useMemo(() => ['all', ...new Set(items.map((i) => i.category))], [items]);
-  const [category, setCategory] = useState('all');
-  const visible = category === 'all' ? items : items.filter((i) => i.category === category);
+export interface GridItem {
+  slug: string;
+  title: string;
+  purpose: string;
+  status: RegistryStatus;
+  level: Level | 'page';
+  href: string;
+  /** Footer caption: the package or "Block". */
+  source: string;
+}
 
+/** One level's cards: title, level and status, purpose, and where it ships from. */
+export function ComponentsGrid({ items }: { items: GridItem[] }) {
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Segmented
-          label="Filter by category"
-          size="md"
-          options={categories.map((c) => ({
-            value: c,
-            label: c.charAt(0).toUpperCase() + c.slice(1),
-          }))}
-          value={category}
-          onValueChange={setCategory}
-        />
-        <Text variant="caption" tone="muted" role="status">
-          {visible.length} of {items.length} components
-        </Text>
-      </div>
-      <ul className="m-0 grid list-none gap-4 p-0 md:grid-cols-2 lg:grid-cols-3">
-        {visible.map((item) => (
-          <li key={item.slug}>
-            <Card interactive asChild>
-              <Link href={`/components/${item.slug}`}>
-                <Card.Header>
-                  <Card.Title as="h2">{item.title}</Card.Title>
-                  <StatusBadge status={item.status} size="sm" />
-                </Card.Header>
-                <Card.Body>
+    <ul className="m-0 grid list-none grid-cols-3 gap-4 p-0">
+      {items.map((item) => (
+        <li key={item.href}>
+          <Card interactive asChild>
+            <Link href={item.href}>
+              <CardHeader>
+                <CardTitle as="h3">{item.title}</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-wrap items-center gap-1">
+                    <LevelBadge level={item.level} size="sm" />
+                    <StatusBadge status={item.status} size="sm" />
+                  </div>
                   <Text variant="body-sm" tone="secondary">
                     {item.purpose}
                   </Text>
-                </Card.Body>
-                <Card.Footer>
-                  <Text as="span" variant="caption" tone="muted">
-                    {item.category}
-                  </Text>
-                  <Icon name="chevron-right" size="sm" tone="muted" />
-                </Card.Footer>
-              </Link>
-            </Card>
-          </li>
-        ))}
-      </ul>
-    </div>
+                </div>
+              </CardBody>
+              <CardFooter>
+                <Text as="span" variant="caption" tone="muted">
+                  {item.source}
+                </Text>
+                <Icon name="chevron-right" size="sm" tone="muted" />
+              </CardFooter>
+            </Link>
+          </Card>
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -1,149 +1,98 @@
 import { Text } from '@macaw-ds/ui';
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import Link from 'next/link';
+import { BlockThumbnail } from '@/components/block-page/block-thumbnail';
 import { Section } from '@/components/component-page/section';
 import { CodeBlock } from '@/components/docs-ui/code-block';
-import {
-  AppShellTemplate,
-  DashboardTemplate,
-  FormTemplate,
-  ListTemplate,
-  RecordTemplate,
-} from '@/components/foundations/layout-demos';
+import { focusRing } from '@/components/docs-ui/focus';
+import { AppShellTemplate } from '@/components/foundations/layout-demos';
+import { findBlock } from '@/lib/blocks';
+import { cn } from '@/lib/cn';
 
 export const metadata: Metadata = { title: 'Page templates' };
 
-const TEMPLATES: {
-  id: string;
-  title: string;
-  intro: string;
-  Render: () => ReactNode;
-  code: string;
-}[] = [
+/** Recipe per template block: the layout in one line. The block itself is the source of truth. */
+const TEMPLATES: { slug: string; id: string; title: string; intro: string }[] = [
   {
-    id: 'app-shell',
-    title: 'App shell',
-    intro: 'Once, in the root layout. Every page below renders inside its main area.',
-    Render: AppShellTemplate,
-    code: `// app/layout.tsx
-<AppShell
-  topBar={<TopBar brand={<Brand />} actions={<HeaderActions />} />}
-  sideNav={
-    <SideNav aria-label="Main">
-      <SideNav.Group title="Billing">
-        <SideNav.Item asChild active={pathname === '/invoices'}>
-          <Link href="/invoices">Invoices</Link>
-        </SideNav.Item>
-      </SideNav.Group>
-    </SideNav>
-  }
->
-  {children}
-</AppShell>`,
-  },
-  {
+    slug: 'list-template',
     id: 'list',
     title: 'List page',
-    intro: 'A PageHeader with the one primary action, then filters and the table.',
-    Render: ListTemplate,
-    code: `<PageHeader
-  title="Invoices"
-  description="Every invoice across your customers, newest first."
-  actions={<Button iconStart={<Icon name="plus" />}>New invoice</Button>}
-/>
-<div className="flex flex-col gap-stack-md px-margin py-section">
-  <Input type="search" aria-label="Search invoices" startAdornment={<Icon name="search" />} />
-  <table>…</table>
-</div>`,
+    intro:
+      'A PageHeader with the one primary action, a search and filter toolbar, then rows on a layer-1 card.',
   },
   {
+    slug: 'record-template',
     id: 'record',
     title: 'Record page with tabs',
     intro:
-      'Status in meta, actions on the right, one URL per tab. The tab row sticks below the TopBar.',
-    Render: RecordTemplate,
-    code: `<PageHeader
-  title="INV-0041"
-  meta={<Badge tone="critical">Overdue</Badge>}
-  actions={<Button>Send reminder</Button>}
-  tabs={
-    <TabNav aria-label="Invoice sections">
-      <TabNav.Item asChild active={pathname === base}>
-        <Link href={base}>Overview</Link>
-      </TabNav.Item>
-      <TabNav.Item asChild active={pathname === \`\${base}/payments\`}>
-        <Link href={\`\${base}/payments\`}>Payments</Link>
-      </TabNav.Item>
-    </TabNav>
-  }
-/>
-<div className="layout-grid gap-y-gutter px-margin py-section">
-  <div className="col-span-8">{/* details */}</div>
-  <div className="col-span-4">{/* summary */}</div>
-</div>`,
+      'Status in meta, actions on the right, one URL per tab, then col-span-8 content and a col-span-4 summary.',
   },
   {
+    slug: 'dashboard-template',
     id: 'dashboard',
     title: 'Dashboard with a KPI row',
-    intro: 'Four KPI cards on col-span-3, then an 8 + 4 split.',
-    Render: DashboardTemplate,
-    code: `<PageHeader title="Overview" actions={<Button variant="secondary">Last 30 days</Button>} />
-<div className="layout-grid gap-y-gutter px-margin py-section">
-  <div className="col-span-3">
-    <Card padding="sm">
-      <Card.Body>
-        <Text variant="label-sm" tone="secondary">Gross volume</Text>
-        <Text variant="numeric-md" numeric>$128,430.00</Text>
-      </Card.Body>
-    </Card>
-  </div>
-  {/* three more col-span-3 KPI cards */}
-  <div className="col-span-8">{/* chart */}</div>
-  <div className="col-span-4">{/* list */}</div>
-</div>`,
+    intro: 'Four KPIs on col-span-3 (or three on col-span-4), then an 8 + 4 split of panels.',
   },
   {
+    slug: 'settings-template',
     id: 'form',
     title: 'Form or settings page',
-    intro: 'One column capped at max-w-form, fields on stack-md, actions in the card footer.',
-    Render: FormTemplate,
-    code: `<PageHeader title="Business settings" description="Shown on invoices and receipts." />
-<div className="px-margin py-section">
-  <div className="max-w-form">
-    <Card>
-      <Card.Body>
-        <div className="flex flex-col gap-stack-md">
-          <div className="flex flex-col gap-1">
-            <Text as="label" variant="label-sm" htmlFor="legal-name">Legal name</Text>
-            <Input id="legal-name" />
-          </div>
-        </div>
-      </Card.Body>
-      <Card.Footer>
-        <Button variant="ghost">Cancel</Button>
-        <Button>Save changes</Button>
-      </Card.Footer>
-    </Card>
-  </div>
-</div>`,
+    intro:
+      'One column capped at max-w-form, card sections of labelled fields, Save in each card footer.',
   },
 ];
+
+const LINK = cn(
+  'rounded-xs text-fg-link underline underline-offset-2 hover:text-fg-link-hover',
+  focusRing,
+);
 
 export default function TemplatesPage() {
   return (
     <>
       <Text tone="secondary">
-        Five page shapes cover most financial products. Each is a live render with the real
-        components, and the recipe below it is what to copy. Every page starts with a PageHeader
-        whose title is the page&apos;s h1; the renders here use h2 because this page already has
-        one.
+        Five page shapes cover most financial products. AppShell is the frame; the other four are
+        template blocks in <code className="font-mono text-code">@macaw-ds/blocks</code> that{' '}
+        <code className="font-mono text-code">npx @macaw-ds/cli add &lt;slug&gt;</code> copies into
+        your repo. The previews below are the real blocks at half scale. Every page starts with a
+        PageHeader whose title is the page&apos;s h1.
       </Text>
-      {TEMPLATES.map(({ id, title, intro, Render, code }) => (
-        <Section key={id} id={id} title={title} intro={intro}>
-          <Render />
-          <CodeBlock code={code} lang="tsx" copyLabel={`Copy ${title.toLowerCase()} recipe`} />
-        </Section>
-      ))}
+
+      <Section
+        id="app-shell"
+        title="App shell"
+        intro="Once, in the root layout. Every page below renders inside its main area."
+      >
+        <AppShellTemplate />
+        <CodeBlock
+          code={`// app/layout.tsx
+<AppShell
+  topBar={<TopBar brand={<Brand />} actions={<HeaderActions />} />}
+  sideNav={<SideNav aria-label="Main">…</SideNav>}
+>
+  {children}
+</AppShell>`}
+          lang="tsx"
+          copyLabel="Copy app shell recipe"
+        />
+        <Text variant="body-sm" tone="secondary">
+          See{' '}
+          <Link href="/components/app-shell" className={LINK}>
+            AppShell
+          </Link>{' '}
+          for the props and the skip link.
+        </Text>
+      </Section>
+
+      {TEMPLATES.map(({ slug, id, title, intro }) => {
+        const block = findBlock('template', slug);
+        if (!block) return null;
+        return (
+          <Section key={slug} id={id} title={title} intro={intro}>
+            <BlockThumbnail block={block} />
+          </Section>
+        );
+      })}
     </>
   );
 }

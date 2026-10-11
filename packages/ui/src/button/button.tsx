@@ -1,3 +1,5 @@
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { LoaderCircle } from 'lucide-react';
 import { Slot } from 'radix-ui';
@@ -10,20 +12,20 @@ export const buttonVariants = cva(
   cn(
     'inline-flex shrink-0 items-center justify-center rounded-control border whitespace-nowrap select-none',
     'transition-colors duration-fast ease-standard',
-    'disabled:cursor-not-allowed aria-busy:cursor-progress',
+    'disabled:cursor-not-allowed aria-busy:cursor-progress data-disabled:cursor-not-allowed',
     focusRing,
   ),
   {
     variants: {
       variant: {
         primary:
-          'border-transparent bg-action-primary text-action-primary-fg hover:bg-action-primary-hover active:bg-action-primary-active disabled:bg-action-disabled disabled:text-action-disabled-fg',
+          'border-transparent bg-action-primary text-action-primary-fg hover:bg-action-primary-hover active:bg-action-primary-active disabled:bg-action-disabled disabled:text-action-disabled-fg data-disabled:bg-action-disabled data-disabled:text-action-disabled-fg',
         secondary:
           'border-action-secondary-line bg-action-secondary text-action-secondary-fg shadow-xs hover:bg-action-secondary-hover active:bg-action-secondary-active disabled:border-transparent disabled:bg-action-disabled disabled:text-action-disabled-fg disabled:shadow-flat',
         ghost:
-          'border-transparent bg-transparent text-fg-primary hover:bg-action-ghost-hover active:bg-action-ghost-active disabled:bg-transparent disabled:text-action-disabled-fg',
+          'border-transparent bg-transparent text-fg-primary hover:bg-action-ghost-hover active:bg-action-ghost-active disabled:bg-transparent disabled:text-action-disabled-fg data-disabled:bg-transparent data-disabled:text-action-disabled-fg',
         destructive:
-          'border-transparent bg-action-destructive text-action-destructive-fg hover:bg-action-destructive-hover active:bg-action-destructive-active disabled:bg-action-disabled disabled:text-action-disabled-fg',
+          'border-transparent bg-action-destructive text-action-destructive-fg hover:bg-action-destructive-hover active:bg-action-destructive-active disabled:bg-action-disabled disabled:text-action-disabled-fg data-disabled:bg-action-disabled data-disabled:text-action-disabled-fg',
       },
       size: {
         sm: 'h-control-sm gap-1.5 px-2.5 text-label-sm',
@@ -71,11 +73,22 @@ export function Button({
   size,
   type,
   disabled,
+  onClick,
   children,
   ...rest
 }: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button';
-  const isDisabled = disabled || loading;
+  // Loading keeps the button focusable (aria-disabled, not disabled) so keyboard focus is not
+  // lost when an action starts; clicks and form submits are suppressed instead. A disabled
+  // asChild link cannot use the native attribute either, so it gets the same treatment.
+  const blocked = loading || (asChild && disabled);
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    if (blocked) {
+      event.preventDefault();
+      return;
+    }
+    onClick?.(event);
+  };
   // The spinner imports one Lucide icon directly so Button does not carry the whole curated set.
   const spinner = (
     <LoaderCircle
@@ -90,10 +103,12 @@ export function Button({
     <Comp
       className={cn(buttonVariants({ variant, size, iconOnly }))}
       type={asChild ? undefined : (type ?? 'button')}
-      disabled={asChild ? undefined : isDisabled}
-      aria-disabled={asChild && isDisabled ? true : undefined}
+      disabled={asChild ? undefined : disabled}
+      aria-disabled={blocked || undefined}
       aria-busy={loading || undefined}
       data-loading={loading || undefined}
+      data-disabled={asChild && disabled ? '' : undefined}
+      onClick={handleClick}
       {...rest}
     >
       {loading ? spinner : iconStart}

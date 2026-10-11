@@ -5,6 +5,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "atom",
   "category": "primitive",
   "purpose": "Triggers an action. Not navigation; for links use asChild with an anchor.",
   "description": "The action primitive. Four variants carry the weight of an action (one primary per view), three sizes match the control heights, and `loading` turns the button busy without losing its label. Icon-only buttons require an accessible name at the type level.",
@@ -26,8 +27,8 @@
     "loading": {
       "type": "boolean",
       "default": false,
-      "description": "Shows a spinner in place of the start icon, disables the button and sets aria-busy. The label stays visible.",
-      "a11y": "aria-busy=true is announced; the label is not replaced, so the purpose remains readable."
+      "description": "Shows a spinner in place of the start icon, sets aria-busy and aria-disabled, and ignores clicks and form submits. The button stays focusable and the label stays visible.",
+      "a11y": "Keeps keyboard focus when an action starts: aria-disabled, not the disabled attribute. aria-busy is announced; the label is not replaced."
     },
     "disabled": {
       "type": "boolean",
@@ -88,13 +89,14 @@
     "keyboard": [
       "Tab: focus",
       "Enter, Space: activate",
-      "Disabled and loading buttons are removed from the tab order"
+      "Disabled buttons leave the tab order; loading buttons stay focusable and ignore activation"
     ],
     "name": "From the visible label (children). Icon-only buttons take it from aria-label, which TypeScript requires.",
     "notes": [
       "Focus ring is 2 px outline with 2 px offset at 3:1 or better against every surface.",
       "loading keeps the label visible and sets aria-busy; it never swaps the label for a spinner alone.",
-      "Use a real button for actions and an anchor (asChild) for navigation so assistive technology announces the right thing."
+      "Use a real button for actions and an anchor (asChild) for navigation so assistive technology announces the right thing.",
+      "A disabled asChild link gets aria-disabled and its clicks are blocked, so it never navigates."
     ]
   },
   "budget": {

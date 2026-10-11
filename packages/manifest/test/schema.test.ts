@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { buildJsxSnippet, inferControl, parseManifest, previewControls } from '../src/index.ts';
+import {
+  buildJsxSnippet,
+  inferControl,
+  parseBlock,
+  parseManifest,
+  previewControls,
+} from '../src/index.ts';
 
 const base = {
   name: 'Button',
@@ -7,6 +13,7 @@ const base = {
   package: '@macaw-ds/ui',
   status: 'beta',
   since: '0.1.0',
+  level: 'atom',
   category: 'primitive',
   purpose: 'Triggers an action.',
   description: 'A button.',
@@ -125,5 +132,34 @@ describe('previewControls', () => {
     });
     expect(previewControls(c, {}).focus).toBe(false);
     expect(previewControls(c, { interactive: true }).focus).toBe(true);
+  });
+});
+
+describe('BlockSchema', () => {
+  const block = {
+    name: 'Dashboard',
+    slug: 'dashboard-template',
+    level: 'template',
+    status: 'beta',
+    since: '0.1.0',
+    purpose: 'A KPI row and panels.',
+    description: 'd',
+    exports: ['DashboardTemplate'],
+    uses: ['page-header', 'card'],
+    whenToUse: ['Overview screens'],
+  };
+  it('accepts a template and requires pages to name their template', () => {
+    expect(parseBlock(block).level).toBe('template');
+    expect(() => parseBlock({ ...block, slug: 'billing-dashboard', level: 'page' })).toThrow(
+      /template/,
+    );
+    expect(
+      parseBlock({
+        ...block,
+        slug: 'billing-dashboard',
+        level: 'page',
+        template: 'dashboard-template',
+      }).template,
+    ).toBe('dashboard-template');
   });
 });

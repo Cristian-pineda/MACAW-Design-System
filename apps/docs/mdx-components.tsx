@@ -7,6 +7,7 @@ import { CodeBlock } from '@/components/docs-ui/code-block';
 import { focusRing } from '@/components/docs-ui/focus';
 import type { CodeLang } from '@/lib/highlight';
 import { cn } from '@/lib/cn';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 type Props = ComponentPropsWithoutRef<'div'>;
 
@@ -104,9 +105,9 @@ export const mdxComponents: MDXComponents = {
     </blockquote>
   ),
   table: ({ children }: Props) => (
-    <div className="overflow-x-auto rounded-container border border-line-default">
+    <ScrollRegion label="Table" className="rounded-container border border-line-default">
       <table className="w-full border-collapse text-start">{children}</table>
-    </div>
+    </ScrollRegion>
   ),
   thead: ({ children }: Props) => <thead className="bg-surface-layer-2">{children}</thead>,
   th: ({ children }: Props) => (

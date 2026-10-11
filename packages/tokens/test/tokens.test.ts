@@ -198,6 +198,15 @@ describe('output integrity', () => {
     const missing = [...referenced].filter((v) => !defined.has(v));
     expect(missing).toEqual([]);
   });
+  it('collapses layout-grid to one track below the 1024px floor (WCAG 1.4.10)', () => {
+    const grid = theme.slice(
+      theme.indexOf('@utility layout-grid'),
+      theme.indexOf('@utility', theme.indexOf('@utility layout-grid') + 1),
+    );
+    expect(grid).toMatch(
+      /@media \(width < 64rem\)\s*\{\s*grid-template-columns: minmax\(0, 1fr\);/,
+    );
+  });
   it('exposes no primitive colour ramps as Tailwind utilities', () => {
     expect(theme).not.toMatch(/--color-(neutral|accent|success|warning|critical|info)-\d+:/);
   });

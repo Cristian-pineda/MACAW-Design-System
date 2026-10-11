@@ -4,6 +4,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "organism",
   "category": "navigation",
   "purpose": "The product's primary navigation in the left column of AppShell. Not for sections within a page; that is TabNav.",
   "description": "Groups of links with optional headings and icons. One item is active and carries aria-current=\"page\". Item height follows the density mode. AppShell gives it a full-height, independently scrolling column on surface layer-1.",
@@ -76,7 +77,7 @@
       "Tab: move between items (each is a link)",
       "Enter: follow the link"
     ],
-    "name": "The landmark takes its name from aria-label; each item from its text. Group headings are visible text, not headings, so they do not interrupt the page outline.",
+    "name": "The landmark takes its name from aria-label; each group list from its visible title (aria-labelledby); each item from its text. Group titles are not headings, so they do not interrupt the page outline.",
     "notes": [
       "The active item has aria-current=\"page\" and a tinted background plus accent text, so selection is not shown by colour of one property alone.",
       "Icons are decorative; the label always names the item."

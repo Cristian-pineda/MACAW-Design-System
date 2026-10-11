@@ -13,6 +13,10 @@ playwright-report/
 test-results/
 e2e/__diff__/
 
+# registry build scratch (atomic swap)
+.registry-build-*
+registry.previous-*
+
 # generated at build time (committed generated dirs are listed in CONTRIBUTING.md)
 packages/cli/templates/
 packages/mcp/registry/

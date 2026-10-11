@@ -1,5 +1,6 @@
 import type { Manifest } from '@macaw-ds/manifest';
 import { Text } from '@macaw-ds/ui';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 function splitKey(entry: string): { keys: string; action: string } {
   const idx = entry.indexOf(':');
@@ -9,8 +10,8 @@ function splitKey(entry: string): { keys: string; action: string } {
 
 export function A11yPanel({ a11y }: { a11y: Manifest['a11y'] }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <dl className="m-0 flex flex-col gap-3 rounded-container border border-line-default bg-surface-layer-1 p-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <dl className="m-0 flex min-w-0 flex-col gap-3 rounded-container border border-line-default bg-surface-layer-1 p-4 wrap-break-word">
         <div className="flex flex-col gap-0.5">
           <Text as="dt" variant="label-sm" tone="secondary">
             Role
@@ -58,7 +59,10 @@ export function A11yPanel({ a11y }: { a11y: Manifest['a11y'] }) {
           </div>
         )}
       </dl>
-      <div className="rounded-container border border-line-default bg-surface-layer-1">
+      <ScrollRegion
+        label="Contrast"
+        className="rounded-container border border-line-default bg-surface-layer-1"
+      >
         <table className="w-full border-collapse">
           <caption className="px-4 pt-3 pb-2 text-start">
             <Text as="span" variant="label-sm" tone="secondary">
@@ -114,7 +118,7 @@ export function A11yPanel({ a11y }: { a11y: Manifest['a11y'] }) {
             })}
           </tbody>
         </table>
-      </div>
+      </ScrollRegion>
     </div>
   );
 }

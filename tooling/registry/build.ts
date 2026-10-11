@@ -8,11 +8,14 @@
  *   tokens.json             token metadata with light and dark values
  * Both doors (CLI and MCP) and the docs read these files; nothing reads packages/ directly.
  */
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { loadAllManifests, loadTokenMeta, packageVersion, readJson, ROOT, SCOPE } from '../lib.ts';
+import { loadAllBlocks, loadAllManifests, loadTokenMeta, packageVersion, readJson, ROOT, SCOPE } from '../lib.ts';
 
-const OUT = join(ROOT, 'registry');
+// Build into a temporary sibling and swap it in at the end, so readers (the docs dev server, a
+// concurrent typecheck, the CLI) never see a half-written registry.
+const FINAL = join(ROOT, 'registry');
+const OUT = join(ROOT, `.registry-build-${process.pid}`);
 const BASE_URL = (process.env.REGISTRY_BASE_URL ?? 'https://macaw-design-system.vercel.app').replace(/\/$/, '');
 const version = await packageVersion('packages/ui');
 const manifests = await loadAllManifests();
@@ -20,6 +23,10 @@ const tokenMeta = await loadTokenMeta();
 
 await rm(OUT, { recursive: true, force: true });
 await mkdir(join(OUT, 'r'), { recursive: true });
+process.on('exit', () => {
+  // Best effort: never leave a temporary build directory behind on failure.
+  void rm(OUT, { recursive: true, force: true });
+});
 await mkdir(join(OUT, 'manifests'), { recursive: true });
 
 /** Rewrites workspace-relative imports in a component source into consumer-shaped ones. */
@@ -88,7 +95,7 @@ for (const { manifest: m, file } of manifests) {
     files,
     docs: `Ejected from ${m.package}@${version}. ${m.rules.slice(0, 2).join(' ')}`,
     categories: [m.category],
-    meta: { macaw: { version, package: m.package, status: m.status, slug: m.slug, manifest: m } },
+    meta: { macaw: { version, kind: 'component', level: m.level, package: m.package, status: m.status, slug: m.slug, manifest: m } },
   };
   await writeFile(join(OUT, 'r', `${m.slug}.json`), JSON.stringify(item, null, 2) + '\n');
   await writeFile(join(OUT, 'manifests', `${m.slug}.json`), JSON.stringify({ ...m, $schema: undefined }, null, 2) + '\n');
@@ -98,7 +105,7 @@ for (const { manifest: m, file } of manifests) {
     title: m.name,
     description: m.purpose,
     files: files.map(({ path, type, target }) => ({ path, type, target })),
-    meta: { macaw: { version, package: m.package, status: m.status, category: m.category, since: m.since, exports: m.exports, budget: m.budget, file: file.replace(`${ROOT}/`, '') } },
+    meta: { macaw: { version, kind: 'component', level: m.level, package: m.package, status: m.status, category: m.category, since: m.since, exports: m.exports, budget: m.budget, file: file.replace(`${ROOT}/`, '') } },
   });
 }
 
@@ -133,16 +140,52 @@ const tokensItem = {
 await writeFile(join(OUT, 'r/tokens.json'), JSON.stringify(tokensItem, null, 2) + '\n');
 await writeFile(join(OUT, 'tokens.json'), JSON.stringify({ version, ...tokenMeta }, null, 2) + '\n');
 
+// ---- Blocks: templates and pages, copied into the consumer as a starting point ----
+await mkdir(join(OUT, 'blocks'), { recursive: true });
+const blocks = await loadAllBlocks();
+const blockItems: unknown[] = [];
+const blockTarget = (slug: string) => `components/macaw/blocks/${slug}.tsx`;
+for (const { block: b, file, sourceFile } of blocks) {
+  const content = (await readFile(sourceFile, 'utf8')).replace(
+    /from '\.\.\/([a-z-]+)\/[a-z-]+\.tsx'/g,
+    (_m, slug: string) => `from '@/components/macaw/blocks/${slug}'`,
+  );
+  const item = {
+    $schema: 'https://ui.shadcn.com/schema/registry-item.json',
+    name: b.slug,
+    type: 'registry:block',
+    title: b.name,
+    description: b.purpose,
+    dependencies: [...new Set([`${SCOPE}/ui`, `${SCOPE}/icons`, `${SCOPE}/tokens`, ...b.dependencies])],
+    registryDependencies: [`${BASE_URL}/r/tokens.json`, ...(b.template ? [`${BASE_URL}/r/${b.template}.json`] : [])],
+    files: [{ path: `registry/macaw/blocks/${b.slug}.tsx`, type: 'registry:block', target: blockTarget(b.slug), content }],
+    docs: `A ${b.level} from MACAW ${version}. Components come from ${SCOPE}/ui and stay on the upgrade path; this composition is yours to edit.`,
+    categories: [b.level],
+    meta: { macaw: { version, kind: 'block', level: b.level, slug: b.slug, uses: b.uses, template: b.template, block: b } },
+  };
+  await writeFile(join(OUT, 'r', `${b.slug}.json`), JSON.stringify(item, null, 2) + '\n');
+  await writeFile(join(OUT, 'blocks', `${b.slug}.json`), JSON.stringify({ ...b, $schema: undefined }, null, 2) + '\n');
+  blockItems.push({
+    name: b.slug,
+    type: 'registry:block',
+    title: b.name,
+    description: b.purpose,
+    files: [{ path: `registry/macaw/blocks/${b.slug}.tsx`, type: 'registry:block', target: blockTarget(b.slug) }],
+    meta: { macaw: { version, kind: 'block', level: b.level, status: b.status, since: b.since, exports: b.exports, uses: b.uses, template: b.template, file: file.replace(`${ROOT}/`, '') } },
+  });
+}
+
 const index = {
   $schema: 'https://ui.shadcn.com/schema/registry.json',
   name: 'macaw',
   homepage: BASE_URL,
   items: [
     ...items,
+    ...blockItems,
     { name: 'macaw-lib', type: 'registry:lib', title: libItem.title, description: libItem.description, files: libItem.files.map(({ path, type, target }) => ({ path, type, target })) },
     { name: 'tokens', type: 'registry:style', title: tokensItem.title, description: tokensItem.description },
   ],
-  meta: { macaw: { version, scope: SCOPE, generatedFrom: 'packages/ui, packages/icons, packages/tokens', components: manifests.map((m) => m.manifest.slug) } },
+  meta: { macaw: { version, scope: SCOPE, generatedFrom: 'packages/ui, packages/icons, packages/tokens', components: manifests.map((m) => m.manifest.slug), blocks: blocks.map((b) => b.block.slug), levels: ['atom', 'molecule', 'organism', 'template', 'page'] } },
 };
 await writeFile(join(OUT, 'registry.json'), JSON.stringify(index, null, 2) + '\n');
 
@@ -153,13 +196,19 @@ try {
   const itemSchema = await readJson<Record<string, unknown>>(join(ROOT, 'tooling/registry/schemas/registry-item.json'));
   delete itemSchema.$schema; // shadcn declares the https draft-07 id, which Ajv registers under http
   const validateItem = ajv.compile(itemSchema);
-  for (const m of manifests) {
-    const item = await readJson(join(OUT, 'r', `${m.manifest.slug}.json`));
-    if (!validateItem(item)) throw new Error(`r/${m.manifest.slug}.json: ${ajv.errorsText(validateItem.errors)}`);
+  for (const slug of [...manifests.map((m) => m.manifest.slug), ...blocks.map((b) => b.block.slug)]) {
+    const item = await readJson(join(OUT, 'r', `${slug}.json`));
+    if (!validateItem(item)) throw new Error(`r/${slug}.json: ${ajv.errorsText(validateItem.errors)}`);
   }
   console.log('registry:build: validated against shadcn registry-item schema');
 } catch (e) {
   if ((e as NodeJS.ErrnoException).code !== 'ENOENT') throw e;
 }
 
-console.log(`registry:build: ${items.length} components, macaw-lib, tokens → registry/ (base ${BASE_URL})`);
+const previous = `${FINAL}.previous-${process.pid}`;
+await rm(previous, { recursive: true, force: true });
+await rename(FINAL, previous).catch(() => undefined);
+await rename(OUT, FINAL);
+await rm(previous, { recursive: true, force: true });
+
+console.log(`registry:build: ${items.length} components, ${blockItems.length} blocks, macaw-lib, tokens → registry/ (base ${BASE_URL})`);

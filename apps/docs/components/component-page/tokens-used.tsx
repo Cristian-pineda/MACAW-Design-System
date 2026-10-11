@@ -4,10 +4,11 @@ import { focusRing } from '@/components/docs-ui/focus';
 import { Swatch } from '@/components/tokens/swatch';
 import { cn } from '@/lib/cn';
 import { getToken } from '@/lib/tokens';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 export function TokensUsed({ names }: { names: string[] }) {
   return (
-    <div className="overflow-x-auto rounded-container border border-line-default">
+    <ScrollRegion label={'Tokens used'} className="rounded-container border border-line-default">
       <table className="w-full border-collapse">
         <thead className="bg-surface-layer-2">
           <tr>
@@ -63,6 +64,6 @@ export function TokensUsed({ names }: { names: string[] }) {
           })}
         </tbody>
       </table>
-    </div>
+    </ScrollRegion>
   );
 }

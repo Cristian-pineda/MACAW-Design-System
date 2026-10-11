@@ -1,6 +1,7 @@
 import { Button, Text } from '@macaw-ds/ui';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { LevelBadge } from '@/components/component-page/level-badge';
 import { StatusBadge } from '@/components/component-page/status-badge';
 import { DocsPage } from '@/components/shell/docs-page';
 import { componentTabs } from '@/components/shell/nav';
@@ -21,6 +22,7 @@ export default async function ComponentLayout({
       description={manifest.purpose}
       meta={
         <>
+          <LevelBadge level={manifest.level} />
           <StatusBadge status={manifest.status} />
           <Text as="span" variant="caption" tone="muted">
             {manifest.package} · since {manifest.since}

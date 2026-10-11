@@ -40,7 +40,7 @@ export function PageHeader({
         )}
         {...rest}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex flex-wrap items-center gap-2">
               <Text as={headingLevel} variant="heading-lg">
@@ -54,12 +54,12 @@ export function PageHeader({
               </Text>
             )}
           </div>
-          {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+          {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
         </div>
       </div>
       {tabs && (
         <div
-          className="sticky top-topbar z-sticky border-b border-line-default bg-surface-layer-1 px-margin"
+          className="z-sticky border-b border-line-default bg-surface-layer-1 px-margin md:sticky md:top-topbar"
           data-page-header-tabs=""
         >
           {tabs}

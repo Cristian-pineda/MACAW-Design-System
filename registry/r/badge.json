@@ -26,6 +26,8 @@
   "meta": {
     "macaw": {
       "version": "0.0.0",
+      "kind": "component",
+      "level": "atom",
       "package": "@macaw-ds/ui",
       "status": "beta",
       "slug": "badge",
@@ -36,6 +38,7 @@
         "package": "@macaw-ds/ui",
         "status": "beta",
         "since": "0.1.0",
+        "level": "atom",
         "category": "feedback",
         "purpose": "A short, non-interactive status label such as Paid, Overdue or Draft. Not a button, not a counter.",
         "description": "Status labels for records and rows. Six tones map to the status colour tokens; three variants trade emphasis for density. The text carries the meaning so colour is never the only signal.",

@@ -80,4 +80,29 @@ describe('macaw cli', () => {
       JSON.parse(readFileSync(join(repoRoot, 'packages/ui/package.json'), 'utf8')).version,
     );
   });
+
+  const index = JSON.parse(readFileSync(join(repoRoot, 'registry/registry.json'), 'utf8'));
+  const page = index.items.find(
+    (i: { type: string; meta?: { macaw?: { level?: string } } }) =>
+      i.type === 'registry:block' && i.meta?.macaw?.level === 'page',
+  );
+
+  it.skipIf(!page)(
+    'add <page> copies the page and the template it fills, and records nothing as ejected',
+    () => {
+      const before = readFileSync(join(dir, '.macaw/ejected.json'), 'utf8');
+      const out = macaw(['add', page.name, '--skip-install'], dir);
+      expect(out).toContain(`Added ${page.name}`);
+      const pagePath = join(dir, `components/macaw/blocks/${page.name}.tsx`);
+      const templatePath = join(dir, `components/macaw/blocks/${page.meta.macaw.template}.tsx`);
+      expect(existsSync(pagePath)).toBe(true);
+      expect(existsSync(templatePath)).toBe(true);
+      const src = readFileSync(pagePath, 'utf8');
+      expect(src).toContain(`from '@/components/macaw/blocks/${page.meta.macaw.template}'`);
+      // Components come from the package, through the template at least.
+      expect(readFileSync(templatePath, 'utf8')).toContain("from '@macaw-ds/ui'");
+      expect(src).not.toMatch(/from '\.\.\//);
+      expect(readFileSync(join(dir, '.macaw/ejected.json'), 'utf8')).toBe(before);
+    },
+  );
 });

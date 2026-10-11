@@ -1,5 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
-import { componentSlugs, componentTabUrls, foundationTabUrls, interactiveSlugs } from './helpers';
+import {
+  blockTabUrls,
+  componentSlugs,
+  componentTabUrls,
+  foundationTabUrls,
+  interactiveSlugs,
+} from './helpers';
 
 interface FocusInfo {
   tag: string;
@@ -136,7 +142,7 @@ test.describe('docs shell', () => {
   });
 });
 
-for (const url of [...componentTabUrls, ...foundationTabUrls]) {
+for (const url of [...componentTabUrls, ...foundationTabUrls, ...blockTabUrls]) {
   test(`${url}: the current tab is marked and every focused element has a visible outline`, async ({
     page,
   }) => {

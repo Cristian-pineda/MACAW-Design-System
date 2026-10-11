@@ -12,7 +12,7 @@ export interface RegistryIndex {
     description: string;
     meta?: { macaw?: { version: string; package: string; status: string; exports?: string[] } };
   }>;
-  meta: { macaw: { version: string; scope: string; components: string[] } };
+  meta: { macaw: { version: string; scope: string; components: string[]; blocks?: string[] } };
 }
 
 export interface RegistryItem {

@@ -1,0 +1,34 @@
+{
+  "name": "Account settings",
+  "slug": "account-settings",
+  "level": "page",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "Account settings for a billing product: business details, the payout account and notification recipients.",
+  "description": "The settings template filled with three sections: Business details (legal name, statement descriptor, support email, address), Payout account (holder, read-only bank account, schedule, minimum payout) and Notifications (alert, reminder and receipt recipients).",
+  "exports": [
+    "AccountSettings"
+  ],
+  "uses": [
+    "page-header",
+    "card",
+    "text",
+    "input",
+    "button"
+  ],
+  "template": "settings-template",
+  "whenToUse": [
+    "Starting point for the settings area of a billing or payments product."
+  ],
+  "whenNotToUse": [
+    "As a component: copy it and wire each section's Save to your API."
+  ],
+  "rules": [
+    "Amounts use align end with a currency adornment.",
+    "Read-only values say how to change them in a hint.",
+    "Save notifications, the last section's button, is the page's only primary Button."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui"
+  ]
+}

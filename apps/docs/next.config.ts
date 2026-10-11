@@ -6,7 +6,13 @@ const monorepoRoot = path.resolve(process.cwd(), '..', '..');
 
 const nextConfig: NextConfig = {
   pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
-  transpilePackages: ['@macaw-ds/ui', '@macaw-ds/icons', '@macaw-ds/tokens', '@macaw-ds/manifest'],
+  transpilePackages: [
+    '@macaw-ds/ui',
+    '@macaw-ds/icons',
+    '@macaw-ds/tokens',
+    '@macaw-ds/manifest',
+    '@macaw-ds/blocks',
+  ],
   outputFileTracingRoot: monorepoRoot,
   turbopack: {
     root: monorepoRoot,

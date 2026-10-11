@@ -27,7 +27,7 @@ Out of scope: marketing and content sites, native mobile, responsive-web-as-mobi
 
 Status: accepted · 2026-10-10
 
-Decision. Layouts are designed for 1024 px and above. Below the floor, tables collapse to cards (when tables exist); nothing else adapts.
+Decision. Layouts are designed for 1024 px and above. Below the floor, content still reflows without horizontal scrolling down to 320 px, because WCAG 2.2 SC 1.4.10 (a 400% zoom on a laptop) requires it. The application shell stops being sticky, the side column stacks above the page, page header actions wrap, and the 12-column grid stacks to one column. Tables, when they exist, will collapse to cards. Below the floor the design is functional rather than tuned.
 
 Consequences. Roughly a third less cost per component than fully responsive. Breakpoint tokens exist (`md` 1024, `lg` 1280, `xl` 1536) but components do not promise behaviour below `md`.
 
@@ -178,6 +178,16 @@ Status: accepted · 2026-10-10
 Decision. `AppShell`, `TopBar`, `SideNav`, `PageHeader` and `TabNav` ship in `@macaw-ds/ui`, and the docs site uses them. `TabNav` is navigation: each tab is a URL, with links and `aria-current`. In-page panel switching is a separate Tabs component, not yet built. `AppShell` keeps window scrolling, a skip link and a full-height SideNav column.
 
 Consequences. Every MACAW product gets the same frame and landmarks. Pages start with `PageHeader`, whose title is the page's `h1`.
+
+## 22. Atomic levels: atoms, molecules, organisms, templates, pages
+
+Status: accepted · 2026-10-10
+
+Context. A flat list of components hides how they relate, and agents need to know which pieces are building blocks and which are whole screens.
+
+Decision. Every component manifest declares `level`: atom (Text, Icon, Button, Input, Badge), molecule (Card, TabNav), organism (TopBar, SideNav, PageHeader) or template (AppShell). A component composes only components at its own level or below, and `manifest:check` enforces it. Templates (page structure with placeholder content) and pages (templates filled with realistic content) are **blocks**: compositions in the private `@macaw-ds/blocks` workspace, published as shadcn `registry:block` items. `npx @macaw-ds/cli add <slug>` copies a block, and a page brings its template. Blocks import components from `@macaw-ds/ui`, so the components stay on the upgrade path while the composition belongs to the consumer.
+
+Consequences. The docs navigation, the components index, the registry, the MCP server and the agent skill all group by the same field. Blocks are never package exports, so they carry no semver obligations; they are starting points.
 
 ---
 

@@ -4,6 +4,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "organism",
   "category": "layout",
   "purpose": "The application's global header: brand, optional centre content and actions. Not a page title; that is PageHeader.",
   "description": "A sticky banner landmark on surface layer-1 with a bottom border. Its height is size.topbar (56px comfortable, 48px compact), which sticky elements below it use as their offset. Content is passed through three slots.",
@@ -48,7 +49,8 @@
     "name": "Not named; there is one banner per page.",
     "notes": [
       "The TopBar is not focusable itself; its brand link and action buttons are.",
-      "Sticky content below it offsets by top-topbar so it is never obscured (WCAG 2.2 SC 2.4.11)."
+      "Sticky content below it offsets by top-topbar so it is never obscured (WCAG 2.2 SC 2.4.11).",
+      "Sticky only at 1024px and wider; below that it scrolls away so a zoomed or narrow viewport keeps its height for content."
     ]
   },
   "budget": {

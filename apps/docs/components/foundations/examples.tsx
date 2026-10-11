@@ -4,6 +4,7 @@ import { Icon } from '@macaw-ds/icons';
 import { Badge, Button, Card, Input, Text } from '@macaw-ds/ui';
 import { MotionDemo } from '@/components/tokens/motion-demo';
 import { tokensByPrefix } from '@/lib/tokens';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 /** The same card in both modes: only the semantic layer changes. */
 export function ColorExample() {
@@ -56,7 +57,7 @@ export function TypographyExample() {
       <Text variant="body-md" tone="secondary">
         Body text at 14 px with 20 px leading. Headings tighten tracking; captions widen it.
       </Text>
-      <dl className="m-0 grid w-96 grid-cols-2 gap-x-6 gap-y-1">
+      <dl className="m-0 grid w-full max-w-96 grid-cols-2 gap-x-6 gap-y-1">
         <Text as="dt" variant="label-sm" tone="secondary">
           Outstanding
         </Text>
@@ -84,13 +85,13 @@ export function SpacingExample() {
         Form section (stack-md between fields, inline-sm between buttons)
       </Text>
       <div className="flex flex-col gap-stack-md">
-        <div className="flex w-72 flex-col gap-1">
+        <div className="flex w-full max-w-72 flex-col gap-1">
           <Text as="label" variant="label-sm" htmlFor="spacing-ref">
             Invoice reference
           </Text>
           <Input id="spacing-ref" placeholder="INV-0041" />
         </div>
-        <div className="flex w-72 flex-col gap-1">
+        <div className="flex w-full max-w-72 flex-col gap-1">
           <Text as="label" variant="label-sm" htmlFor="spacing-amount">
             Amount (USD)
           </Text>
@@ -165,7 +166,7 @@ export function AccessibilityExample() {
         <Button iconOnly variant="ghost" aria-label="More actions">
           <Icon name="more-horizontal" />
         </Button>
-        <div className="flex w-56 flex-col gap-1">
+        <div className="flex w-full max-w-56 flex-col gap-1">
           <Text as="label" variant="label-sm" htmlFor="a11y-search">
             Search transactions
           </Text>
@@ -191,7 +192,10 @@ const INVOICES = [
 /** Tabular numerals line up in an end-aligned column; the negative amount pairs a sign with the tone. */
 export function NumeralsExample() {
   return (
-    <div className="overflow-x-auto rounded-container border border-line-default bg-surface-layer-1">
+    <ScrollRegion
+      label={'Recent invoices'}
+      className="rounded-container border border-line-default bg-surface-layer-1"
+    >
       <table className="w-full border-collapse">
         <caption className="sr-only">Recent invoices</caption>
         <thead className="bg-surface-layer-2">
@@ -248,6 +252,6 @@ export function NumeralsExample() {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollRegion>
   );
 }

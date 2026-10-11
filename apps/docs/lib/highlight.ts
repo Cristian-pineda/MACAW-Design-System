@@ -19,5 +19,7 @@ export async function highlight(code: string, lang: CodeLang): Promise<string> {
     lang: lang === 'text' ? 'txt' : lang,
     themes: { light: 'github-light', dark: 'github-dark-default' },
     defaultColor: false,
+    // github-light's orange (props and parameters, 3.5:1 on white) fails AA; darken it to 5.5:1.
+    colorReplacements: { 'github-light': { '#e36209': '#b04a00' } },
   });
 }

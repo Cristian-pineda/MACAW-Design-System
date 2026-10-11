@@ -14,7 +14,7 @@ export interface TopBarProps extends NativeProps<'header'> {
 export function TopBar({ brand, children, actions, ...rest }: TopBarProps) {
   return (
     <header
-      className="sticky top-0 z-sticky flex h-topbar shrink-0 items-center gap-4 border-b border-line-default bg-surface-layer-1 px-4"
+      className="z-sticky flex h-topbar shrink-0 items-center gap-4 border-b border-line-default bg-surface-layer-1 px-4 md:sticky md:top-0"
       {...rest}
     >
       <div className="flex shrink-0 items-center gap-2">{brand}</div>

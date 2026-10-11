@@ -9,7 +9,7 @@ MACAW is an agentic design system for financial software. The manifests in `refe
 
 ## Workflow
 
-1. Open `reference/components.md` and choose components by `purpose`. If what you need is not there, stop and report `not-in-system: <what>` with one sentence on what it would do. Do not build a substitute from divs.
+1. For a new screen, start from the closest template in `reference/blocks.md`: `npx @macaw-ds/cli add <template>` copies it in, and the page examples in `reference/blocks/` show how a template is filled. Then open `reference/components.md` (grouped atoms, molecules, organisms, templates) and choose components by `purpose`. If what you need is not there, stop and report `not-in-system: <what>` with one sentence on what it would do. Do not build a substitute from divs.
 2. Open `reference/manifests/<slug>.json` for each component you will use. Follow `rules`, respect `donts`, and copy from `examples`.
 3. Compose with token utilities only. `reference/tokens.md` lists them. Spacing is the 4px scale (`gap-2`, `p-4`); colours are semantic (`bg-surface-default`, `text-fg-muted`, `border-line-default`); type is `text-<variant>` through `<Text>`.
 4. After each edit, lint the file (the post-edit hook does this). Before reporting done, run `pnpm verify` (or `npm run verify`) and show the output.

@@ -58,7 +58,7 @@ export const tailwindTheme: Format = {
         theme.push(`  --container-${rest[1]}: ${v};`);
       else if (root === 'layout' && rest[0] === 'grid') {
         utilities.push(
-          `@utility layout-grid {\n  display: grid;\n  grid-template-columns: repeat(${v}, minmax(0, 1fr));\n  column-gap: var(--macaw-layout-gutter);\n}`,
+          `@utility layout-grid {\n  display: grid;\n  grid-template-columns: repeat(${v}, minmax(0, 1fr));\n  gap: var(--macaw-layout-gutter);\n  /* Below the 1024px floor the grid is one column and every cell spans it, so content reflows (WCAG 1.4.10).\n     Collapsing the tracks matters: twelve tracks keep eleven gutters, which alone overflow a narrow viewport. */\n  @media (width < 64rem) {\n    grid-template-columns: minmax(0, 1fr);\n    & > * {\n      grid-column: 1 / -1 !important;\n    }\n  }\n}`,
         );
       } else if (root === 'layout') theme.push(`  --spacing-${key}: ${v};`);
       else if (root === 'size' && rest[0] === 'control')

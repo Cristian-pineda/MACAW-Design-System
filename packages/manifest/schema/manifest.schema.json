@@ -36,6 +36,16 @@
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+$"
     },
+    "level": {
+      "type": "string",
+      "enum": [
+        "atom",
+        "molecule",
+        "organism",
+        "template"
+      ],
+      "description": "Atomic design level. Atoms cannot be broken down; molecules group atoms for one job; organisms are interface sections; templates are page-level structure."
+    },
     "category": {
       "type": "string",
       "enum": [
@@ -324,6 +334,7 @@
     "package",
     "status",
     "since",
+    "level",
     "category",
     "purpose",
     "description",

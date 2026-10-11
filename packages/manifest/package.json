@@ -17,11 +17,12 @@
       "import": "./dist/index.js"
     },
     "./schema.json": "./schema/manifest.schema.json",
-    "./package.json": "./package.json",
     "./node": {
       "types": "./dist/node.d.ts",
       "import": "./dist/node.js"
-    }
+    },
+    "./block-schema.json": "./schema/block.schema.json",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",

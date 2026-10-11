@@ -1,5 +1,5 @@
 import { Slot } from 'radix-ui';
-import type * as React from 'react';
+import * as React from 'react';
 import { cn } from '../lib/cn.ts';
 import { focusRing } from '../lib/focus.ts';
 import type { NativeProps } from '../lib/types.ts';
@@ -26,10 +26,21 @@ export interface SideNavGroupProps extends NativeProps<'div'> {
 }
 
 function SideNavGroup({ title, children, ...rest }: SideNavGroupProps) {
+  // The visible heading names the list, so screen readers announce "Billing, list, 3 items".
+  const titleId = React.useId();
   return (
     <div className="flex flex-col gap-1" {...rest}>
-      {title && <p className="m-0 px-2 font-sans text-caption text-fg-muted">{title}</p>}
-      <ul className="m-0 flex list-none flex-col gap-0.5 p-0">{children}</ul>
+      {title && (
+        <p id={titleId} className="m-0 px-2 font-sans text-caption text-fg-muted">
+          {title}
+        </p>
+      )}
+      <ul
+        aria-labelledby={title ? titleId : undefined}
+        className="m-0 flex list-none flex-col gap-0.5 p-0"
+      >
+        {children}
+      </ul>
     </div>
   );
 }

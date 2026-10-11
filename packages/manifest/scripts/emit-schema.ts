@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { z } from 'zod';
-import { ManifestSchema } from '../src/schema.ts';
+import { BlockSchema, ManifestSchema } from '../src/schema.ts';
 
 const schema = z.toJSONSchema(ManifestSchema, { target: 'draft-2020-12', io: 'input' });
 const out = {
@@ -14,3 +14,13 @@ const out = {
 await mkdir('schema', { recursive: true });
 await writeFile('schema/manifest.schema.json', JSON.stringify(out, null, 2) + '\n');
 console.log('@macaw-ds/manifest: wrote schema/manifest.schema.json');
+
+const block = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  $id: 'https://github.com/Cristian-pineda/MACAW-Design-System/packages/manifest/schema/block.schema.json',
+  title: 'MACAW block manifest',
+  description: 'Templates and pages: compositions of MACAW components shipped as registry blocks.',
+  ...z.toJSONSchema(BlockSchema, { target: 'draft-2020-12', io: 'input' }),
+};
+await writeFile('schema/block.schema.json', JSON.stringify(block, null, 2) + '\n');
+console.log('@macaw-ds/manifest: wrote schema/block.schema.json');

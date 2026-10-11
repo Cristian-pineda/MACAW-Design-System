@@ -4,6 +4,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "atom",
   "category": "form",
   "purpose": "Single-line text entry: names, emails, references, amounts. Not for multi-line text, dates or selections.",
   "description": "The text field primitive. Labelled by contract (TypeScript requires an id for a visible label, or aria-label / aria-labelledby), with adornments for currency symbols and units, an `invalid` state wired to aria-invalid, and `align=\"end\"` for money. Formatting of money and numbers belongs to the consumer until the NumberField ships.",

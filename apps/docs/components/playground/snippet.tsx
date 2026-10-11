@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { CopyButton } from '@/components/docs-ui/copy-button';
 import { highlightTsx } from './client-highlight';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 /** Highlights the generated JSX on the client; shows plain text until shiki is ready. */
 export function Snippet({ code }: { code: string }) {
@@ -28,11 +29,13 @@ export function Snippet({ code }: { code: string }) {
         <CopyButton text={code} label="Copy snippet" />
       </div>
       {html ? (
-        <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: html }} />
+        <ScrollRegion label="Generated code" html={html} />
       ) : (
-        <pre className="m-0 overflow-x-auto p-4 font-mono text-code text-fg-primary">
-          <code>{code}</code>
-        </pre>
+        <ScrollRegion label="Generated code">
+          <pre className="m-0 p-4 font-mono text-code text-fg-primary">
+            <code>{code}</code>
+          </pre>
+        </ScrollRegion>
       )}
     </div>
   );

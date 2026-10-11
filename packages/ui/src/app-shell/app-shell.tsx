@@ -12,6 +12,11 @@ export interface AppShellProps extends NativeProps<'div'> {
   sideNavLabel?: string;
   /** id of the main element; the skip link targets it. */
   mainId?: string;
+  /**
+   * Accessible name for main. Only needed when several apps share one screen-reader landmark list,
+   * such as an app embedded in an iframe inside another app.
+   */
+  mainLabel?: string;
   /** Text of the skip link, the first Tab stop on the page. */
   skipLinkLabel?: string;
   /** The page: usually a PageHeader followed by content. */
@@ -21,18 +26,21 @@ export interface AppShellProps extends NativeProps<'div'> {
 /**
  * The application frame: skip link, sticky TopBar, a full-height SideNav column on layer-1 that
  * scrolls on its own, and the main area on the canvas. The window scrolls the main content.
+ * Below the 1024px floor nothing is sticky and the side column stacks above main, so the page
+ * reflows at 320px (WCAG 1.4.10).
  */
 export function AppShell({
   topBar,
   sideNav,
   sideNavLabel = 'Primary',
   mainId = 'main',
+  mainLabel,
   skipLinkLabel = 'Skip to main content',
   children,
   ...rest
 }: AppShellProps) {
   return (
-    <div className="min-h-dvh bg-surface-canvas text-fg-primary" {...rest}>
+    <div data-macaw-app-shell="" className="min-h-dvh bg-surface-canvas text-fg-primary" {...rest}>
       <a
         href={`#${mainId}`}
         className={cn(
@@ -43,16 +51,21 @@ export function AppShell({
         {skipLinkLabel}
       </a>
       {topBar}
-      <div className="flex">
+      <div className="flex flex-col md:flex-row">
         {sideNav && (
           <aside
             aria-label={sideNavLabel}
-            className="sticky top-topbar h-below-topbar w-sidenav shrink-0 overflow-y-auto border-r border-line-default bg-surface-layer-1"
+            className="w-full shrink-0 border-b border-line-default bg-surface-layer-1 md:sticky md:top-topbar md:h-below-topbar md:w-sidenav md:overflow-y-auto md:border-r md:border-b-0"
           >
             {sideNav}
           </aside>
         )}
-        <main id={mainId} tabIndex={-1} className="min-w-0 flex-1 outline-none">
+        <main
+          id={mainId}
+          aria-label={mainLabel}
+          tabIndex={-1}
+          className="min-w-0 flex-1 outline-none"
+        >
           {children}
         </main>
       </div>

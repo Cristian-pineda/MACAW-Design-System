@@ -4,6 +4,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "organism",
   "category": "layout",
   "purpose": "The page's own header under the TopBar: title, description, meta, actions and section tabs. Not the global header; that is TopBar.",
   "description": "A compact secondary header on surface layer-1, full width at the top of the main area. The title is the page's h1. Actions sit on the right; the tabs slot takes a TabNav, which sticks below the TopBar for the whole page. Spacing follows the density mode.",
@@ -77,7 +78,8 @@
     "name": "The title is the page's heading; the tabs landmark is named by TabNav's aria-label.",
     "notes": [
       "The title renders as h1 by default so every page has exactly one top-level heading.",
-      "The sticky tab row sits below the TopBar (top-topbar), so focused tabs are never hidden behind it."
+      "The sticky tab row sits below the TopBar (top-topbar), so focused tabs are never hidden behind it.",
+      "Actions wrap under the title on narrow viewports; the tab row is sticky only at 1024px and wider."
     ]
   },
   "budget": {

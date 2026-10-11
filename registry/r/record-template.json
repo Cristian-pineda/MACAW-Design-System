@@ -1,0 +1,86 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "record-template",
+  "type": "registry:block",
+  "title": "Record",
+  "description": "Structure for a single record: status, actions and section tabs in the header, then main content and a summary column.",
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons",
+    "@macaw-ds/tokens"
+  ],
+  "registryDependencies": [
+    "https://macaw-design-system.vercel.app/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "registry/macaw/blocks/record-template.tsx",
+      "type": "registry:block",
+      "target": "components/macaw/blocks/record-template.tsx",
+      "content": "import { Icon } from '@macaw-ds/icons';\nimport {\n  Badge,\n  Button,\n  Card,\n  CardBody,\n  CardHeader,\n  CardTitle,\n  PageHeader,\n  TabNav,\n  Text,\n} from '@macaw-ds/ui';\nimport type * as React from 'react';\n\nexport interface RecordSummaryItem {\n  /** The label, e.g. \"Amount due\". */\n  term: string;\n  /** The value. Strings render as body text; pass a `<Text numeric>` or a Badge for anything else. */\n  value: React.ReactNode;\n}\n\nexport interface RecordSummaryProps {\n  /** Card title, rendered as an h2. */\n  title?: string;\n  items: RecordSummaryItem[];\n}\n\n/** The summary card for the side column: a definition list of label and value pairs. */\nexport function RecordSummary({ title = 'Summary', items }: RecordSummaryProps) {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle as=\"h2\">{title}</CardTitle>\n      </CardHeader>\n      <CardBody>\n        <dl className=\"m-0 flex flex-col gap-stack-sm\">\n          {items.map((item) => (\n            <div key={item.term} className=\"flex flex-col gap-0.5\">\n              <Text as=\"dt\" variant=\"label-sm\" tone=\"secondary\">\n                {item.term}\n              </Text>\n              {typeof item.value === 'string' ? (\n                <Text as=\"dd\" variant=\"body-md\">\n                  {item.value}\n                </Text>\n              ) : (\n                <dd className=\"m-0\">{item.value}</dd>\n              )}\n            </div>\n          ))}\n        </dl>\n      </CardBody>\n    </Card>\n  );\n}\n\nexport interface RecordTemplateProps {\n  /** The record's name or ID, rendered as the page's h1. */\n  title?: React.ReactNode;\n  /** One line under the title: the counterparty, key dates. */\n  description?: React.ReactNode;\n  /** Next to the title: the record's status Badge. */\n  meta?: React.ReactNode;\n  /** Record actions: one primary Button at most. */\n  actions?: React.ReactNode;\n  /** A TabNav, one URL per tab. It sticks below the TopBar while the page scrolls. */\n  tabs?: React.ReactNode;\n  /** The side column, usually a RecordSummary. */\n  summary?: React.ReactNode;\n  /** The main column: the active tab's content. */\n  children?: React.ReactNode;\n}\n\nfunction PlaceholderTabs() {\n  return (\n    <TabNav aria-label=\"Record sections\">\n      <TabNav.Item href=\"#overview\" active>\n        Overview\n      </TabNav.Item>\n      <TabNav.Item href=\"#details\">Details</TabNav.Item>\n      <TabNav.Item href=\"#activity\">Activity</TabNav.Item>\n    </TabNav>\n  );\n}\n\nfunction PlaceholderMain() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle as=\"h2\">Overview</CardTitle>\n      </CardHeader>\n      <CardBody>\n        <Text tone=\"secondary\">The active tab&apos;s content goes in the main column.</Text>\n      </CardBody>\n    </Card>\n  );\n}\n\nconst PLACEHOLDER_SUMMARY: RecordSummaryItem[] = [\n  { term: 'Owner', value: 'Name' },\n  { term: 'Created', value: 'Date' },\n  { term: 'Last updated', value: 'Date' },\n];\n\n/**\n * Record page: a PageHeader with status, actions and section tabs, then an 8 + 4 split with the\n * active tab's content on the left and a summary on the right. Renders the main area only.\n */\nexport function RecordTemplate({\n  title = 'Record name',\n  description = 'Counterparty · Key date',\n  meta = <Badge tone=\"neutral\">Status</Badge>,\n  actions = (\n    <>\n      <Button variant=\"secondary\" iconStart={<Icon name=\"pencil\" />}>\n        Edit\n      </Button>\n      <Button>Primary action</Button>\n    </>\n  ),\n  tabs = <PlaceholderTabs />,\n  summary = <RecordSummary items={PLACEHOLDER_SUMMARY} />,\n  children = <PlaceholderMain />,\n}: RecordTemplateProps) {\n  return (\n    <>\n      <PageHeader\n        title={title}\n        description={description}\n        meta={meta}\n        actions={actions}\n        tabs={tabs}\n      />\n      <div className=\"layout-grid max-w-page items-start gap-y-gutter px-margin py-section\">\n        <div className=\"col-span-8 flex min-w-0 flex-col gap-gutter\">{children}</div>\n        <div className=\"col-span-4 flex min-w-0 flex-col gap-gutter\">{summary}</div>\n      </div>\n    </>\n  );\n}\n"
+    }
+  ],
+  "docs": "A template from MACAW 0.0.0. Components come from @macaw-ds/ui and stay on the upgrade path; this composition is yours to edit.",
+  "categories": [
+    "template"
+  ],
+  "meta": {
+    "macaw": {
+      "version": "0.0.0",
+      "kind": "block",
+      "level": "template",
+      "slug": "record-template",
+      "uses": [
+        "page-header",
+        "tab-nav",
+        "card",
+        "text",
+        "badge",
+        "button",
+        "icon"
+      ],
+      "block": {
+        "$schema": "../../../manifest/schema/block.schema.json",
+        "name": "Record",
+        "slug": "record-template",
+        "level": "template",
+        "status": "beta",
+        "since": "0.1.0",
+        "purpose": "Structure for a single record: status, actions and section tabs in the header, then main content and a summary column.",
+        "description": "A PageHeader with meta (status Badge), actions and a TabNav whose tabs are URLs, then an 8 + 4 split on the layout grid: the active tab's content in the main column and a summary Card with a definition list in the side column. Exports RecordSummary for the side column. Renders the main area only.",
+        "exports": [
+          "RecordTemplate",
+          "RecordSummary"
+        ],
+        "uses": [
+          "page-header",
+          "tab-nav",
+          "card",
+          "text",
+          "badge",
+          "button",
+          "icon"
+        ],
+        "whenToUse": [
+          "One invoice, customer, payout or subscription with sections the user can link to.",
+          "A record with a short set of key facts that should stay visible next to the details."
+        ],
+        "whenNotToUse": [
+          "Switching panels in place without changing the URL: that is a Tabs component, not TabNav.",
+          "Editing many settings: use the settings template."
+        ],
+        "rules": [
+          "Render inside AppShell's main; never add a second main or a TopBar.",
+          "The PageHeader title is the page's only h1; card titles are h2.",
+          "Every tab is a link to its own URL with active set on the current one.",
+          "At most one primary Button, in the PageHeader actions.",
+          "The summary column is col-span-4 and the main column col-span-8."
+        ],
+        "dependencies": [
+          "@macaw-ds/ui",
+          "@macaw-ds/icons"
+        ]
+      }
+    }
+  }
+}

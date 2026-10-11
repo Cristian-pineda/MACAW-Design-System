@@ -18,6 +18,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "template",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "layout",
@@ -47,6 +49,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "atom",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "feedback",
@@ -77,6 +81,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "atom",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "primitive",
@@ -107,6 +113,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "molecule",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "layout",
@@ -147,6 +155,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "atom",
           "package": "@macaw-ds/icons",
           "status": "beta",
           "category": "primitive",
@@ -177,6 +187,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "atom",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "form",
@@ -207,6 +219,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "organism",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "layout",
@@ -236,6 +250,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "organism",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "navigation",
@@ -267,6 +283,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "molecule",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "navigation",
@@ -297,6 +315,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "atom",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "typography",
@@ -327,6 +347,8 @@
       "meta": {
         "macaw": {
           "version": "0.0.0",
+          "kind": "component",
+          "level": "organism",
           "package": "@macaw-ds/ui",
           "status": "beta",
           "category": "layout",
@@ -338,6 +360,248 @@
             "gzip": 1000
           },
           "file": "packages/ui/src/top-bar/top-bar.manifest.json"
+        }
+      }
+    },
+    {
+      "name": "dashboard-template",
+      "type": "registry:block",
+      "title": "Dashboard",
+      "description": "Structure for an overview: a header, a row of three or four KPIs, then a wide and a narrow panel.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/dashboard-template.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/dashboard-template.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "template",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "DashboardTemplate"
+          ],
+          "uses": [
+            "page-header",
+            "card",
+            "text",
+            "button",
+            "icon"
+          ],
+          "file": "packages/blocks/src/dashboard-template/dashboard-template.block.json"
+        }
+      }
+    },
+    {
+      "name": "list-template",
+      "type": "registry:block",
+      "title": "List",
+      "description": "Structure for a list page: header with one primary action, a search and filter toolbar, and rows on a card.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/list-template.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/list-template.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "template",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "ListTemplate"
+          ],
+          "uses": [
+            "page-header",
+            "button",
+            "input",
+            "card",
+            "text",
+            "badge",
+            "icon"
+          ],
+          "file": "packages/blocks/src/list-template/list-template.block.json"
+        }
+      }
+    },
+    {
+      "name": "record-template",
+      "type": "registry:block",
+      "title": "Record",
+      "description": "Structure for a single record: status, actions and section tabs in the header, then main content and a summary column.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/record-template.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/record-template.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "template",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "RecordTemplate",
+            "RecordSummary"
+          ],
+          "uses": [
+            "page-header",
+            "tab-nav",
+            "card",
+            "text",
+            "badge",
+            "button",
+            "icon"
+          ],
+          "file": "packages/blocks/src/record-template/record-template.block.json"
+        }
+      }
+    },
+    {
+      "name": "settings-template",
+      "type": "registry:block",
+      "title": "Settings",
+      "description": "Structure for a settings or form page: a header, then card sections of labelled fields in one column.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/settings-template.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/settings-template.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "template",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "SettingsTemplate"
+          ],
+          "uses": [
+            "page-header",
+            "card",
+            "text",
+            "input",
+            "button"
+          ],
+          "file": "packages/blocks/src/settings-template/settings-template.block.json"
+        }
+      }
+    },
+    {
+      "name": "account-settings",
+      "type": "registry:block",
+      "title": "Account settings",
+      "description": "Account settings for a billing product: business details, the payout account and notification recipients.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/account-settings.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/account-settings.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "page",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "AccountSettings"
+          ],
+          "uses": [
+            "page-header",
+            "card",
+            "text",
+            "input",
+            "button"
+          ],
+          "template": "settings-template",
+          "file": "packages/blocks/src/account-settings/account-settings.block.json"
+        }
+      }
+    },
+    {
+      "name": "billing-dashboard",
+      "type": "registry:block",
+      "title": "Billing dashboard",
+      "description": "A billing overview: volume, revenue, outstanding and overdue KPIs, overdue invoices to chase and upcoming payouts.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/billing-dashboard.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/billing-dashboard.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "page",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "BillingDashboard"
+          ],
+          "uses": [
+            "page-header",
+            "card",
+            "text",
+            "badge",
+            "button",
+            "icon"
+          ],
+          "template": "dashboard-template",
+          "file": "packages/blocks/src/billing-dashboard/billing-dashboard.block.json"
+        }
+      }
+    },
+    {
+      "name": "invoice-record",
+      "type": "registry:block",
+      "title": "Invoice record",
+      "description": "An overdue invoice: status, reminder and download actions, line items with totals and a summary of what is owed.",
+      "files": [
+        {
+          "path": "registry/macaw/blocks/invoice-record.tsx",
+          "type": "registry:block",
+          "target": "components/macaw/blocks/invoice-record.tsx"
+        }
+      ],
+      "meta": {
+        "macaw": {
+          "version": "0.0.0",
+          "kind": "block",
+          "level": "page",
+          "status": "beta",
+          "since": "0.1.0",
+          "exports": [
+            "InvoiceRecord"
+          ],
+          "uses": [
+            "page-header",
+            "tab-nav",
+            "card",
+            "text",
+            "badge",
+            "button",
+            "icon"
+          ],
+          "template": "record-template",
+          "file": "packages/blocks/src/invoice-record/invoice-record.block.json"
         }
       }
     },
@@ -388,6 +652,22 @@
         "tab-nav",
         "text",
         "top-bar"
+      ],
+      "blocks": [
+        "dashboard-template",
+        "list-template",
+        "record-template",
+        "settings-template",
+        "account-settings",
+        "billing-dashboard",
+        "invoice-record"
+      ],
+      "levels": [
+        "atom",
+        "molecule",
+        "organism",
+        "template",
+        "page"
       ]
     }
   }

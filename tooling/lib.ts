@@ -1,6 +1,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseBlock, type Block } from '@macaw-ds/manifest';
 import { loadManifests, type LoadedManifest } from '@macaw-ds/manifest/node';
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
@@ -63,4 +64,29 @@ export interface TokenMeta {
 
 export async function loadTokenMeta(): Promise<TokenMeta> {
   return readJson<TokenMeta>(join(ROOT, 'packages/tokens/dist/tokens.meta.json'));
+}
+
+export const LEVEL_RANK = { atom: 1, molecule: 2, organism: 3, template: 4, page: 5 } as const;
+
+export interface LoadedBlock {
+  block: Block;
+  file: string;
+  sourceFile: string;
+}
+
+/** Templates and pages from packages/blocks/src/<slug>/<slug>.block.json, sorted by level then slug. */
+export async function loadAllBlocks(): Promise<LoadedBlock[]> {
+  const files = (await walk(join(ROOT, 'packages/blocks/src'))).filter((f) =>
+    f.endsWith('.block.json'),
+  );
+  const out: LoadedBlock[] = [];
+  for (const file of files) {
+    const block = parseBlock(JSON.parse(await readFile(file, 'utf8')), file);
+    out.push({ block, file, sourceFile: file.replace(/\.block\.json$/, '.tsx') });
+  }
+  return out.sort(
+    (a, b) =>
+      LEVEL_RANK[a.block.level] - LEVEL_RANK[b.block.level] ||
+      a.block.slug.localeCompare(b.block.slug),
+  );
 }

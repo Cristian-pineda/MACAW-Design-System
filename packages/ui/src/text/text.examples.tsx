@@ -43,7 +43,7 @@ export function Roles() {
 
 export function Money() {
   return (
-    <div className="flex w-48 flex-col gap-1">
+    <div className="flex w-full max-w-48 flex-col gap-1">
       <Text variant="numeric-lg" numeric align="end">
         $12,480.00
       </Text>
@@ -83,7 +83,7 @@ export function Tones() {
 
 export function Truncated() {
   return (
-    <div className="w-56">
+    <div className="w-full max-w-56">
       <Text truncate title="A very long merchant descriptor that will not fit on one line">
         A very long merchant descriptor that will not fit on one line
       </Text>

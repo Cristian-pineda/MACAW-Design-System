@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../manifest/schema/block.schema.json",
+  "name": "List",
+  "slug": "list-template",
+  "level": "template",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "Structure for a list page: header with one primary action, a search and filter toolbar, and rows on a card.",
+  "description": "A PageHeader, a toolbar row with a labelled search Input and a Filter button, and the list region on a layer-1 Card with no padding. Placeholder rows are a semantic ul laid out on the 12-column grid with Text and Badge. Renders the main area only: AppShell, TopBar and main come from the root layout.",
+  "exports": ["ListTemplate"],
+  "uses": ["page-header", "button", "input", "card", "text", "badge", "icon"],
+  "whenToUse": [
+    "A collection the user scans, searches and filters: invoices, customers, payouts.",
+    "Rows with a name, a status and one figure."
+  ],
+  "whenNotToUse": [
+    "Comparing many columns of numbers: wait for the Table component instead of faking one with a grid.",
+    "A single record: use the record template."
+  ],
+  "rules": [
+    "Render inside AppShell's main; never add a second main or a TopBar.",
+    "The PageHeader title is the page's only h1.",
+    "At most one primary Button on the page, in the PageHeader actions.",
+    "The search Input needs an aria-label (or a visible label).",
+    "Keep the list a semantic ul with one li per row; amounts use Text numeric with align end."
+  ],
+  "dependencies": ["@macaw-ds/ui", "@macaw-ds/icons"]
+}

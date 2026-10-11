@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Cristian-pineda/MACAW-Design-System/packages/manifest/schema/block.schema.json",
+  "title": "MACAW block manifest",
+  "description": "Templates and pages: compositions of MACAW components shipped as registry blocks.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Display name, e.g. \"Dashboard\""
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Folder, registry and CLI name, e.g. \"dashboard-template\""
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "template",
+        "page"
+      ],
+      "description": "template: structure with placeholder content; page: a template filled with realistic content"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "alpha",
+        "beta",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "since": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exports": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Exported React components from the block source"
+    },
+    "uses": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Component slugs the block composes"
+    },
+    "template": {
+      "description": "For pages: the template slug this page fills",
+      "type": "string"
+    },
+    "whenToUse": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "whenNotToUse": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dependencies": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "slug",
+    "level",
+    "status",
+    "since",
+    "purpose",
+    "description",
+    "exports",
+    "uses",
+    "whenToUse"
+  ],
+  "additionalProperties": false
+}

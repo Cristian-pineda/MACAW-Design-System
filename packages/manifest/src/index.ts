@@ -1,5 +1,10 @@
 export {
   A11ySchema,
+  BlockSchema,
+  LevelSchema,
+  parseBlock,
+  type Block,
+  type Level,
   ControlSchema,
   ExampleSchema,
   ManifestSchema,

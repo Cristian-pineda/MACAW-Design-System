@@ -4,6 +4,7 @@
   "package": "@macaw-ds/icons",
   "status": "beta",
   "since": "0.1.0",
+  "level": "atom",
   "category": "primitive",
   "purpose": "Renders one icon from the curated set, bound to size and tone tokens. Not for logos or illustrations.",
   "description": "A thin wrapper over a curated Lucide subset. Decorative by default (aria-hidden); pass `label` when the icon carries meaning on its own. The set is deliberately small: adding an icon is a PR with a screenshot of where it is used.",

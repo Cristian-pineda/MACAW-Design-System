@@ -16,8 +16,8 @@ describe('PageHeader', () => {
   it('renders tabs in a sticky row below the TopBar', () => {
     const { container } = render(<examples.Record />);
     const row = container.querySelector('[data-page-header-tabs]');
-    expect(row?.className).toContain('sticky');
-    expect(row?.className).toContain('top-topbar');
+    expect(row?.className).toContain('md:sticky');
+    expect(row?.className).toContain('md:top-topbar');
     expect(screen.getByRole('navigation', { name: 'Invoice sections' })).toBeInTheDocument();
   });
   it('has one primary action in the examples', () => {

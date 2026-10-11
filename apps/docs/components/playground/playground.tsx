@@ -11,6 +11,7 @@ import { cn } from '@/lib/cn';
 import { useMounted } from '@/lib/use-mounted';
 import { componentMap, type PlaygroundProps } from './component-map';
 import { Snippet } from './snippet';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 export type Control = 'segmented' | 'select' | 'switch' | 'text' | 'number' | 'none';
 
@@ -154,15 +155,20 @@ export function Playground({ slug, manifest, controls }: PlaygroundProps_) {
           )}
         </div>
 
-        <div
-          data-theme={frameTheme}
-          data-force-focus={forceFocus ? '' : undefined}
-          data-motion={motionReduced ? 'reduced' : undefined}
-          data-testid="playground-frame"
-          className="isolate flex min-h-56 items-center justify-center overflow-x-auto rounded-container border border-line-default bg-surface-canvas p-8 text-fg-primary"
+        <ScrollRegion
+          label={`${manifest.name} preview`}
+          className="rounded-container border border-line-default"
         >
-          {rendered}
-        </div>
+          <div
+            data-theme={frameTheme}
+            data-force-focus={forceFocus ? '' : undefined}
+            data-motion={motionReduced ? 'reduced' : undefined}
+            data-testid="playground-frame"
+            className="isolate flex min-h-56 items-center justify-center bg-surface-canvas p-8 text-fg-primary"
+          >
+            {rendered}
+          </div>
+        </ScrollRegion>
 
         {manifest.examples.length > 0 && (
           <div className="flex flex-col gap-2">

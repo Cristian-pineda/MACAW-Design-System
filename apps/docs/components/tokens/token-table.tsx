@@ -1,8 +1,18 @@
 import type { ReactNode } from 'react';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
-export function TokenTable({ columns, children }: { columns: string[]; children: ReactNode }) {
+export function TokenTable({
+  columns,
+  children,
+  label = 'Tokens',
+}: {
+  columns: string[];
+  children: ReactNode;
+  /** Names the scrollable region. */
+  label?: string;
+}) {
   return (
-    <div className="overflow-x-auto rounded-container border border-line-default">
+    <ScrollRegion label={label} className="rounded-container border border-line-default">
       <table className="w-full border-collapse">
         <thead className="bg-surface-layer-2">
           <tr>
@@ -19,7 +29,7 @@ export function TokenTable({ columns, children }: { columns: string[]; children:
         </thead>
         <tbody>{children}</tbody>
       </table>
-    </div>
+    </ScrollRegion>
   );
 }
 

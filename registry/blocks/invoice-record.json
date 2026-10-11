@@ -1,0 +1,37 @@
+{
+  "name": "Invoice record",
+  "slug": "invoice-record",
+  "level": "page",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "An overdue invoice: status, reminder and download actions, line items with totals and a summary of what is owed.",
+  "description": "The record template filled with invoice INV-0041 for Acme Corporation: an Overdue Badge, Void, Download PDF and Send reminder actions, section tabs, line items with quantities and end-aligned totals, and a summary of amount due, due date, customer and terms.",
+  "exports": [
+    "InvoiceRecord"
+  ],
+  "uses": [
+    "page-header",
+    "tab-nav",
+    "card",
+    "text",
+    "badge",
+    "button",
+    "icon"
+  ],
+  "template": "record-template",
+  "whenToUse": [
+    "Starting point for an invoice, bill or payment detail page."
+  ],
+  "whenNotToUse": [
+    "As a component: copy it and replace the data with your queries."
+  ],
+  "rules": [
+    "Send reminder is the only primary Button; Void is ghost so it does not compete.",
+    "Each tab links to its own URL.",
+    "Totals are a definition list with numerals end-aligned."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons"
+  ]
+}

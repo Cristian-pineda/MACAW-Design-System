@@ -115,7 +115,33 @@ export function componentTabs(slug: string): TabLink[] {
   ];
 }
 
-export function navGroups(components: { slug: string; title: string }[]): NavGroup[] {
+/** Block page tabs (templates and pages); the first is the base URL. */
+export function blockTabs(base: string): TabLink[] {
+  return [
+    { href: base, label: 'Preview' },
+    { href: `${base}/code`, label: 'Code' },
+    { href: `${base}/usage`, label: 'Usage' },
+  ];
+}
+
+type NavComponent = { slug: string; title: string; level: string };
+type NavBlock = { slug: string; name: string; level: 'template' | 'page' };
+
+/**
+ * Start, Foundations, then one group per atomic level (Atoms, Molecules, Organisms, Templates,
+ * Pages), then Reference. Components are grouped by their manifest level; the Templates group
+ * holds the template-level components (AppShell) followed by the template blocks.
+ */
+export function navGroups(components: NavComponent[], blocks: NavBlock[]): NavGroup[] {
+  const componentLinks = (level: string): NavLink[] =>
+    components
+      .filter((c) => c.level === level)
+      .map((c) => ({ href: `/components/${c.slug}`, label: c.title }));
+  const blockLinks = (level: NavBlock['level']): NavLink[] =>
+    blocks
+      .filter((b) => b.level === level)
+      .map((b) => ({ href: `/${level}s/${b.slug}`, label: b.name }));
+
   return [
     {
       title: 'Start',
@@ -129,12 +155,16 @@ export function navGroups(components: { slug: string; title: string }[]): NavGro
       links: FOUNDATIONS.map((f) => ({ href: `/foundations/${f.slug}`, label: f.title })),
     },
     {
-      title: 'Components',
+      title: 'Atoms',
       links: [
         { href: '/components', label: 'All components', exact: true },
-        ...components.map((c) => ({ href: `/components/${c.slug}`, label: c.title })),
+        ...componentLinks('atom'),
       ],
     },
+    { title: 'Molecules', links: componentLinks('molecule') },
+    { title: 'Organisms', links: componentLinks('organism') },
+    { title: 'Templates', links: [...componentLinks('template'), ...blockLinks('template')] },
+    { title: 'Pages', links: blockLinks('page') },
     {
       title: 'Reference',
       links: [

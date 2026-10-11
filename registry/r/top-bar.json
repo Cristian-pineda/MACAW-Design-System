@@ -14,7 +14,7 @@
       "path": "registry/macaw/ui/top-bar.tsx",
       "type": "registry:ui",
       "target": "components/ui/macaw/top-bar.tsx",
-      "content": "import type * as React from 'react';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface TopBarProps extends NativeProps<'header'> {\n  /** Product mark and name, usually a link to home. */\n  brand: React.ReactNode;\n  /** Optional centre content, such as a search field or environment switcher. */\n  children?: React.ReactNode;\n  /** Right-aligned actions: help, notifications, theme toggle, account. */\n  actions?: React.ReactNode;\n}\n\n/** The application's global header. Sticky at the top of AppShell, on surface layer-1. */\nexport function TopBar({ brand, children, actions, ...rest }: TopBarProps) {\n  return (\n    <header\n      className=\"sticky top-0 z-sticky flex h-topbar shrink-0 items-center gap-4 border-b border-line-default bg-surface-layer-1 px-4\"\n      {...rest}\n    >\n      <div className=\"flex shrink-0 items-center gap-2\">{brand}</div>\n      <div className=\"flex min-w-0 flex-1 items-center\">{children}</div>\n      {actions && <div className=\"flex shrink-0 items-center gap-1\">{actions}</div>}\n    </header>\n  );\n}\n"
+      "content": "import type * as React from 'react';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface TopBarProps extends NativeProps<'header'> {\n  /** Product mark and name, usually a link to home. */\n  brand: React.ReactNode;\n  /** Optional centre content, such as a search field or environment switcher. */\n  children?: React.ReactNode;\n  /** Right-aligned actions: help, notifications, theme toggle, account. */\n  actions?: React.ReactNode;\n}\n\n/** The application's global header. Sticky at the top of AppShell, on surface layer-1. */\nexport function TopBar({ brand, children, actions, ...rest }: TopBarProps) {\n  return (\n    <header\n      className=\"z-sticky flex h-topbar shrink-0 items-center gap-4 border-b border-line-default bg-surface-layer-1 px-4 md:sticky md:top-0\"\n      {...rest}\n    >\n      <div className=\"flex shrink-0 items-center gap-2\">{brand}</div>\n      <div className=\"flex min-w-0 flex-1 items-center\">{children}</div>\n      {actions && <div className=\"flex shrink-0 items-center gap-1\">{actions}</div>}\n    </header>\n  );\n}\n"
     }
   ],
   "docs": "Ejected from @macaw-ds/ui@0.0.0. One TopBar per page, placed in AppShell's topBar slot. Actions are ghost Buttons; icon-only actions need aria-label.",
@@ -24,6 +24,8 @@
   "meta": {
     "macaw": {
       "version": "0.0.0",
+      "kind": "component",
+      "level": "organism",
       "package": "@macaw-ds/ui",
       "status": "beta",
       "slug": "top-bar",
@@ -34,6 +36,7 @@
         "package": "@macaw-ds/ui",
         "status": "beta",
         "since": "0.1.0",
+        "level": "organism",
         "category": "layout",
         "purpose": "The application's global header: brand, optional centre content and actions. Not a page title; that is PageHeader.",
         "description": "A sticky banner landmark on surface layer-1 with a bottom border. Its height is size.topbar (56px comfortable, 48px compact), which sticky elements below it use as their offset. Content is passed through three slots.",
@@ -78,7 +81,8 @@
           "name": "Not named; there is one banner per page.",
           "notes": [
             "The TopBar is not focusable itself; its brand link and action buttons are.",
-            "Sticky content below it offsets by top-topbar so it is never obscured (WCAG 2.2 SC 2.4.11)."
+            "Sticky content below it offsets by top-topbar so it is never obscured (WCAG 2.2 SC 2.4.11).",
+            "Sticky only at 1024px and wider; below that it scrolls away so a zoomed or narrow viewport keeps its height for content."
           ]
         },
         "budget": {

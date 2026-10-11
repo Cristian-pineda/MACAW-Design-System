@@ -14,6 +14,7 @@ describe('TopBar', () => {
     render(<examples.Default />);
     const cls = screen.getByRole('banner').className;
     expect(cls).toContain('h-topbar');
+    expect(cls).toContain('md:sticky');
     expect(cls).toContain('bg-surface-layer-1');
   });
   it('renders without axe violations in both themes', async () => {

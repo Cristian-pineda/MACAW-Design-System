@@ -118,6 +118,19 @@ const reducedMotion = `
 
 const extras = `
 /*
+ * Sticky chrome offsets (WCAG 2.2 SC 2.4.11 Focus Not Obscured). When an AppShell is on the page
+ * at desktop widths, focused elements scroll clear of the sticky TopBar and PageHeader tab row.
+ */
+@media (width >= 64rem) {
+  :root:has([data-macaw-app-shell]) {
+    scroll-padding-top: calc(var(--${PREFIX}-size-topbar) + var(--${PREFIX}-space-4));
+  }
+  :root:has([data-macaw-app-shell] [data-page-header-tabs]) {
+    scroll-padding-top: calc(var(--${PREFIX}-size-topbar) + var(--${PREFIX}-size-control-lg) + var(--${PREFIX}-space-4));
+  }
+}
+
+/*
  * Keyframes for the animation tokens. Plain CSS on purpose: Tailwind drops keyframes declared
  * inside @theme unless a theme variable names them literally, and ours point at token variables.
  */

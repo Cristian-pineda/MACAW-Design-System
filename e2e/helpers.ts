@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Page } from '@playwright/test';
@@ -17,6 +17,7 @@ export const componentSlugs = registry.items
 
 export interface ManifestJson {
   slug: string;
+  level: 'atom' | 'molecule' | 'organism' | 'template';
   props: Record<string, { type: string; control?: string; default?: unknown }>;
   a11y: { focusable: boolean | { whenProp: string } };
   motion?: { description: string; tokens: string[]; whenProp?: string };
@@ -80,6 +81,32 @@ export const foundationTabUrls = [
   '/foundations/accessibility/developers',
 ];
 
+export interface BlockJson {
+  slug: string;
+  name: string;
+  level: 'template' | 'page';
+}
+
+/** Every template and page block, read from packages/blocks/src/<slug>/<slug>.block.json. */
+const blocksDir = path.resolve(here, '../packages/blocks/src');
+export const blocks: BlockJson[] = readdirSync(blocksDir, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => path.join(blocksDir, entry.name, `${entry.name}.block.json`))
+  .filter((file) => existsSync(file))
+  .map((file) => JSON.parse(readFileSync(file, 'utf8')) as BlockJson)
+  .sort((a, b) => a.slug.localeCompare(b.slug));
+
+/** Block base URL: /templates/<slug> or /pages/<slug>. */
+export function blockUrl(block: BlockJson): string {
+  return `/${block.level}s/${block.slug}`;
+}
+
+/** Block pages: one URL per tab (Preview, Code, Usage). */
+export const blockTabSuffixes = ['', '/code', '/usage'] as const;
+export const blockTabUrls = blocks.flatMap((block) =>
+  blockTabSuffixes.map((suffix) => `${blockUrl(block)}${suffix}`),
+);
+
 export const staticPages = ['/', '/components', '/tokens', '/getting-started', '/for-agents'];
 
 export type Theme = 'light' | 'dark';
@@ -113,3 +140,10 @@ export async function gotoThemed(page: Page, url: string, theme: Theme): Promise
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.waitForSelector(`html[data-theme="${theme}"]`, { timeout: 10_000 });
 }
+
+/** Each block as its own document in the real AppShell (the docs embed these in titled iframes). */
+export const blockPreviewUrls = blocks.flatMap((block) =>
+  (['light', 'dark'] as const).map(
+    (theme) => `/preview/${block.level}/${block.slug}?theme=${theme}`,
+  ),
+);

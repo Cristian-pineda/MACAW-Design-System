@@ -11,6 +11,11 @@ describe('SideNav', () => {
     expect(current).toHaveLength(1);
     expect(current[0]).toHaveTextContent('Invoices');
   });
+  it('names each titled group list by its heading', () => {
+    render(<examples.Default />);
+    expect(screen.getByRole('list', { name: 'Billing' })).toBeInTheDocument();
+    expect(screen.getByRole('list', { name: 'Settings' })).toBeInTheDocument();
+  });
   it('names items by their label, not their icon', () => {
     render(<examples.Default />);
     expect(screen.getByRole('link', { name: 'Payouts' })).toBeInTheDocument();

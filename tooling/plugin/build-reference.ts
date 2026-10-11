@@ -37,19 +37,37 @@ const propSummary = (m: Manifest) =>
     })
     .join('; ');
 
+const LEVEL_TITLE = {
+  atom: 'Atoms',
+  molecule: 'Molecules',
+  organism: 'Organisms',
+  template: 'Templates',
+} as const;
+
 const components = `# MACAW components (generated, v${index.meta.macaw.version})
 
 Read the manifest in \`manifests/<slug>.json\` before using a component. Import everything from \`@macaw-ds/ui\` (Icon from \`@macaw-ds/icons\`).
 
+Components are grouped by atomic level. A level composes only levels below it: atoms, then molecules, organisms and templates. Templates and pages that are whole screens live in \`blocks.md\`.
+
+${(['atom', 'molecule', 'organism', 'template'] as const)
+  .map((level) => {
+    const rows = manifests.filter((m) => m.level === level);
+    if (!rows.length) return '';
+    return `## ${LEVEL_TITLE[level]}
+
 | Component | Import | Purpose | Props | First rules |
 |---|---|---|---|---|
-${manifests
+${rows
   .map(
     (m) =>
       `| ${m.name} | \`import { ${m.exports[0]} } from '${m.package}'\` | ${m.purpose} | ${propSummary(m)} | ${m.rules.slice(0, 2).join(' ')} |`,
   )
   .join('\n')}
-
+`;
+  })
+  .filter(Boolean)
+  .join('\n')}
 ## Not in the system yet
 
 Anything not listed above. Say \`not-in-system: <what>\` instead of building it: tables, select, dialog, tooltip, popover, in-page tabs, toast, date picker, number or money input, textarea, checkbox, radio, switch, dropdown menu, command palette.
@@ -59,6 +77,66 @@ Anything not listed above. Say \`not-in-system: <what>\` instead of building it:
 ${manifests.map((m) => `- ${m.name}: ${m.status} since ${m.since}, budget ${m.budget.gzip} B gzipped`).join('\n')}
 `;
 await writeFile(join(OUT, 'components.md'), components);
+
+// ---- blocks.md + consumer-shaped block sources ----
+interface BlockItem {
+  name: string;
+  title: string;
+  files: Array<{ content: string; target: string }>;
+  meta: {
+    macaw: {
+      level: 'template' | 'page';
+      uses: string[];
+      template?: string;
+      block: {
+        purpose: string;
+        whenToUse: string[];
+        whenNotToUse: string[];
+        rules: string[];
+        exports: string[];
+      };
+    };
+  };
+}
+const blockSlugs = (index.meta.macaw as { blocks?: string[] }).blocks ?? [];
+const blockItems: BlockItem[] = [];
+await mkdir(join(OUT, 'blocks'), { recursive: true });
+for (const slug of blockSlugs) {
+  const item = await readJson<BlockItem>(join(REG, 'r', `${slug}.json`));
+  blockItems.push(item);
+  await writeFile(join(OUT, 'blocks', `${slug}.tsx`), item.files[0]!.content);
+}
+const blockSection = (level: 'template' | 'page') =>
+  blockItems
+    .filter((b) => b.meta.macaw.level === level)
+    .map((b) => {
+      const m = b.meta.macaw;
+      return `### ${b.title} (\`${b.name}\`)
+
+${m.block.purpose}
+
+- Install: \`npx @macaw-ds/cli add ${b.name}\` (writes \`${b.files[0]!.target}\`${m.template ? ` and its template \`${m.template}\`` : ''})
+- Source: \`blocks/${b.name}.tsx\` · exports ${m.block.exports.map((e) => `\`${e}\``).join(', ')}
+- Uses: ${m.uses.join(', ')}${m.template ? `\n- Fills template: ${m.template}` : ''}
+- Use for: ${m.block.whenToUse.join(' ')}${m.block.whenNotToUse.length ? `\n- Not for: ${m.block.whenNotToUse.join(' ')}` : ''}${m.block.rules.length ? `\n- Rules: ${m.block.rules.join(' ')}` : ''}
+`;
+    })
+    .join('\n');
+await writeFile(
+  join(OUT, 'blocks.md'),
+  `# MACAW templates and pages (generated, v${index.meta.macaw.version})
+
+Templates are page structure with placeholder content; pages are templates filled with realistic content. Both are compositions you copy in and own; the components inside still come from \`@macaw-ds/ui\`. Start a new screen from the closest template instead of composing from scratch, and read the page examples to see how a template is filled.
+
+## Templates
+
+${blockSection('template') || 'None yet.'}
+
+## Pages
+
+${blockSection('page') || 'None yet.'}
+`,
+);
 
 const tokens = await readJson<TokenMeta & { version: string }>(join(REG, 'tokens.json'));
 const semantic = tokens.tokens.filter((t) => t.tier === 'semantic');
@@ -108,5 +186,5 @@ ${tokens.tokens
 `;
 await writeFile(join(OUT, 'tokens.md'), tokensMd);
 console.log(
-  `plugin:build: ${manifests.length} manifests, components.md, tokens.md → plugin/skills/using-macaw/reference/`,
+  `plugin:build: ${manifests.length} manifests, ${blockSlugs.length} blocks, components.md, blocks.md, tokens.md → plugin/skills/using-macaw/reference/`,
 );

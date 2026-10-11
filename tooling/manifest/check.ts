@@ -4,7 +4,7 @@
  */
 import { readFile } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
-import { findManifestFiles, loadTokenMeta, ROOT } from '../lib.ts';
+import { findManifestFiles, LEVEL_RANK, loadAllBlocks, loadTokenMeta, ROOT } from '../lib.ts';
 import { loadManifests } from '@macaw-ds/manifest/node';
 
 const problems: string[] = [];
@@ -112,6 +112,80 @@ for (const { manifest: m, file } of loaded) {
   }
 }
 
+// ---- Atomic hierarchy: a component composes only components at its level or below ----
+const levelBySlug = new Map(loaded.map(({ manifest: m }) => [m.slug, m.level]));
+const slugByExport = new Map<string, string>();
+for (const { manifest: m } of loaded) for (const e of m.exports) slugByExport.set(e, m.slug);
+for (const { manifest: m, file } of loaded) {
+  const rel = file.replace(`${ROOT}/`, '');
+  const source = await readFile(join(dirname(file), `${m.slug}.tsx`), 'utf8').catch(() => '');
+  for (const imp of source.matchAll(/from '\.\.\/([a-z-]+)\/[a-z-]+\.tsx'/g)) {
+    const dep = imp[1]!;
+    const depLevel = levelBySlug.get(dep);
+    if (depLevel && LEVEL_RANK[depLevel] > LEVEL_RANK[m.level]) {
+      problems.push(
+        `${rel}: a ${m.level} cannot compose ${dep} (a ${depLevel}); move it up a level or restructure`,
+      );
+    }
+  }
+}
+
+// ---- Blocks: templates and pages ----
+const blocks = await loadAllBlocks().catch((e: Error) => {
+  problems.push(e.message);
+  return [];
+});
+const blockSlugs = new Map(blocks.map((b) => [b.block.slug, b.block]));
+for (const { block: b, file, sourceFile } of blocks) {
+  const rel = file.replace(`${ROOT}/`, '');
+  if (slugs.has(b.slug)) problems.push(`${rel}: slug "${b.slug}" collides with a component`);
+  if (!file.endsWith(`/${b.slug}/${b.slug}.block.json`))
+    problems.push(`${rel}: must live at src/${b.slug}/${b.slug}.block.json`);
+  const source = await readFile(sourceFile, 'utf8').catch(() => '');
+  if (!source) {
+    problems.push(`${rel}: missing ${b.slug}.tsx`);
+    continue;
+  }
+  for (const e of b.exports)
+    if (!new RegExp(`export (?:function|const) ${e}\\b`).test(source))
+      problems.push(`${rel}: export "${e}" not found in ${b.slug}.tsx`);
+  for (const u of b.uses) if (!slugs.has(u)) problems.push(`${rel}: uses unknown component "${u}"`);
+  // Every MACAW component the source imports must be declared in uses, and vice versa.
+  const imported = new Set<string>();
+  for (const imp of source.matchAll(/import\s*\{([^}]+)\}\s*from\s*'@macaw-ds\/(?:ui|icons)'/g)) {
+    for (const name of imp[1]!
+      .split(',')
+      .map((n) => n.replace(/\btype\b/, '').trim())
+      .filter(Boolean)) {
+      const slug = slugByExport.get(name);
+      if (slug) imported.add(slug);
+    }
+  }
+  for (const u of imported)
+    if (!b.uses.includes(u)) problems.push(`${rel}: imports ${u} but "uses" does not list it`);
+  // A page may list what reaches the screen through its template.
+  const inherited = new Set(
+    b.level === 'page' ? (blockSlugs.get(b.template ?? '')?.uses ?? []) : [],
+  );
+  for (const u of b.uses) {
+    if (!imported.has(u) && !inherited.has(u))
+      problems.push(`${rel}: "uses" lists ${u} but neither the source nor its template imports it`);
+  }
+  if (/from '\.\.\/\.\.\/|from '@macaw-ds\/ui\/src/.test(source))
+    problems.push(`${rel}: import components from '@macaw-ds/ui', never from package source`);
+  if (b.level === 'page') {
+    const t = blockSlugs.get(b.template ?? '');
+    if (!t) problems.push(`${rel}: template "${b.template}" does not exist`);
+    else if (t.level !== 'template')
+      problems.push(`${rel}: "${b.template}" is a ${t.level}, not a template`);
+    else if (!source.includes(`'../${t.slug}/${t.slug}.tsx'`))
+      problems.push(`${rel}: a page must import its template from '../${t.slug}/${t.slug}.tsx'`);
+  }
+  if (b.level === 'template' && /from '\.\.\/[a-z-]+\/[a-z-]+\.tsx'/.test(source)) {
+    problems.push(`${rel}: a template must not import other blocks`);
+  }
+}
+
 if (problems.length) {
   console.error(
     `manifest:check found ${problems.length} problem(s):\n` +
@@ -120,3 +194,6 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(`manifest:check: ${loaded.length} manifests ok (${[...slugs].join(', ')})`);
+console.log(
+  `manifest:check: ${blocks.length} blocks ok (${blocks.map((b) => `${b.block.slug} [${b.block.level}]`).join(', ') || 'none yet'})`,
+);

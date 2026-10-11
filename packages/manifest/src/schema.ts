@@ -74,6 +74,12 @@ export const MotionSchema = z
   })
   .strict();
 
+export const LevelSchema = z
+  .enum(['atom', 'molecule', 'organism', 'template'])
+  .describe(
+    'Atomic design level. Atoms cannot be broken down; molecules group atoms for one job; organisms are interface sections; templates are page-level structure.',
+  );
+
 export const ManifestSchema = z
   .object({
     $schema: z.string().optional(),
@@ -85,6 +91,7 @@ export const ManifestSchema = z
     package: z.string().regex(/^@macaw-ds\/[a-z-]+$/),
     status: z.enum(['planned', 'alpha', 'beta', 'stable', 'deprecated']),
     since: z.string().regex(/^\d+\.\d+\.\d+$/),
+    level: LevelSchema,
     category: z.enum([
       'primitive',
       'typography',
@@ -139,6 +146,55 @@ export function parseManifest(input: unknown, source = 'manifest'): Manifest {
       .map((i) => `  ${i.path.join('.') || '(root)'}: ${i.message}`)
       .join('\n');
     throw new Error(`Invalid manifest (${source}):\n${issues}`);
+  }
+  return result.data;
+}
+
+/** Templates and pages: compositions shipped as registry blocks, not package exports. */
+export const BlockSchema = z
+  .object({
+    $schema: z.string().optional(),
+    name: z.string().min(1).describe('Display name, e.g. "Dashboard"'),
+    slug: z
+      .string()
+      .regex(/^[a-z][a-z0-9-]*$/)
+      .describe('Folder, registry and CLI name, e.g. "dashboard-template"'),
+    level: z
+      .enum(['template', 'page'])
+      .describe(
+        'template: structure with placeholder content; page: a template filled with realistic content',
+      ),
+    status: z.enum(['planned', 'alpha', 'beta', 'stable', 'deprecated']),
+    since: z.string().regex(/^\d+\.\d+\.\d+$/),
+    purpose: z.string().min(1).max(160),
+    description: z.string().min(1),
+    exports: z
+      .array(z.string().min(1))
+      .min(1)
+      .describe('Exported React components from the block source'),
+    uses: z.array(z.string()).min(1).describe('Component slugs the block composes'),
+    template: z.string().optional().describe('For pages: the template slug this page fills'),
+    whenToUse: z.array(z.string()).min(1),
+    whenNotToUse: z.array(z.string()).default([]),
+    rules: z.array(z.string()).default([]),
+    dependencies: z.array(z.string()).default([]),
+  })
+  .strict()
+  .refine((b) => b.level !== 'page' || typeof b.template === 'string', {
+    message: 'pages must name the template they fill',
+    path: ['template'],
+  });
+
+export type Block = z.infer<typeof BlockSchema>;
+export type Level = z.infer<typeof LevelSchema>;
+
+export function parseBlock(input: unknown, source = 'block'): Block {
+  const result = BlockSchema.safeParse(input);
+  if (!result.success) {
+    const issues = result.error.issues
+      .map((i) => `  ${i.path.join('.') || '(root)'}: ${i.message}`)
+      .join('\n');
+    throw new Error(`Invalid block (${source}):\n${issues}`);
   }
   return result.data;
 }

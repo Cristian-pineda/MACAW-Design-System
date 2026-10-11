@@ -28,6 +28,8 @@
   "meta": {
     "macaw": {
       "version": "0.0.0",
+      "kind": "component",
+      "level": "molecule",
       "package": "@macaw-ds/ui",
       "status": "beta",
       "slug": "card",
@@ -38,6 +40,7 @@
         "package": "@macaw-ds/ui",
         "status": "beta",
         "since": "0.1.0",
+        "level": "molecule",
         "category": "layout",
         "purpose": "A bordered surface that groups related content: a KPI, a form section, a record summary. Not a page, not a modal.",
         "description": "A compound component. `Card` is the surface; `Card.Header`, `Card.Title`, `Card.Description`, `Card.Body` and `Card.Footer` lay out its parts with the padding the Card sets. Structure comes from a 1 px border; elevation is optional and subtle. `interactive` with `asChild` turns the whole card into a link or button with the shared focus ring. Padding follows the density mode.",

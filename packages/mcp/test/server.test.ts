@@ -88,4 +88,17 @@ export function X() { return <div className="flex gap-2 p-4"><Text numeric>$1.00
     expect(v.messages.filter((m: { severity: string }) => m.severity === 'error')).toEqual([]);
     expect(v.ok).toBe(true);
   });
+  it('lists templates and pages and returns a block with its source', async () => {
+    const r = text(await client.callTool({ name: 'list_components', arguments: {} }));
+    expect(r.levels).toEqual(['atom', 'molecule', 'organism', 'template', 'page']);
+    expect(r.components.every((c: { level?: string }) => typeof c.level === 'string')).toBe(true);
+    if (r.blocks.length === 0) return;
+    const first = r.blocks[0];
+    expect(first.install).toBe(`npx @macaw-ds/cli add ${first.name}`);
+    const b = text(
+      await client.callTool({ name: 'get_component', arguments: { name: first.name } }),
+    );
+    expect(b.kind).toBe('block');
+    expect(b.source).toContain("from '@macaw-ds/ui'");
+  });
 });

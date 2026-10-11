@@ -19,7 +19,7 @@ export function ReducedMotionDemo() {
       <div
         data-motion={reduced ? 'reduced' : undefined}
         data-testid="reduced-motion-frame"
-        className="flex items-center gap-inline-sm rounded-control bg-surface-canvas p-6"
+        className="flex flex-wrap items-center gap-inline-sm rounded-control bg-surface-canvas p-6"
       >
         <Button loading>Paying invoice</Button>
         <Button variant="secondary" loading>

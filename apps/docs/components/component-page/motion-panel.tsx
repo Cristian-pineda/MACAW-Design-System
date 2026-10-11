@@ -11,7 +11,7 @@ export function MotionPanel({ motion }: { motion: Manifest['motion'] }) {
     );
   }
   return (
-    <dl className="m-0 flex flex-col gap-3 rounded-container border border-line-default bg-surface-layer-1 p-4">
+    <dl className="m-0 flex min-w-0 flex-col gap-3 rounded-container border border-line-default bg-surface-layer-1 p-4 wrap-break-word">
       <div className="flex flex-col gap-0.5">
         <Text as="dt" variant="label-sm" tone="secondary">
           What moves

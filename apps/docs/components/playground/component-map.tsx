@@ -89,7 +89,7 @@ export const componentMap: Record<string, ComponentMapEntry> = {
       id: typeof props.id === 'string' && props.id ? `playground-${props.id}` : 'playground-input',
     }),
     wrap: (element, props) => (
-      <div className="flex w-72 flex-col gap-1">
+      <div className="flex w-full max-w-72 flex-col gap-1">
         <Text as="label" variant="label-sm" htmlFor={String(props.id)}>
           Amount (USD)
         </Text>
@@ -134,7 +134,7 @@ export const componentMap: Record<string, ComponentMapEntry> = {
         </Card.Footer>
       </>
     ),
-    wrap: (element) => <div className="w-80">{element}</div>,
+    wrap: (element) => <div className="w-full max-w-80">{element}</div>,
   },
   icon: {
     Component: Icon as unknown as ComponentType<PlaygroundProps>,

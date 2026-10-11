@@ -4,3 +4,5 @@ import path from 'node:path';
 export const DOCS_DIR = process.cwd();
 export const REPO_ROOT = path.resolve(DOCS_DIR, '..', '..');
 export const REGISTRY_DIR = path.join(REPO_ROOT, 'registry');
+/** Source of the template and page blocks (packages/blocks/src/<slug>/). */
+export const BLOCKS_DIR = path.join(REPO_ROOT, 'packages', 'blocks', 'src');

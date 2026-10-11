@@ -26,6 +26,8 @@
   "meta": {
     "macaw": {
       "version": "0.0.0",
+      "kind": "component",
+      "level": "molecule",
       "package": "@macaw-ds/ui",
       "status": "beta",
       "slug": "tab-nav",
@@ -36,6 +38,7 @@
         "package": "@macaw-ds/ui",
         "status": "beta",
         "since": "0.1.0",
+        "level": "molecule",
         "category": "navigation",
         "purpose": "Page-level tabs where each tab is its own URL. Not for switching panels in place; that is Tabs (not in the system yet).",
         "description": "Navigation tabs for the sections of a page: Overview, Usage, Accessibility, Code. Each item is a link, so tabs can be bookmarked, shared and opened in a new tab. The current tab sets aria-current=\"page\". Usually rendered by PageHeader's tabs slot.",

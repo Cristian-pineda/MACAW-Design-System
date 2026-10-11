@@ -1,0 +1,38 @@
+{
+  "name": "Dashboard",
+  "slug": "dashboard-template",
+  "level": "template",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "Structure for an overview: a header, a row of three or four KPIs, then a wide and a narrow panel.",
+  "description": "A PageHeader, a KPI row on the 12-column grid (four on col-span-3 or three on col-span-4) with tabular numerals, a delta and its sentiment, then a col-span-8 primary panel and a col-span-4 secondary panel. KPIs are typed data so every figure renders the same way. Renders the main area only.",
+  "exports": [
+    "DashboardTemplate"
+  ],
+  "uses": [
+    "page-header",
+    "card",
+    "text",
+    "button",
+    "icon"
+  ],
+  "whenToUse": [
+    "The landing page of a product area: billing, treasury, payouts.",
+    "A few headline figures followed by what needs attention."
+  ],
+  "whenNotToUse": [
+    "More than four KPIs: split the page or move figures into a panel.",
+    "A single record or a long list: use the record or list template."
+  ],
+  "rules": [
+    "Render inside AppShell's main; never add a second main or a TopBar.",
+    "The PageHeader title is the page's only h1; panel titles are h2.",
+    "Three or four KPIs; every value is Text numeric.",
+    "A delta's sentiment says whether it is good news; up is not always positive.",
+    "At most one primary Button, in the PageHeader actions."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons"
+  ]
+}

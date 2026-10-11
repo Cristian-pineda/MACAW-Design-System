@@ -1,6 +1,8 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { Icon } from '@macaw-ds/icons';
+import { Button } from '@macaw-ds/ui';
 import { Segmented } from '@/components/docs-ui/segmented';
 import { DENSITY_STORAGE_KEY, type Density } from './density';
 
@@ -33,14 +35,30 @@ function write(next: Density) {
 export function DensityToggle() {
   const density = useSyncExternalStore(subscribe, read, () => 'comfortable' as Density);
   return (
-    <Segmented
-      label="Density"
-      options={[
-        { value: 'comfortable', label: 'Comfortable' },
-        { value: 'compact', label: 'Compact' },
-      ]}
-      value={density}
-      onValueChange={write}
-    />
+    <>
+      <span className="hidden md:inline-flex">
+        <Segmented
+          label="Density"
+          options={[
+            { value: 'comfortable', label: 'Comfortable' },
+            { value: 'compact', label: 'Compact' },
+          ]}
+          value={density}
+          onValueChange={write}
+        />
+      </span>
+      {/* Below the 1024px floor: one toggle button, so the TopBar reflows at 320px (WCAG 1.4.10). */}
+      <span className="inline-flex md:hidden">
+        <Button
+          iconOnly
+          variant="ghost"
+          aria-label="Compact density"
+          aria-pressed={density === 'compact'}
+          onClick={() => write(density === 'compact' ? 'comfortable' : 'compact')}
+        >
+          <Icon name="table" />
+        </Button>
+      </span>
+    </>
   );
 }

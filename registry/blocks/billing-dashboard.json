@@ -1,0 +1,36 @@
+{
+  "name": "Billing dashboard",
+  "slug": "billing-dashboard",
+  "level": "page",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "A billing overview: volume, revenue, outstanding and overdue KPIs, overdue invoices to chase and upcoming payouts.",
+  "description": "The dashboard template filled for a billing product: four KPIs with deltas, a Needs attention panel listing overdue invoices with critical Badges, and an Upcoming payouts panel with dates and amounts.",
+  "exports": [
+    "BillingDashboard"
+  ],
+  "uses": [
+    "page-header",
+    "card",
+    "text",
+    "badge",
+    "button",
+    "icon"
+  ],
+  "template": "dashboard-template",
+  "whenToUse": [
+    "Starting point for the home page of a billing or invoicing product."
+  ],
+  "whenNotToUse": [
+    "As a component: copy it and replace the data with your queries."
+  ],
+  "rules": [
+    "Keep money in Text numeric, end-aligned.",
+    "Overdue is critical; in transit is info; scheduled is neutral.",
+    "Create invoice is the page's only primary Button."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons"
+  ]
+}

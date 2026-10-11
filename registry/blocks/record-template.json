@@ -1,0 +1,41 @@
+{
+  "name": "Record",
+  "slug": "record-template",
+  "level": "template",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "Structure for a single record: status, actions and section tabs in the header, then main content and a summary column.",
+  "description": "A PageHeader with meta (status Badge), actions and a TabNav whose tabs are URLs, then an 8 + 4 split on the layout grid: the active tab's content in the main column and a summary Card with a definition list in the side column. Exports RecordSummary for the side column. Renders the main area only.",
+  "exports": [
+    "RecordTemplate",
+    "RecordSummary"
+  ],
+  "uses": [
+    "page-header",
+    "tab-nav",
+    "card",
+    "text",
+    "badge",
+    "button",
+    "icon"
+  ],
+  "whenToUse": [
+    "One invoice, customer, payout or subscription with sections the user can link to.",
+    "A record with a short set of key facts that should stay visible next to the details."
+  ],
+  "whenNotToUse": [
+    "Switching panels in place without changing the URL: that is a Tabs component, not TabNav.",
+    "Editing many settings: use the settings template."
+  ],
+  "rules": [
+    "Render inside AppShell's main; never add a second main or a TopBar.",
+    "The PageHeader title is the page's only h1; card titles are h2.",
+    "Every tab is a link to its own URL with active set on the current one.",
+    "At most one primary Button, in the PageHeader actions.",
+    "The summary column is col-span-4 and the main column col-span-8."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui",
+    "@macaw-ds/icons"
+  ]
+}

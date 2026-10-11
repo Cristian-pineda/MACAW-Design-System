@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import { Icon } from '@macaw-ds/icons';
 import { describe, expect, it, vi } from 'vitest';
 import {
@@ -37,7 +38,7 @@ describe('Button', () => {
     expect(onClick).toHaveBeenCalledTimes(3);
   });
 
-  it('is removed from the tab order when disabled or loading', async () => {
+  it('removes disabled buttons from the tab order but keeps loading ones focusable', async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -47,14 +48,52 @@ describe('Button', () => {
       </>,
     );
     await user.tab();
+    expect(screen.getByRole('button', { name: 'B' })).toHaveFocus();
+    await user.tab();
     expect(screen.getByRole('button', { name: 'C' })).toHaveFocus();
+  });
+
+  it('keeps keyboard focus when an action starts loading, and ignores activation while busy', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    const { rerender } = render(<Button onClick={onClick}>Pay</Button>);
+    const btn = screen.getByRole('button', { name: 'Pay' });
+    btn.focus();
+    await user.keyboard('{Enter}');
+    expect(onClick).toHaveBeenCalledTimes(1);
+    rerender(
+      <Button onClick={onClick} loading>
+        Pay
+      </Button>,
+    );
+    expect(btn).toHaveFocus();
+    expect(btn).toHaveAttribute('aria-disabled', 'true');
+    await user.keyboard('{Enter}');
+    await user.keyboard(' ');
+    await user.click(btn);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not submit a form while loading', async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault());
+    render(
+      <form onSubmit={onSubmit}>
+        <Button type="submit" loading>
+          Save
+        </Button>
+      </form>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('announces busy and keeps the label when loading', () => {
     render(<Button loading>Processing</Button>);
     const btn = screen.getByRole('button', { name: 'Processing' });
     expect(btn).toHaveAttribute('aria-busy', 'true');
-    expect(btn).toBeDisabled();
+    expect(btn).toHaveAttribute('aria-disabled', 'true');
+    expect(btn).not.toBeDisabled();
     expect(btn.querySelector('[data-icon="loader"]')).toBeInTheDocument();
   });
 
@@ -67,15 +106,21 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'More actions' })).toBeInTheDocument();
   });
 
-  it('renders the child with asChild and never sets disabled on it', () => {
+  it('renders the child with asChild, and a disabled link does not navigate', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
     render(
-      <Button asChild disabled>
-        <a href="/x">Link</a>
+      <Button asChild disabled onClick={onClick}>
+        <a href="#x">Link</a>
       </Button>,
     );
     const link = screen.getByRole('link', { name: 'Link' });
     expect(link).not.toHaveAttribute('disabled');
     expect(link).toHaveAttribute('aria-disabled', 'true');
+    const before = window.location.hash;
+    await user.click(link);
+    expect(window.location.hash).toBe(before);
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   it('renders every variant, size and state without axe violations in both themes', async () => {

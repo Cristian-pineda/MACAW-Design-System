@@ -1,0 +1,37 @@
+{
+  "name": "Settings",
+  "slug": "settings-template",
+  "level": "template",
+  "status": "beta",
+  "since": "0.1.0",
+  "purpose": "Structure for a settings or form page: a header, then card sections of labelled fields in one column.",
+  "description": "A PageHeader, then a single column capped at max-w-form of Card sections, each a labelled region with a title, a description, labelled Inputs with optional hints and a CardFooter with its Save button. One primary per page: the last section's Save is primary and earlier sections' are secondary. Renders the main area only.",
+  "exports": [
+    "SettingsTemplate"
+  ],
+  "uses": [
+    "page-header",
+    "card",
+    "text",
+    "input",
+    "button"
+  ],
+  "whenToUse": [
+    "Account, business, payout or notification settings.",
+    "Any form that splits into a few independently saved groups."
+  ],
+  "whenNotToUse": [
+    "A multi-step flow such as onboarding: one step per page with its own primary action.",
+    "A record with actions: use the record template."
+  ],
+  "rules": [
+    "Render inside AppShell's main; never add a second main or a TopBar.",
+    "The PageHeader title is the page's only h1; section titles are h2.",
+    "Every Input has a visible label via Text as label with htmlFor; hints are linked with aria-describedby.",
+    "Only one primary Button on the page: the last section's Save.",
+    "Field ids are unique on the page."
+  ],
+  "dependencies": [
+    "@macaw-ds/ui"
+  ]
+}

@@ -28,7 +28,7 @@ if [ -z "$FROM_NPM" ]; then
 fi
 
 cd "$WORK"
-npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --no-import-alias --skip-install --yes >/dev/null 2>&1 || npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --yes
+npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --import-alias '@/*' --skip-install --yes >/dev/null 2>&1 || npx --yes create-next-app@latest app --ts --tailwind --app --src-dir --no-eslint --use-pnpm --yes
 cd app
 if [ -z "$FROM_NPM" ]; then
   # Unpublished builds: point every @macaw-ds/* range at the local tarballs so cross-package
@@ -54,15 +54,40 @@ cat > src/app/globals.css <<'CSS'
 @import "@macaw-ds/ui/styles.css";
 CSS
 cat > src/app/page.tsx <<'TSX'
-import { Button, Text } from '@macaw-ds/ui';
+// A React Server Component rendering every MACAW component, including the client ones
+// (Button, Card) in states that attach handlers. This is the check jsdom unit tests cannot do.
+import { Icon } from '@macaw-ds/icons';
+import {
+  AppShell, Badge, Button, Card, CardBody, CardHeader, CardTitle, Input, PageHeader, SideNav, TabNav, Text, TopBar,
+} from '@macaw-ds/ui';
 
 export default function Page() {
   return (
-    <main className="flex flex-col gap-4 p-8">
-      <Text as="h1" variant="heading-lg">Smoke</Text>
-      <Text numeric variant="numeric-lg" data-testid="amount">$12,480.00</Text>
-      <Button data-testid="pay">Pay invoice</Button>
-    </main>
+    <AppShell
+      topBar={<TopBar brand={<Text as="span" variant="heading-md">Smoke</Text>} actions={<Button iconOnly variant="ghost" aria-label="Settings"><Icon name="settings" /></Button>} />}
+      sideNav={<SideNav aria-label="Main"><SideNav.Group title="Billing"><SideNav.Item href="/" active>Invoices</SideNav.Item></SideNav.Group></SideNav>}
+    >
+      <PageHeader
+        title="Smoke"
+        meta={<Badge tone="success">Live</Badge>}
+        actions={<Button data-testid="pay">Pay invoice</Button>}
+        tabs={<TabNav aria-label="Sections"><TabNav.Item href="/" active>Overview</TabNav.Item></TabNav>}
+      />
+      <div className="layout-grid px-margin py-section">
+        <div className="col-span-6">
+          <Card>
+            <CardHeader><CardTitle>Balance</CardTitle></CardHeader>
+            <CardBody><Text numeric variant="numeric-lg" data-testid="amount">$12,480.00</Text></CardBody>
+          </Card>
+        </div>
+        <div className="col-span-6 flex flex-col gap-2">
+          <Text as="label" htmlFor="amt" variant="label-sm">Amount</Text>
+          <Input id="amt" align="end" startAdornment="$" />
+          <Button loading>Processing</Button>
+          <Button asChild disabled><a href="/x">Disabled link</a></Button>
+        </div>
+      </div>
+    </AppShell>
   );
 }
 TSX
@@ -73,6 +98,20 @@ echo "smoke: consumer build ok"
 pnpm exec macaw init --skip-install >/dev/null
 test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-reviewer.md && test -f .mcp.json && grep -q "macaw:start" CLAUDE.md && grep -q '"macaw"' .claude/settings.json
 echo "smoke: macaw init ok"
+
+# A page block through the one door: copies the page and the template it fills.
+pnpm exec macaw add billing-dashboard --skip-install >/dev/null
+test -f src/components/macaw/blocks/billing-dashboard.tsx && test -f src/components/macaw/blocks/dashboard-template.tsx
+mkdir -p src/app/dashboard
+cat > src/app/dashboard/page.tsx <<'TSX'
+import { BillingDashboard } from '@/components/macaw/blocks/billing-dashboard';
+
+export default function Dashboard() {
+  return <BillingDashboard />;
+}
+TSX
+pnpm exec next build >/dev/null
+echo "smoke: macaw add billing-dashboard ok (page + template render from a server page)"
 
 # Rendered CSS reaches the page: the built CSS must contain the token variable and the utility.
 CSS_ALL="$(find .next/static -name '*.css' -exec cat {} +)"

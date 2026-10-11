@@ -9,6 +9,7 @@ import { cn } from '@/lib/cn';
 import { REPO_ROOT } from '@/lib/paths';
 import { DocsPage } from '@/components/shell/docs-page';
 import { MARKETPLACE_ADD } from '@/lib/site';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 export const metadata: Metadata = { title: 'For agents' };
 
@@ -103,7 +104,7 @@ export default async function ForAgentsPage() {
         title="MCP tools"
         intro="@macaw-ds/mcp exposes the generated registry over four tools."
       >
-        <div className="overflow-x-auto rounded-container border border-line-default">
+        <ScrollRegion label={'MCP tools'} className="rounded-container border border-line-default">
           <table className="w-full border-collapse">
             <thead className="bg-surface-layer-2">
               <tr>
@@ -136,7 +137,7 @@ export default async function ForAgentsPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollRegion>
       </Section>
 
       <Section

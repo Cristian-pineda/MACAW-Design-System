@@ -1,5 +1,6 @@
 import type { Manifest } from '@macaw-ds/manifest';
 import { Text } from '@macaw-ds/ui';
+import { ScrollRegion } from '@/components/docs-ui/scroll-region';
 
 function typeOf(spec: Manifest['props'][string]): string {
   if (spec.type === 'enum' && spec.values) return spec.values.map((v) => `"${v}"`).join(' | ');
@@ -11,7 +12,10 @@ function typeOf(spec: Manifest['props'][string]): string {
 export function PropsTable({ manifest }: { manifest: Manifest }) {
   const rows = Object.entries(manifest.props);
   return (
-    <div className="overflow-x-auto rounded-container border border-line-default">
+    <ScrollRegion
+      label={`${manifest.name} props`}
+      className="rounded-container border border-line-default"
+    >
       <table className="w-full border-collapse">
         <thead className="bg-surface-layer-2">
           <tr>
@@ -57,6 +61,6 @@ export function PropsTable({ manifest }: { manifest: Manifest }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </ScrollRegion>
   );
 }

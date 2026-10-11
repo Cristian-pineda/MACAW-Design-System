@@ -26,10 +26,23 @@ export const add = defineCommand({
   async run({ args }) {
     const cwd = args.cwd;
     const index = await loadIndex();
+    const block = index.items.find((i) => i.name === args.name && i.type === 'registry:block');
+    if (block) {
+      await addBlock(
+        args.name,
+        cwd,
+        args.yes,
+        args['skip-install'],
+        index.meta.macaw.scope,
+        index.meta.macaw.version,
+      );
+      return;
+    }
     const item = index.items.find((i) => i.name === args.name && i.type === 'registry:ui');
     if (!item) {
+      const blocks = index.meta.macaw.blocks ?? [];
       console.error(
-        `not-in-system: "${args.name}". Components: ${index.meta.macaw.components.join(', ')}`,
+        `not-in-system: "${args.name}". Components: ${index.meta.macaw.components.join(', ')}${blocks.length ? `. Templates and pages: ${blocks.join(', ')}` : ''}`,
       );
       process.exitCode = 1;
       return;
@@ -120,3 +133,54 @@ export const add = defineCommand({
     );
   },
 });
+
+/**
+ * Templates and pages are starting points the consumer owns: copy the block and the template a
+ * page fills. The components inside import from @macaw-ds/ui, so nothing leaves the upgrade path
+ * and nothing is recorded as ejected.
+ */
+async function addBlock(
+  name: string,
+  cwd: string,
+  overwrite: boolean,
+  skipInstall: boolean,
+  scope: string,
+  version: string,
+) {
+  const written: string[] = [];
+  const queue = [await loadItem(name)];
+  const seen = new Set<string>();
+  const deps = new Set<string>();
+  while (queue.length) {
+    const current = queue.shift()!;
+    if (seen.has(current.name)) continue;
+    seen.add(current.name);
+    for (const d of current.dependencies ?? [])
+      deps.add(d.startsWith(scope) ? `${d}@${version}` : d);
+    for (const dep of current.registryDependencies ?? []) {
+      const depName =
+        dep
+          .split('/')
+          .pop()
+          ?.replace(/\.json$/, '') ?? '';
+      if (depName && depName !== 'tokens' && !seen.has(depName))
+        queue.push(await loadItem(depName));
+    }
+    for (const f of current.files) {
+      const dest = join(cwd, existsSync(join(cwd, 'src')) ? `src/${f.target}` : f.target);
+      if (existsSync(dest) && !overwrite) {
+        console.error(`${dest} exists. Re-run with --yes to overwrite.`);
+        process.exitCode = 1;
+        return;
+      }
+      await mkdir(dirname(dest), { recursive: true });
+      await writeFile(dest, f.content);
+      written.push(dest.replace(`${cwd}/`, ''));
+    }
+  }
+  if (deps.size && !skipInstall) run(addCommand(detectPackageManager(cwd), [...deps]), cwd);
+  console.log(`Added ${name}:\n${written.map((w) => `  ${w}`).join('\n')}`);
+  console.log(
+    `\nThis composition is yours to edit. Its components import from ${scope}/ui and stay on the upgrade path. Imports use '@/components/macaw/blocks/*'; make sure the '@/*' alias points at your source root.`,
+  );
+}

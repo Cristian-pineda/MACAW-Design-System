@@ -5,6 +5,7 @@
   "package": "@macaw-ds/ui",
   "status": "beta",
   "since": "0.1.0",
+  "level": "atom",
   "category": "typography",
   "purpose": "Renders text in a named typographic role and tone. Every string on screen goes through it; nothing else sets font size or colour.",
   "description": "The typography primitive. `variant` picks size, line height, weight and tracking from the type scale; `tone` picks the colour; `as` picks the HTML element for semantics. `numeric` switches on tabular numerals and the 7:1 numeric colour for money, counts and dates.",

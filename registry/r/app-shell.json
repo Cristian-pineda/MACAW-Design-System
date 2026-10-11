@@ -16,7 +16,7 @@
       "path": "registry/macaw/ui/app-shell.tsx",
       "type": "registry:ui",
       "target": "components/ui/macaw/app-shell.tsx",
-      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport { focusRing } from '@/lib/macaw/focus';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface AppShellProps extends NativeProps<'div'> {\n  /** The TopBar. */\n  topBar: React.ReactNode;\n  /** The SideNav. Omit for pages without primary navigation. */\n  sideNav?: React.ReactNode;\n  /** Accessible name for the side column landmark. */\n  sideNavLabel?: string;\n  /** id of the main element; the skip link targets it. */\n  mainId?: string;\n  /** Text of the skip link, the first Tab stop on the page. */\n  skipLinkLabel?: string;\n  /** The page: usually a PageHeader followed by content. */\n  children: React.ReactNode;\n}\n\n/**\n * The application frame: skip link, sticky TopBar, a full-height SideNav column on layer-1 that\n * scrolls on its own, and the main area on the canvas. The window scrolls the main content.\n */\nexport function AppShell({\n  topBar,\n  sideNav,\n  sideNavLabel = 'Primary',\n  mainId = 'main',\n  skipLinkLabel = 'Skip to main content',\n  children,\n  ...rest\n}: AppShellProps) {\n  return (\n    <div className=\"min-h-dvh bg-surface-canvas text-fg-primary\" {...rest}>\n      <a\n        href={`#${mainId}`}\n        className={cn(\n          'sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:rounded-control focus:bg-surface-overlay focus:px-3 focus:py-2 focus:font-sans focus:text-label-md focus:text-fg-primary focus:shadow-overlay',\n          focusRing,\n        )}\n      >\n        {skipLinkLabel}\n      </a>\n      {topBar}\n      <div className=\"flex\">\n        {sideNav && (\n          <aside\n            aria-label={sideNavLabel}\n            className=\"sticky top-topbar h-below-topbar w-sidenav shrink-0 overflow-y-auto border-r border-line-default bg-surface-layer-1\"\n          >\n            {sideNav}\n          </aside>\n        )}\n        <main id={mainId} tabIndex={-1} className=\"min-w-0 flex-1 outline-none\">\n          {children}\n        </main>\n      </div>\n    </div>\n  );\n}\n"
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/macaw/cn';\nimport { focusRing } from '@/lib/macaw/focus';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface AppShellProps extends NativeProps<'div'> {\n  /** The TopBar. */\n  topBar: React.ReactNode;\n  /** The SideNav. Omit for pages without primary navigation. */\n  sideNav?: React.ReactNode;\n  /** Accessible name for the side column landmark. */\n  sideNavLabel?: string;\n  /** id of the main element; the skip link targets it. */\n  mainId?: string;\n  /**\n   * Accessible name for main. Only needed when several apps share one screen-reader landmark list,\n   * such as an app embedded in an iframe inside another app.\n   */\n  mainLabel?: string;\n  /** Text of the skip link, the first Tab stop on the page. */\n  skipLinkLabel?: string;\n  /** The page: usually a PageHeader followed by content. */\n  children: React.ReactNode;\n}\n\n/**\n * The application frame: skip link, sticky TopBar, a full-height SideNav column on layer-1 that\n * scrolls on its own, and the main area on the canvas. The window scrolls the main content.\n * Below the 1024px floor nothing is sticky and the side column stacks above main, so the page\n * reflows at 320px (WCAG 1.4.10).\n */\nexport function AppShell({\n  topBar,\n  sideNav,\n  sideNavLabel = 'Primary',\n  mainId = 'main',\n  mainLabel,\n  skipLinkLabel = 'Skip to main content',\n  children,\n  ...rest\n}: AppShellProps) {\n  return (\n    <div data-macaw-app-shell=\"\" className=\"min-h-dvh bg-surface-canvas text-fg-primary\" {...rest}>\n      <a\n        href={`#${mainId}`}\n        className={cn(\n          'sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:rounded-control focus:bg-surface-overlay focus:px-3 focus:py-2 focus:font-sans focus:text-label-md focus:text-fg-primary focus:shadow-overlay',\n          focusRing,\n        )}\n      >\n        {skipLinkLabel}\n      </a>\n      {topBar}\n      <div className=\"flex flex-col md:flex-row\">\n        {sideNav && (\n          <aside\n            aria-label={sideNavLabel}\n            className=\"w-full shrink-0 border-b border-line-default bg-surface-layer-1 md:sticky md:top-topbar md:h-below-topbar md:w-sidenav md:overflow-y-auto md:border-r md:border-b-0\"\n          >\n            {sideNav}\n          </aside>\n        )}\n        <main\n          id={mainId}\n          aria-label={mainLabel}\n          tabIndex={-1}\n          className=\"min-w-0 flex-1 outline-none\"\n        >\n          {children}\n        </main>\n      </div>\n    </div>\n  );\n}\n"
     }
   ],
   "docs": "Ejected from @macaw-ds/ui@0.0.0. One AppShell per application, at the root layout. Put a TopBar in topBar and a SideNav in sideNav; do not build the frame by hand.",
@@ -26,6 +26,8 @@
   "meta": {
     "macaw": {
       "version": "0.0.0",
+      "kind": "component",
+      "level": "template",
       "package": "@macaw-ds/ui",
       "status": "beta",
       "slug": "app-shell",
@@ -36,6 +38,7 @@
         "package": "@macaw-ds/ui",
         "status": "beta",
         "since": "0.1.0",
+        "level": "template",
         "category": "layout",
         "purpose": "The application frame: skip link, sticky TopBar, full-height SideNav column and the main area. One per app, at the root layout.",
         "description": "Lays out the product chrome with depth by tone: the canvas is the background, the TopBar and SideNav column sit on layer-1. The SideNav column is sticky, exactly the viewport height below the TopBar, and scrolls on its own; the window scrolls the main area. A skip link is the first Tab stop.",
@@ -67,6 +70,12 @@
             "default": "main",
             "required": false,
             "description": "id of the main element; the skip link targets it.",
+            "control": "none"
+          },
+          "mainLabel": {
+            "type": "string",
+            "required": false,
+            "description": "Accessible name for main. Only when several apps share one landmark list, such as an app embedded in an iframe.",
             "control": "none"
           },
           "skipLinkLabel": {
@@ -107,7 +116,9 @@
           "notes": [
             "The skip link satisfies WCAG 2.4.1 Bypass Blocks; it is visually hidden until focused.",
             "main has tabIndex=-1 so the skip link can move focus to it.",
-            "Sticky chrome is offset with size.topbar so focused content is never obscured (WCAG 2.2 SC 2.4.11)."
+            "Sticky chrome is offset with size.topbar so focused content is never obscured (WCAG 2.2 SC 2.4.11).",
+            "Below 1024px nothing is sticky and the side column stacks above main, so the page reflows at 320px wide (WCAG 1.4.10). At desktop widths, scroll padding keeps focused elements clear of the sticky chrome (WCAG 2.4.11).",
+            "Screen readers list an iframe's landmarks with the host page's; an embedded app should name its banner (TopBar aria-label) and main (mainLabel) so landmarks stay unique."
           ]
         },
         "budget": {
