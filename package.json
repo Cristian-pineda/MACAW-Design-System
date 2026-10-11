@@ -42,7 +42,7 @@
     "@macaw-ds/eslint-config": "workspace:*",
     "@macaw-ds/manifest": "workspace:*",
     "@playwright/test": "^1.64.0",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.4",
     "ajv": "^8.20.0",
     "eslint": "^10.12.0",
     "eslint-plugin-better-tailwindcss": "^4.9.0",

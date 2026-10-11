@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/culori": "^4.0.1",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.4",
     "culori": "^4.0.2",
     "style-dictionary": "^5.6.1",
     "tsx": "^4.23.15",

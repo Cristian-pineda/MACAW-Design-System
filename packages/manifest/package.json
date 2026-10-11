@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@macaw-ds/eslint-config": "workspace:*",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.4",
     "tsdown": "^0.23.1",
     "tsx": "^4.23.15",
     "typescript": "5.9.3",
