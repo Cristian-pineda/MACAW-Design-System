@@ -17,13 +17,13 @@
       "content": "import type * as React from 'react';\nimport type { NativeProps } from '@/lib/macaw/types';\n\nexport interface TopBarProps extends NativeProps<'header'> {\n  /** Product mark and name, usually a link to home. */\n  brand: React.ReactNode;\n  /** Optional centre content, such as a search field or environment switcher. */\n  children?: React.ReactNode;\n  /** Right-aligned actions: help, notifications, theme toggle, account. */\n  actions?: React.ReactNode;\n}\n\n/** The application's global header. Sticky at the top of AppShell, on surface layer-1. */\nexport function TopBar({ brand, children, actions, ...rest }: TopBarProps) {\n  return (\n    <header\n      className=\"z-sticky flex h-topbar shrink-0 items-center gap-4 border-b border-line-default bg-surface-layer-1 px-4 md:sticky md:top-0\"\n      {...rest}\n    >\n      <div className=\"flex shrink-0 items-center gap-2\">{brand}</div>\n      <div className=\"flex min-w-0 flex-1 items-center\">{children}</div>\n      {actions && <div className=\"flex shrink-0 items-center gap-1\">{actions}</div>}\n    </header>\n  );\n}\n"
     }
   ],
-  "docs": "Ejected from @macaw-ds/ui@0.0.0. One TopBar per page, placed in AppShell's topBar slot. Actions are ghost Buttons; icon-only actions need aria-label.",
+  "docs": "Ejected from @macaw-ds/ui@0.1.0. One TopBar per page, placed in AppShell's topBar slot. Actions are ghost Buttons; icon-only actions need aria-label.",
   "categories": [
     "layout"
   ],
   "meta": {
     "macaw": {
-      "version": "0.0.0",
+      "version": "0.1.0",
       "kind": "component",
       "level": "organism",
       "package": "@macaw-ds/ui",

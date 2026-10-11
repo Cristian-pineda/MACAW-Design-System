@@ -17,7 +17,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "template",
           "package": "@macaw-ds/ui",
@@ -48,7 +48,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "atom",
           "package": "@macaw-ds/ui",
@@ -80,7 +80,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "atom",
           "package": "@macaw-ds/ui",
@@ -112,7 +112,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "molecule",
           "package": "@macaw-ds/ui",
@@ -154,7 +154,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "atom",
           "package": "@macaw-ds/icons",
@@ -186,7 +186,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "atom",
           "package": "@macaw-ds/ui",
@@ -218,7 +218,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "organism",
           "package": "@macaw-ds/ui",
@@ -249,7 +249,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "organism",
           "package": "@macaw-ds/ui",
@@ -282,7 +282,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "molecule",
           "package": "@macaw-ds/ui",
@@ -314,7 +314,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "atom",
           "package": "@macaw-ds/ui",
@@ -346,7 +346,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "component",
           "level": "organism",
           "package": "@macaw-ds/ui",
@@ -377,7 +377,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "template",
           "status": "beta",
@@ -410,7 +410,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "template",
           "status": "beta",
@@ -445,7 +445,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "template",
           "status": "beta",
@@ -481,7 +481,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "template",
           "status": "beta",
@@ -514,7 +514,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "page",
           "status": "beta",
@@ -548,7 +548,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "page",
           "status": "beta",
@@ -583,7 +583,7 @@
       ],
       "meta": {
         "macaw": {
-          "version": "0.0.0",
+          "version": "0.1.0",
           "kind": "block",
           "level": "page",
           "status": "beta",
@@ -637,7 +637,7 @@
   ],
   "meta": {
     "macaw": {
-      "version": "0.0.0",
+      "version": "0.1.0",
       "scope": "@macaw-ds",
       "generatedFrom": "packages/ui, packages/icons, packages/tokens",
       "components": [
