@@ -38,7 +38,14 @@ updates:
     ignore:
       - dependency-name: typescript
         update-types: ['version-update:semver-major']
+      # Types follow the Node runtime in .node-version (24); bump both together, by hand.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
       interval: weekly
+    # One PR for all action bumps: they edit the same workflow files and conflict otherwise.
+    groups:
+      actions:
+        patterns: ['*']

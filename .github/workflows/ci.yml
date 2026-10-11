@@ -35,5 +35,6 @@ jobs:
       - name: Format check
         run: pnpm format:check
       - name: Changeset status
-        if: github.event_name == 'pull_request'
+        # Dependabot cannot write changesets; dependency bumps ship with the next release's changeset.
+        if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
         run: pnpm changeset status --since=origin/main
