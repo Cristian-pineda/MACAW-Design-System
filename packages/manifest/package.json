@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/manifest",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The MACAW component manifest: schema, loader and snippet builder shared by the docs, CLI, MCP server and CI",
   "license": "Apache-2.0",
   "repository": {

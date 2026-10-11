@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/tokens",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "MACAW design tokens: DTCG JSON compiled to CSS variables, a Tailwind v4 theme and TypeScript constants",
   "license": "Apache-2.0",
   "repository": {
