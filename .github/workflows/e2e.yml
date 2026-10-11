@@ -15,6 +15,9 @@ concurrency:
   group: e2e-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write # only the update-baselines dispatch uses it, to commit the screenshots
+
 jobs:
   e2e:
     name: a11y, keyboard, visual
@@ -23,9 +26,9 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: pnpm
@@ -44,12 +47,13 @@ jobs:
       - name: Commit baselines
         if: ${{ inputs.update-baselines }}
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add e2e/__screenshots__
           git commit -m "test: update visual baselines" || echo "no changes"
           git push
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
