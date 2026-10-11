@@ -41,13 +41,12 @@ Roughly 60% more scope than the v1 plan, all decided in this session's consultat
 
 Done on 2026-10-11: CI fixes merged (#6), visual baselines committed, Dependabot cleaned up (#1–#5 closed, Actions bumps merged as #8). `ci`, `e2e` and `smoke` are green on `main`.
 
-1. **Merge #9:** fixes the `release` version step and makes visual tests Linux-only.
-2. **Allow Actions to open PRs:** Settings → Actions → General → Workflow permissions → _Allow GitHub Actions to create and approve pull requests_. Without it `release` cannot open the "Version Packages" PR.
-3. **npm:** create the account and the `macaw-ds` org, publish `0.0.1` by hand, add each package's trusted publisher, then merge the "Version Packages" PR to release `0.1.0`. Until the repo is public, add an `NPM_TOKEN` secret (90-day granular token) for CI publishing.
-4. **Vercel:** import the repo with root directory `apps/docs`, set `REGISTRY_BASE_URL` to the deployed URL, redeploy so eject and shadcn URLs resolve.
-5. **First eval:** run `evals/tasks/01-invoice-summary.md` with Claude in a fresh app after `macaw init`; record corrections in `evals/README.md`.
-6. **Screen reader pass:** VoiceOver with Safari on one component page and one page block.
-7. **Make the repository public;** then turn on branch protection for `main` (requires `ci` and `e2e`; GitHub only offers it on public repos or with Pro), switch publishing to trusted publishing with provenance, and set the social preview.
+Done on 2026-10-11: `0.1.0` of all seven packages published to npm (first publish by hand), each with a trusted publisher for `release.yml`; CI publishes without a token from then on. Version Packages PRs regenerate `registry/` and the plugin reference (#11).
+
+1. **Vercel:** import the repo with root directory `apps/docs`, set `REGISTRY_BASE_URL` to the deployed URL, redeploy so eject and shadcn URLs resolve.
+2. **First eval:** run `evals/tasks/01-invoice-summary.md` with Claude in a fresh app after `macaw init`; record corrections in `evals/README.md`.
+3. **Screen reader pass:** VoiceOver with Safari on one component page and one page block.
+4. **Make the repository public;** then turn on branch protection for `main` (requires `ci` and `e2e`; GitHub only offers it on public repos or with Pro), check that the next release carries npm provenance (only generated for public repos), and set the social preview.
 
 ## After 0.1.0
 
