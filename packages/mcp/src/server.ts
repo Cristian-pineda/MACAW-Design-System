@@ -5,6 +5,9 @@ import { z } from 'zod';
 import { listManifests, loadBlock, loadIndex, loadManifest, loadTokens } from './registry.ts';
 import { validate } from './tools/validate.ts';
 
+/** Component, template and page slugs: lowercase words joined by single hyphens. */
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 export function createServer(): McpServer {
   const server = new McpServer({ name: 'macaw', version: '0.0.0' });
 
@@ -69,7 +72,16 @@ export function createServer(): McpServer {
     },
     async ({ name }) => {
       const slugs = await listManifests();
-      const slug = name.toLowerCase().replace(/\s+/g, '-');
+      const slug = name.trim().toLowerCase().replace(/\s+/g, '-');
+      // Slugs name files on disk; reject anything that is not a plain slug before touching the filesystem.
+      if (!SLUG.test(slug)) {
+        return {
+          content: [
+            { type: 'text', text: JSON.stringify({ notInSystem: name, available: slugs }) },
+          ],
+          isError: true,
+        };
+      }
       const block = await loadBlock(slug);
       if (block) {
         return { content: [{ type: 'text', text: JSON.stringify(block, null, 2) }] };
@@ -93,20 +105,24 @@ export function createServer(): McpServer {
     {
       title: 'Get MACAW tokens',
       description:
-        'Design tokens with light and dark values and the Tailwind utility they produce. Filter by group (color, color.action, text, shape, elevation, space, duration) and tier (primitive, semantic, component). Use utilities, never raw values.',
+        'Design tokens with light and dark values and the Tailwind utility they produce. Filter by group (color, color.action, text, shape, elevation, space, duration) and tier (primitive, semantic, component). With no filter at all, returns the semantic tier only, which is what screens are built from; pass a tier to see primitives or component tokens. Use utilities, never raw values.',
       inputSchema: {
         group: z
           .string()
           .optional()
           .describe('Dotted prefix such as "color.action" or "text.size"'),
-        tier: z.enum(['primitive', 'semantic', 'component']).optional(),
+        tier: z
+          .enum(['primitive', 'semantic', 'component'])
+          .optional()
+          .describe('Defaults to "semantic" when neither group nor tier is given'),
       },
     },
     async ({ group, tier }) => {
       const { version, prefix, tokens } = await loadTokens();
+      const effectiveTier = tier ?? (group ? undefined : 'semantic');
       const filtered = tokens
         .filter((t) => !group || t.name === group || t.name.startsWith(`${group}.`))
-        .filter((t) => !tier || t.tier === tier)
+        .filter((t) => !effectiveTier || t.tier === effectiveTier)
         .map((t) => ({
           name: t.name,
           cssVar: t.cssVar,
@@ -122,7 +138,13 @@ export function createServer(): McpServer {
           {
             type: 'text',
             text: JSON.stringify(
-              { version, prefix, count: filtered.length, tokens: filtered },
+              {
+                version,
+                prefix,
+                tier: effectiveTier ?? 'all',
+                count: filtered.length,
+                tokens: filtered,
+              },
               null,
               2,
             ),
