@@ -1,5 +1,13 @@
 # @macaw-ds/ui
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @macaw-ds/icons@0.2.1
+  - @macaw-ds/tokens@0.2.1
+
 ## 0.2.0
 
 ### Patch Changes
