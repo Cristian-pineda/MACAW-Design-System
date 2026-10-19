@@ -56,6 +56,35 @@ describe('macaw mcp', () => {
     expect(miss.isError).toBe(true);
     expect(text(miss).notInSystem).toBe('data-table');
   });
+  it('get_component rejects names that are not plain slugs without touching the filesystem', async () => {
+    for (const name of ['../../package', 'button/../text', 'Button Primary!', '.', '']) {
+      const r = await client.callTool({ name: 'get_component', arguments: { name } });
+      expect(r.isError).toBe(true);
+      const body = text(r);
+      expect(body.notInSystem).toBe(name);
+      expect(body.available).toContain('button');
+    }
+    const ok = text(
+      await client.callTool({ name: 'get_component', arguments: { name: ' Page Header ' } }),
+    );
+    expect(ok.slug).toBe('page-header');
+  });
+  it('get_tokens defaults to the semantic tier when called without filters', async () => {
+    const r = text(await client.callTool({ name: 'get_tokens', arguments: {} }));
+    expect(r.tier).toBe('semantic');
+    expect(r.count).toBeGreaterThan(0);
+    expect(r.tokens.every((t: { tier: string }) => t.tier === 'semantic')).toBe(true);
+    const prim = text(
+      await client.callTool({ name: 'get_tokens', arguments: { tier: 'primitive' } }),
+    );
+    expect(prim.tier).toBe('primitive');
+    expect(prim.tokens.every((t: { tier: string }) => t.tier === 'primitive')).toBe(true);
+    const grouped = text(
+      await client.callTool({ name: 'get_tokens', arguments: { group: 'color' } }),
+    );
+    expect(grouped.tier).toBe('all');
+    expect(new Set(grouped.tokens.map((t: { tier: string }) => t.tier)).size).toBeGreaterThan(1);
+  });
   it('get_tokens filters by group and reports utilities and both themes', async () => {
     const r = text(
       await client.callTool({

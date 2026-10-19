@@ -31,3 +31,6 @@ apps/docs/public/r/
 *.log
 .claude/settings.local.json
 CLAUDE.local.md
+
+# design source files (keep out of git)
+*.psd
