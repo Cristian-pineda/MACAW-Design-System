@@ -4,6 +4,12 @@
 
 <h1 align="center">MACAW Design System</h1>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@macaw-ds/ui"><img src="https://img.shields.io/npm/v/@macaw-ds/ui?label=%40macaw-ds%2Fui" alt="Current @macaw-ds/ui version on npm"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="License: Apache-2.0"></a>
+  <a href="https://macaw-design-system.vercel.app"><img src="https://img.shields.io/badge/docs-macaw--design--system.vercel.app-black" alt="Docs site"></a>
+</p>
+
 An **agentic design system for financial software**: tokens, React components, and the agent layer (manifests, skills, hooks, an MCP server) that lets Claude build correct screens with it without a human explaining it first.
 
 MACAW targets dense, high-contrast, dashboard-first financial interfaces: tabular numerals at 7:1 contrast, 1px borders, tight radii, one restrained accent, light and dark as token modes.
@@ -12,7 +18,9 @@ MACAW targets dense, high-contrast, dashboard-first financial interfaces: tabula
 
 ## Status
 
-Pre-release (`0.x`). The first usable release is `0.1.0`: tokens with light, dark and compact modes, Button, Text, Input, Badge, Card, the application shell (AppShell, TopBar, SideNav, PageHeader, TabNav), the CLI, the Claude Code plugin and the MCP server.
+Pre-release (`0.x`): minor releases can still change the public API. The badge above shows the current version, and each package's `CHANGELOG.md` lists what changed.
+
+What ships today: tokens with light, dark and compact modes; Button, Text, Input, Badge, Card; the application shell (AppShell, TopBar, SideNav, PageHeader, TabNav); templates and pages installable as blocks; the CLI (`init` now wires the stylesheet imports into your root CSS), the Claude Code plugin and the MCP server.
 
 ## Install (one door)
 
@@ -68,6 +76,14 @@ evals/      "build me X" tasks run against each release
 ```
 
 Status and next steps are in `ROADMAP.md`. Read `DECISIONS.md` before proposing a change; half of the answers are already there. `CONTRIBUTING.md` has the setup and the component checklist.
+
+## Open source
+
+MACAW is built in the open under Apache-2.0. Issues and pull requests are welcome:
+
+- Read `DECISIONS.md` first; if something is missing from the system, propose it there rather than working around it.
+- `CONTRIBUTING.md` has the setup (Node 24, pnpm via corepack), the six-file component checklist and the `pnpm verify` gate every change passes.
+- Changes under `packages/` need a changeset (`pnpm changeset`); versions are never bumped by hand.
 
 ## License
 

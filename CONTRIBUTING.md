@@ -31,7 +31,41 @@ pnpm dev                                 # docs site at http://localhost:3000
 6. Export from `index.ts` and the package barrel; add the entry to `tsdown.config.ts` and `package.json` exports; add a `size-limit` entry.
 7. Register the component in `apps/docs/components/playground/component-map.tsx`.
 8. `pnpm verify`, then `pnpm changeset`.
-9. Open a PR with a screenshot of the playground. For interactive components, complete the screen reader checklist in the PR template.
+9. Open a PR with screenshots (see below). For interactive components, complete the screen reader checklist in the PR template.
+
+## Acceptance criteria
+
+A PR that adds or changes a component, template or page is reviewed against these. The PR template repeats them as a checklist.
+
+### Screenshots in the PR
+
+Reviewers should be able to judge the change without checking out the branch. Attach to the PR description:
+
+- The playground (or the block preview) in **light and dark**.
+- **Before and after** for any change to something that already exists.
+- **Compact density** if the component uses layout utilities (`p-card-x`, `h-control-*`, `gap-gutter`).
+- A short screen recording for anything with motion or a multi-step keyboard path (menus, dialogs, tabs).
+
+### Built from smaller components, no drift
+
+- Compose what the system already has. If a part of your component looks or behaves like an existing component (a label, a badge, an icon button, a text style), import that component instead of rebuilding it with its classes.
+- Stay on your atomic level or below (DECISIONS.md #22). `manifest:check` fails if an atom imports a molecule, for example.
+- List what you compose in the manifest's `registryDependencies`, so `add` and `--eject` bring it along.
+- No near-duplicates. If an existing component almost fits, extend it with a variant or prop (and propose it in `DECISIONS.md`) rather than shipping a second one.
+- Tokens only. A new visual value is a token change in `packages/tokens/src`, never an inline value in the component.
+
+The level check is automated; the "reused rather than rebuilt" part is not, so reviewers check it by reading the source.
+
+### Documentation complete
+
+Every component page on the docs site is built from the manifest, the `.mdx` and the examples, so a gap in any of them shows up as an empty section. Before review, open `/components/<slug>` and check each tab:
+
+- **Overview:** playground controls cover every variant, `examples` include the realistic cases, and do / don't, rules and related components are filled in.
+- **Usage:** the `.mdx` covers when to use, when not to use, and anatomy, plus a recipe if the component is usually composed with others.
+- **Code:** import path, props (with descriptions and defaults) and slots match the source.
+- **Accessibility:** the `a11y` block is complete: role, accessible name, every keyboard interaction, focus behaviour and notes. Text and non-text contrast meet **WCAG 2.2 AA** (4.5:1 text, 3:1 large text and UI parts) in light and dark; targets are at least 24×24 px; motion uses tokens and respects reduced motion (declare the `motion` block).
+
+`pnpm verify` catches a missing manifest field or an empty keyboard list for interactive categories; it cannot tell whether the content is right.
 
 ## Visual regression baselines
 
