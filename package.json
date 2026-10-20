@@ -37,13 +37,13 @@
     "brand:build": "tsx tooling/brand/build.ts"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
+    "@axe-core/playwright": "^4.14.0",
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
     "@macaw-ds/eslint-config": "workspace:*",
     "@macaw-ds/manifest": "workspace:*",
-    "@playwright/test": "^1.64.0",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^24.0.0",
     "ajv": "^8.20.0",
     "eslint": "^10.12.0",
