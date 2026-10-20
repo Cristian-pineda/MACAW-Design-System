@@ -4,7 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CodeBlock } from '@/components/docs-ui/code-block';
 import { InvoiceSummary, LinkCards } from '@/components/home/showcase';
-import { DEFINITION_OF_DONE } from '@/lib/site';
+import {
+  CONTRIBUTING_URL,
+  DEFINITION_OF_DONE,
+  GITHUB_URL,
+  IS_PRERELEASE,
+  LICENSE_NAME,
+  VERSION,
+} from '@/lib/site';
 
 const INSTALL = 'npx @macaw-ds/cli init';
 
@@ -23,7 +30,10 @@ export default function HomePage() {
               className="size-18 shrink-0"
             />
             <Badge tone="accent" variant="outline">
-              Pre-release 0.x
+              {IS_PRERELEASE ? `v${VERSION} · Pre-release` : `v${VERSION}`}
+            </Badge>
+            <Badge tone="neutral" variant="outline">
+              Open source · {LICENSE_NAME}
             </Badge>
           </div>
           <Text as="h1" variant="display-lg" id="hero-title">
@@ -73,6 +83,29 @@ export default function HomePage() {
           What you get
         </Text>
         <LinkCards />
+      </section>
+
+      <section aria-labelledby="oss-title" className="flex flex-col gap-3">
+        <Text as="h2" variant="heading-lg" id="oss-title">
+          Open source
+        </Text>
+        <Text tone="secondary">
+          MACAW is {LICENSE_NAME} licensed and built in the open. Read the source, file an issue, or
+          propose a component: every decision is recorded in the repo, and the contributing guide
+          has the checklist a change needs to land.
+        </Text>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button asChild variant="secondary" iconEnd={<Icon name="external-link" />}>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+              View on GitHub<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </Button>
+          <Button asChild variant="ghost" iconEnd={<Icon name="external-link" />}>
+            <a href={CONTRIBUTING_URL} target="_blank" rel="noreferrer">
+              Contributing guide<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </Button>
+        </div>
       </section>
     </div>
   );
