@@ -28,7 +28,7 @@
     "@macaw-ds/eslint-config": "workspace:^",
     "@macaw-ds/tokens": "workspace:^",
     "@modelcontextprotocol/sdk": "^1.32.1",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "tailwindcss": "^4.3.3",
     "zod": "^4.6.5"
   },
