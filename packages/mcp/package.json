@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/mcp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "MCP server for the MACAW design system: list_components, get_component, get_tokens, validate",
   "license": "Apache-2.0",
   "repository": {
