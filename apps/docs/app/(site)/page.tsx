@@ -20,7 +20,7 @@ export default function HomePage() {
     <div className="flex max-w-page flex-col gap-section px-margin py-section">
       <section aria-labelledby="hero-title" className="layout-grid items-center gap-y-section">
         <div className="col-span-12 flex flex-col gap-stack-md lg:col-span-6">
-          <div className="flex items-center gap-stack-md">
+          <div className="flex flex-wrap items-center gap-stack-md">
             <Image
               src="/brand/macaw-mark-512.png"
               alt="MACAW"
