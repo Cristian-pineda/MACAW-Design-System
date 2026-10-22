@@ -52,11 +52,18 @@ if [ -z "$FROM_NPM" ]; then
     done
   } > pnpm-workspace.yaml
   quiet pnpm add -D "$PACKS"/macaw-ds-cli-*.tgz
+  # init would `pnpm add @macaw-ds/ui@<version>`, and that exact version is not on npm until the
+  # release publishes it. Some pnpm versions skip the file: overrides for an exact-version add and
+  # go to the registry, so install the tarballs here and let init do everything else.
+  quiet pnpm add "$PACKS"/macaw-ds-ui-*.tgz "$PACKS"/macaw-ds-tokens-*.tgz "$PACKS"/macaw-ds-icons-*.tgz
+  quiet pnpm add -D "$PACKS"/macaw-ds-eslint-config-*.tgz 'eslint@^10'
+  INIT_FLAGS=(--skip-install)
 else
   quiet pnpm add -D "@macaw-ds/cli@$FROM_NPM"
+  INIT_FLAGS=()
 fi
 # The one door: init installs ui, tokens, icons, eslint-config (+ eslint) and the plugin.
-quiet pnpm exec macaw init
+quiet pnpm exec macaw init ${INIT_FLAGS[@]+"${INIT_FLAGS[@]}"}
 test -f .claude/skills/using-macaw/SKILL.md && test -f .claude/agents/macaw-reviewer.md && test -f .mcp.json && grep -q "macaw:start" CLAUDE.md && grep -q '"macaw"' .claude/settings.json
 echo "smoke: macaw init ok"
 
