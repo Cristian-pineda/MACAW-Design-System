@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist_Mono, Inter } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { Analytics } from '@vercel/analytics/next';
 import { DENSITY_INIT_SCRIPT } from '@/components/shell/density';
 import { ThemeProvider } from '@/components/shell/theme-provider';
 import { REGISTRY_BASE_URL, SITE_NAME } from '@/lib/site';
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
