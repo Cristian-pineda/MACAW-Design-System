@@ -1,4 +1,4 @@
-# MACAW components (generated, v0.2.1)
+# MACAW components (generated, v0.2.2)
 
 Read the manifest in `manifests/<slug>.json` before using a component. Import everything from `@macaw-ds/ui` (Icon from `@macaw-ds/icons`).
 
