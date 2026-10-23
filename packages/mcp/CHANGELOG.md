@@ -1,5 +1,14 @@
 # @macaw-ds/mcp
 
+## 0.2.2
+
+### Patch Changes
+
+- Bump eslint to 10.13 and typescript-eslint to 8.71.2.
+- Updated dependencies []:
+  - @macaw-ds/eslint-config@0.2.2
+  - @macaw-ds/tokens@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes

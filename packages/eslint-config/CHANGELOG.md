@@ -1,5 +1,11 @@
 # @macaw-ds/eslint-config
 
+## 0.2.2
+
+### Patch Changes
+
+- Bump eslint to 10.13 and typescript-eslint to 8.71.2.
+
 ## 0.2.1
 
 No changes in this release.
