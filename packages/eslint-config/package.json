@@ -1,6 +1,6 @@
 {
   "name": "@macaw-ds/eslint-config",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "ESLint flat config for MACAW: token utilities only, no raw values, no className on system components, strict jsx-a11y",
   "license": "Apache-2.0",
   "repository": {
