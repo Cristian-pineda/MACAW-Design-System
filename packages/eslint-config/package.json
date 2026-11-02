@@ -34,13 +34,13 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",
-    "typescript-eslint": "^8.71.2"
+    "typescript-eslint": "^8.72.1"
   },
   "peerDependencies": {
     "eslint": ">=10"
   },
   "devDependencies": {
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "typescript": "5.9.3",
     "vite": "^8.3.5",
     "vitest": "^5.0.5",
