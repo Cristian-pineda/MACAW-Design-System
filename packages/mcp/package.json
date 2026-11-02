@@ -27,7 +27,7 @@
   "dependencies": {
     "@macaw-ds/eslint-config": "workspace:^",
     "@macaw-ds/tokens": "workspace:^",
-    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "eslint": "^10.13.0",
     "tailwindcss": "^4.3.3",
     "zod": "^4.6.7"
