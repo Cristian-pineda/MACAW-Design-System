@@ -39,7 +39,7 @@
     "@types/culori": "^4.0.1",
     "@types/node": "^24.0.0",
     "culori": "^4.0.2",
-    "style-dictionary": "^5.6.1",
+    "style-dictionary": "^5.7.1",
     "tsx": "^4.23.15",
     "typescript": "5.9.3",
     "vitest": "^5.0.5",
