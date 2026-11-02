@@ -79,7 +79,7 @@
     "@macaw-ds/tokens": "workspace:^",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^1.55.0",
-    "radix-ui": "^1.7.0"
+    "radix-ui": "^1.8.1"
   },
   "peerDependencies": {
     "react": "^19.0.0",
